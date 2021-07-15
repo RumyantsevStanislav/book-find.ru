@@ -1,5 +1,7 @@
 package backend.controllers;
 
+import backend.entities.Category;
+import backend.services.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,16 +20,22 @@ import java.util.Map;
 @RequestMapping("/books")
 public class BooksController {
     private BooksService booksService;
+    private CategoriesService categoriesService;
 
     @Autowired
-    public BooksController(BooksService booksService) {
+    public BooksController(BooksService booksService, CategoriesService categoriesService) {
         this.booksService = booksService;
+        this.categoriesService = categoriesService;
     }
 
     @GetMapping
-    public String showAllBooks(Model model, @RequestParam Map<String, String> requestParams) {
+    public String showAll(Model model, @RequestParam Map<String, String> requestParams, @RequestParam(name = "categories", required = false) List<Long> categoriesIds) {
+        List<Category> categoriesFilter = null;
+        if (categoriesIds != null) {
+            categoriesFilter = categoriesService.getCategoriesByIds(categoriesIds);
+        }
         Integer pageNumber = Integer.parseInt(requestParams.getOrDefault("p", "1"));
-        BookFilter bookFilter = new BookFilter(requestParams);
+        BookFilter bookFilter = new BookFilter(requestParams, categoriesFilter);
         Page<Book> books = booksService.findAll(bookFilter.getSpec(), pageNumber);
         model.addAttribute("filterDef", bookFilter.getFilterDefinition().toString());
         return "all_books";
