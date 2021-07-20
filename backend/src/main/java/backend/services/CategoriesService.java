@@ -1,6 +1,7 @@
 package backend.services;
 
 import backend.entities.Category;
+import backend.entities.dtos.CategoryDto;
 import backend.repositories.CategoriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,9 @@ public class CategoriesService {
 
     public List<Category> getCategoriesByIds(List<Long> ids) {
         return categoriesRepository.findAllById(ids);
+    }
+
+    public  List<CategoryDto> getDtoData(){
+        return categoriesRepository.findAllBy();
     }
 }

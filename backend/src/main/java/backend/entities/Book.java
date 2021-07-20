@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table (name = "books")
+@Table(name = "books")
 @Data
 @NoArgsConstructor
 public class Book {
@@ -32,7 +32,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
-    public Book(Long id, String title, Float price) {
+    public Book(Long id, String title, String description, Float price) {
         this.id = id;
         this.title = title;
         this.description = description;

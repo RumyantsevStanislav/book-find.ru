@@ -4,12 +4,10 @@ import backend.entities.Category;
 import backend.services.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import backend.entities.Book;
-import backend.repositories.specifications.BookSpecifications;
 import backend.services.BooksService;
 import backend.utils.BookFilter;
 
@@ -37,6 +35,7 @@ public class BooksController {
         Integer pageNumber = Integer.parseInt(requestParams.getOrDefault("p", "1"));
         BookFilter bookFilter = new BookFilter(requestParams, categoriesFilter);
         Page<Book> books = booksService.findAll(bookFilter.getSpec(), pageNumber);
+        model.addAttribute("books", books);
         model.addAttribute("filterDef", bookFilter.getFilterDefinition().toString());
         return "all_books";
     }

@@ -26,7 +26,7 @@ public class Category {
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
     @JsonBackReference
-    private List<Book> products;
+    private List<Book> books;
 
     public Category(Long id, String title) {
         this.id = id;

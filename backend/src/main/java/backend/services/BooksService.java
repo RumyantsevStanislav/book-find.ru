@@ -1,5 +1,6 @@
 package backend.services;
 
+import backend.entities.dtos.BookDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,5 +39,17 @@ public class BooksService {
             page = 1;
         }
         return booksRepository.findAll(spec, PageRequest.of(page - 1, 10));
+    }
+
+    public void deleteById(Long id) {
+        booksRepository.deleteById(id);
+    }
+
+    public boolean existsById(Long id) {
+        return booksRepository.existsById(id);
+    }
+
+    public  List<BookDto> getDtoData(){
+        return booksRepository.findAllBy();
     }
 }
