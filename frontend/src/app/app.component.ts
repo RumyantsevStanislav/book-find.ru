@@ -7,4 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'frontend';
+  constructor() {
+    this.title = 'Spring Boot - Angular Application';
+  }
 }
