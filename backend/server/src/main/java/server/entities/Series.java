@@ -7,16 +7,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name = "authors")
+@Table(name = "series")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Author {
+public class Series {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,15 +24,13 @@ public class Author {
     @Column(name = "labirint_id")
     private Long labirintId;
 
-    @Column(unique = true)
-    private String name;
+    private String title;
 
-    private String role;
+    private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "series")
     @ToString.Exclude
-    private Set<Book> books;
-
+    private List<Book> books;
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -45,8 +43,8 @@ public class Author {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Author author = (Author) o;
-        return id != null && Objects.equals(id, author.id);
+        Series series = (Series) o;
+        return id != null && Objects.equals(id, series.id);
     }
 
     @Override
