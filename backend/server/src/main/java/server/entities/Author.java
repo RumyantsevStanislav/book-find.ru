@@ -31,6 +31,7 @@ public class Author {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
     @ToString.Exclude
+    @Getter(AccessLevel.NONE)
     private Set<Book> books;
 
     @CreationTimestamp

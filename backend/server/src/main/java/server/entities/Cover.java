@@ -25,7 +25,9 @@ public class Cover {
     private String path;
 
     @OneToOne(mappedBy = "cover")
+    @Getter(AccessLevel.NONE)
     private Book book;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
