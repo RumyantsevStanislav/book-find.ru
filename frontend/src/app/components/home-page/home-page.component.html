@@ -1,0 +1,20 @@
+<main>
+  <div class='books'>
+    <div *ngIf="!loading; else loadingBlock">
+      <div class="card" *ngFor="let book of books">
+        <p>
+          <span>{{book.title}}</span>
+          <img src="../../../assets/images/{{book.cover.path}}.{{book.cover.extension}}">
+        </p>
+        <div class="authors" *ngFor="let author of book.authors">
+          <small>{{author.role}}: {{author.name}}</small>
+        </div>
+        <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
+      </div>
+    </div>
+    <ng-template #loadingBlock>
+      <p>Loading...</p>
+    </ng-template>
+  </div>
+</main>
+
