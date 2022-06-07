@@ -1,6 +1,7 @@
 package server.controllers;
 
 import server.entities.Category;
+import server.services.AuthorsService;
 import server.services.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,13 +18,15 @@ import java.util.Map;
 @Controller
 @RequestMapping("/books")
 public class BooksController {
-    private BooksService booksService;
-    private CategoriesService categoriesService;
+    private final BooksService booksService;
+    private final CategoriesService categoriesService;
+    private AuthorsService authorsService;
 
     @Autowired
-    public BooksController(BooksService booksService, CategoriesService categoriesService) {
+    public BooksController(BooksService booksService, CategoriesService categoriesService, AuthorsService authorsService) {
         this.booksService = booksService;
         this.categoriesService = categoriesService;
+        this.authorsService = authorsService;
     }
 
     @GetMapping

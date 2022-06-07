@@ -22,11 +22,18 @@ public class BooksService {
     }
 
     public Book saveOrUpdate(Book book) {
+        if (findByTitle(book.getTitle()) != null) {
+            throw new RuntimeException("Book with title " + book.getTitle() + " is already exist");
+        }
         return booksRepository.save(book);
     }
 
     public Book findById(Long id) {
         return booksRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Can't find book with id = " + id));
+    }
+
+    public Book findByTitle(String title) {
+        return booksRepository.findByTitle(title);
     }
 
     public List<Book> findAll() {
@@ -49,7 +56,7 @@ public class BooksService {
         return booksRepository.existsById(id);
     }
 
-    public  List<BookDto> getDtoData(){
+    public List<BookDto> getDtoData() {
         return booksRepository.findAllBy();
     }
 }
