@@ -1,9 +1,9 @@
 package server.controllers;
 
-import server.entities.Book;
+import server.entities.*;
 import server.entities.dtos.BookDto;
 import server.exceptions.BookNotFoundException;
-import server.services.BooksService;
+import server.services.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController /*@Rest подставляет в каждый метод @ResponseBody*/
 @CrossOrigin("*")
@@ -20,11 +22,21 @@ import java.util.List;
 @Api("Set of endpoints for CRUD operations for Books")
 public class RestBooksController {
 
-    private BooksService booksService;
+    private final BooksService booksService;
+    private final AuthorsService authorsService;
+    private final GenresService genresService;
+    private final PublishersService publishersService;
+    private final CategoriesService categoriesService;
+    private final SeriesService seriesService;
 
     @Autowired
-    public RestBooksController(BooksService booksService) {
+    public RestBooksController(BooksService booksService, AuthorsService authorsService, GenresService genresService, PublishersService publishersService, CategoriesService categoriesService, SeriesService seriesService) {
         this.booksService = booksService;
+        this.authorsService = authorsService;
+        this.genresService = genresService;
+        this.publishersService = publishersService;
+        this.categoriesService = categoriesService;
+        this.seriesService = seriesService;
     }
 
     @GetMapping
@@ -58,11 +70,18 @@ public class RestBooksController {
     @PostMapping(consumes = "application/json", produces = "application/json")/*описываем что ожидаем и что возвращаем*/
     @ApiOperation("")
     @ResponseStatus(HttpStatus.CREATED) /* Возвращаем статус. Альтернатива ResponseEntity */
-    public Book saveNewBook(@RequestBody Book book) {
-        if (book.getId() != null) {
-            book.setId(null);
+    public void saveNewBook(@RequestBody Book book) {
+        checkBook(book);
+        checkAuthors(book);
+        checkGenre(book);
+        checkPublisher(book);
+        checkCategories(book);
+        checkSeries(book);
+        try {
+            booksService.saveOrUpdate(book);
+        } catch (RuntimeException runtimeException){
+            //do nothing
         }
-        return booksService.saveOrUpdate(book);
     }
 
     /*ResponseEntity - чтобы помимо объекта вернуть, например, статус-код*/
@@ -82,5 +101,65 @@ public class RestBooksController {
     @ExceptionHandler
     public ResponseEntity<?> handleException(BookNotFoundException exc) {
         return new ResponseEntity<>(exc.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    private void checkBook(Book book) {
+        if (book.getId() != null) {
+            book.setId(null);
+        }
+    }
+
+    private void checkAuthors(Book book) {
+        Set<Author> currentAuthors = book.getAuthors();
+        Set<Author> authors = new HashSet<>(currentAuthors);
+        for (Author author : authors) {
+            String name = author.getName();
+            String role = author.getRole();
+            Author existingAuthor = authorsService.findByNameAndRole(name, role);
+            if (existingAuthor != null) {
+                currentAuthors.add(existingAuthor);
+                currentAuthors.remove(author);
+            }
+        }
+    }
+
+    private void checkGenre(Book book) {
+        Genre genre = book.getGenre();
+        String path = genre.getPath();
+        Genre existingGenre = genresService.findByPath(path);
+        if (existingGenre != null) {
+            book.setGenre(existingGenre);
+        }
+    }
+
+    private void checkPublisher(Book book) {
+        Publisher publisher = book.getPublisher();
+        String title = publisher.getTitle();
+        Publisher existingPublisher = publishersService.findByTitle(title);
+        if (existingPublisher != null) {
+            book.setPublisher(existingPublisher);
+        }
+    }
+
+    private void checkCategories(Book book) {
+        Set<Category> currentCategories = book.getCategories();
+        Set<Category> categories = new HashSet<>(currentCategories);
+        for (Category category : categories) {
+            String title = category.getTitle();
+            Category existingCategory = categoriesService.findByTitle(title);
+            if (existingCategory != null) {
+                currentCategories.add(existingCategory);
+                currentCategories.remove(category);
+            }
+        }
+    }
+
+    private void checkSeries(Book book) {
+        Series series = book.getSeries();
+        String title = series.getTitle();
+        Series existingSeries = seriesService.findByTitle(title);
+        if (existingSeries != null) {
+            book.setSeries(existingSeries);
+        }
     }
 }
