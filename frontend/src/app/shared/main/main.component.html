@@ -1,10 +1,27 @@
 <p>Панель навигации</p>
-<router-outlet></router-outlet>
 <header>
   <nav>
+    <ul>
+      <li  routerLinkActive="active">
+        <a [routerLink]="['', '/']">Главная</a>
+      </li>
+      <li *ngIf="!auth.isAuthenticated()"  routerLinkActive="active">
+        <a [routerLink]="['/', 'login']">Войти</a>
+      </li>
+<!--      <li  routerLinkActive="active">-->
+<!--        <a [routerLink]="['/admin', 'create']">Добавить</a>-->
+<!--      </li>-->
+      <li *ngIf="auth.isAuthenticated()">
+        <a href="#" (click)="logout($event)">Выйти</a>
+      </li>
+      <li *ngIf="!auth.isAuthenticated()"  routerLinkActive="active">
+        <a [routerLink]="['/', 'registration']">Регистрация</a>
+      </li>
 
+    </ul>
   </nav>
 </header>
+<router-outlet></router-outlet>
 <footer>
 
 </footer>

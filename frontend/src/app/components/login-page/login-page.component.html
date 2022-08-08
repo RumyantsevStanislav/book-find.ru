@@ -1,0 +1,34 @@
+<form class="login" [formGroup]="form" (ngSubmit)="submit()">
+  <h2>Войти</h2>
+  <div class="alert alert-danger" *ngIf="auth.error$ | async as error">
+    {{error}}
+  </div>
+  <div class="alert-info" *ngIf="message">
+    {{message}}
+  </div>
+  <div [ngClass]="{invalid: form.get('username')?.touched && form.get('username')?.invalid}">
+    <div>
+      <label for="username">Email</label>
+      <input id="username" type="text" formControlName="username">
+      <div *ngIf=" form.get('username')?.touched && form.get('username')?.invalid" class="validation">
+        <small *ngIf="form.get('email')?.errors?.required">Поле обязательно</small>
+        <small *ngIf="form.get('email')?.errors?.email">Это не email?</small>
+      </div>
+    </div>
+  </div>
+  <div [ngClass]="{invalid: form.get('password')?.touched && form.get('password')?.invalid}">
+    <div>
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password">
+      <div class="validation" *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+        <div>
+          <small *ngIf="form.get('password')?.errors?.required">Введите пароль</small>
+          <small *ngIf="form.get('password')?.errors?.minlength">
+            Пароль должен быть не менее {{form.get('password')?.errors?.minlength?.requiredLength}},
+            сейчас он {{form.get('password')?.errors?.minlength?.actualLength}}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="submit" [disabled]="form.invalid || submitted">Войти</button>
+</form>

@@ -1,0 +1,85 @@
+<p>registration works!</p>
+<div class="parent p-4">
+  <form #formLogin="ngForm" class="child shadowBorder p-4">
+    <div class="form-group">
+      <label>Логин</label>
+      <input type="text" class="form-control" [(ngModel)]="systemUser.userName" name="login" required
+             pattern="^[A-z 0-9]+$" minlength="3" #login="ngModel">
+      <small class="text-danger" *ngIf="login.touched && login.hasError('required')">Обязательно для заполнения</small>
+      <small class="text-danger" *ngIf="login.touched && login.hasError('pattern')">Использовать только латинский алфавит</small>
+      <small class="text-danger" *ngIf="login.touched && login.hasError('minlength')">Не менее 3-х символов</small>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-6">
+        <label>Пароль</label>
+        <div class="input-group">
+          <input type="{{visiblePassword}}" class="form-control" [(ngModel)]="systemUser.password" name="password" required
+                 pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–\[\]{}:;',?/*~$^+=<>]).{8,}"
+                 #password="ngModel">
+          <span class="input-group-text" (click)="changeVisiblePassword()"><img src="../../../assets/images/eye.png" height="15"
+                                                                                width="20"/></span>
+        </div>
+        <small class="text-danger" *ngIf="password.touched && password.hasError('required')">Обязательно для заполнения</small>
+        <small class="text-danger" *ngIf="password.touched && password.hasError('pattern')">Не менее 8 символов, включая заглавные и
+          прописные буквы на латинице, цифры и спецсимволы</small>
+      </div>
+      <div class="form-group col-6">
+        <label>Повторите пароль</label>
+        <div class="input-group">
+          <input type="{{visiblePassword}}" class="form-control" [(ngModel)]="systemUser.matchingPassword"
+                 name="matchingPassword" required #matchingPassword="ngModel">
+          <span class="input-group-text" (click)="changeVisiblePassword()"><img src="../../../assets/images/eye.png" height="15"
+                                                                                width="20"/></span>
+        </div>
+        <small class="text-danger" *ngIf="matchingPassword.touched && matchingPassword.hasError('required')">Обязательно для заполнения</small>
+        <small class="text-danger" *ngIf="matchingPassword.touched && systemUser.password != systemUser.matchingPassword && systemUser.matchingPassword">Пароли
+          не совпадают</small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-6">
+        <label>Фамилия</label>
+        <input type="text" class="form-control" [(ngModel)]="systemUser.lastName" name="lastName" required minlength="3"
+               #lastName="ngModel">
+        <small class="text-danger" *ngIf="lastName.touched && lastName.hasError('required')">Обязательно для заполнения</small>
+        <small class="text-danger" *ngIf="lastName.touched && lastName.hasError('minlength')">Не менее 3-х символов</small>
+      </div>
+      <div class="form-group col-6">
+        <label>Имя</label>
+        <input type="text" class="form-control" [(ngModel)]="systemUser.firstName" name="firstName" required minlength="3"
+               #firstName="ngModel">
+        <small class="text-danger" *ngIf="firstName.touched && firstName.hasError('required')">Обязательно для заполнения</small>
+        <small class="text-danger" *ngIf="firstName.touched && firstName.hasError('minlength')">Не менее 3-х символов</small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-6">
+        <label>E-mail</label>
+        <input type="email" class="form-control" [(ngModel)]="systemUser.email" name="email"
+               pattern="[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+" required #email="ngModel">
+        <small class="text-danger" *ngIf="email.touched && email.hasError('required')">Обязательно для заполнения</small>
+        <small class="text-danger" *ngIf="email.touched && email.hasError('pattern')">Не правильный формат E-mail</small>
+      </div>
+      <div class="form-group col-6">
+        <label>Дата рождения</label>
+        <input type="date" class="form-control" [(ngModel)]="systemUser.birthDay" name="birthYear" required
+               #birthYear="ngModel">
+        <small class="text-danger" *ngIf="birthYear.touched && birthYear.hasError('required')">Обязательно для заполнения</small>
+      </div>
+    </div>
+
+    <div class="row pr-3 pl-3 pt-3">
+      <button
+        [disabled]="login.errors || password.errors || systemUser.password != systemUser.password || lastName.errors || firstName.errors || email.errors || birthYear.errors"
+        type="submit" class="btn btn-warning col-5" (click)="registration()">Зарегистрироваться
+      </button>
+      <div class="col-2"></div>
+      <button
+        class="btn btn-warning col-5" [routerLink]="['']">Отмена
+      </button>
+    </div>
+  </form>
+</div>
