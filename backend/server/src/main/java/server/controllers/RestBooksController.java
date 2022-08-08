@@ -48,9 +48,6 @@ public class RestBooksController {
     @GetMapping(value = "/{id}", produces = "application/json")
     @ApiOperation("Returns one of books by id")
     public Book getOneBook(@PathVariable @ApiParam("Id of the book to be requested. Can not be empty") Long id) {
-        if (!booksService.existsById(id)) {
-            throw new BookNotFoundException("Book not found, id: " + id);
-        }
         return booksService.findById(id);
     }
 

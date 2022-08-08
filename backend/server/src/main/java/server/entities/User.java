@@ -20,11 +20,13 @@ public class User {
 
     private String phone;
 
-    private String username;
-
     private String password;
 
     private String email;
+
+    private String firstName;
+
+    private String lastName;
 
     @ManyToMany
     @JoinTable(name = "users_roles",

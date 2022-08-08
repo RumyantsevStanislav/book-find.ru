@@ -1,5 +1,6 @@
 package server.configs;
 
+import org.springframework.context.annotation.Profile;
 import server.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,9 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@EnableWebSecurity // (debug = true) - будут сыпаться логи работы безопасности
+//@EnableWebSecurity // (debug = true) - будут сыпаться логи работы безопасности
 //Защита на уровне методов, а не эндпоинтов. Пример - @Secured над мотодом в BooksService. Существует ещё на уровне представлений (views)
-@EnableGlobalMethodSecurity(securedEnabled = true)
+//@EnableGlobalMethodSecurity(securedEnabled = true)
+@Profile("disabled") //Такого профиля нет, класс работать не будет.
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //Spring объект UserDetails - username, password, List<GrantedAuthority>
     private UserDetailsService userDetailsService;
@@ -39,9 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/emails/**").hasAnyAuthority("CAN_READ_EMAIL") //Не добавляет ROLE_
                 .anyRequest().permitAll() //Все остальные - незащищённая область
                 .and()
-//Стандартное окно в браузере (вместо формы formLogin). Логин/пароль подшиваются в header, можно использовать для отправки JSON
+                //Логин/пароль подшиваются в header, можно использовать для отправки JSON
+                //Стандартное окно в браузере (вместо формы formLogin).
                 //.httpBasic()
-                .formLogin() //Форма, куда вписать логин/пароль
+                .formLogin() //Форма, куда вписать логин/пароль дефолтная от Spring
                 //.loginPage("login") //Использование своей формы ввода логина/пароля. Опционально
                 //.loginProcessingUrl("/authenticateTheUser") //Адрес, куда отправить логин/пароль. Опционально
                 //.successForwardUrl("/pageForAuthenticateUsers") //Редирект после успешной авторизации. Опционально

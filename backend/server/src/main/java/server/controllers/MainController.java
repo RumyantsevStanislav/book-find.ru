@@ -1,5 +1,6 @@
 package server.controllers;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import server.entities.User;
 import server.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class MainController {
 //      Authentication a = SecurityContextHolder.getContext().getAuthentication();
 //      System.out.println(Thread.currentThread().getName());
 
-        User user = usersService.findByUsername(principal.getName());
+        User user = usersService.findByPhone(principal.getName()).orElseThrow(() -> new UsernameNotFoundException(""));
         String out = String.format("authenticated user: %s, password: %s", principal.getName(), "-");
         return out;
     }
