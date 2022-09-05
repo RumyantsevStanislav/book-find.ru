@@ -19,7 +19,7 @@ export class LoginPageComponent implements OnInit {
     this.form = new FormGroup({
       username: new FormControl(null, [
         Validators.required,
-        //Validators.email
+        Validators.email || Validators.pattern('[- +()0-9]+')
       ]),
       password: new FormControl(null, [
         Validators.required,
@@ -29,8 +29,8 @@ export class LoginPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params:Params)=> {
-      if( params['loginAgain']){
+    this.route.queryParams.subscribe((params: Params) => {
+      if (params['loginAgain']) {
         this.message = 'Введите данные'
       }
     })

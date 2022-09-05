@@ -8,11 +8,11 @@
   </div>
   <div [ngClass]="{invalid: form.get('username')?.touched && form.get('username')?.invalid}">
     <div>
-      <label for="username">Email</label>
+      <label for="username">Телефон или email</label>
       <input id="username" type="text" formControlName="username">
       <div *ngIf=" form.get('username')?.touched && form.get('username')?.invalid" class="validation">
-        <small *ngIf="form.get('email')?.errors?.required">Поле обязательно</small>
-        <small *ngIf="form.get('email')?.errors?.email">Это не email?</small>
+        <small *ngIf="form.get('username')?.errors?.required">Поле обязательно</small>
+        <!--        <small *ngIf="form.get('email')?.errors?.email">Это не email?</small>-->
       </div>
     </div>
   </div>
