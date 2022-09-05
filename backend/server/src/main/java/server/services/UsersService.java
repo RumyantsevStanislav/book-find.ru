@@ -1,11 +1,6 @@
 package server.services;
 
 
-import server.configs.PasswordEncoder;
-import server.entities.Role;
-import server.entities.User;
-import server.entities.dtos.SystemUser;
-import server.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,6 +9,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.configs.PasswordEncoder;
+import server.entities.Role;
+import server.entities.User;
+import server.entities.dtos.SystemUser;
+import server.repositories.UsersRepository;
 
 import java.util.Collection;
 import java.util.List;
@@ -42,16 +42,28 @@ public class UsersService implements UserDetailsService {
         this.rolesService = rolesService;
     }
 
-    public Optional<User> findByPhone(String phone) {
-        return usersRepository.findOneByPhone(phone);
+    public Optional<User> getUserByPhoneOrEmail(String phoneOrEmail) {
+        if (phoneOrEmail.contains("@")) {
+            return usersRepository.findByEmail(phoneOrEmail);
+        } else {
+            return usersRepository.findByPhone(phoneOrEmail);
+        }
+    }
+
+    public Optional<User> getUserByPhone(String phone) {
+        return usersRepository.findByPhone(phone);
+    }
+
+    public Optional<User> getUserByEmail(String email) {
+        return usersRepository.findByEmail(email);
     }
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
-        User user = usersRepository.findOneByPhone(phone).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", phone)));
+    public UserDetails loadUserByUsername(String phoneOrEmail) throws UsernameNotFoundException {
+        User user = getUserByPhoneOrEmail(phoneOrEmail).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", phoneOrEmail)));
         //Возвращаем UserDetails, вязв нужные поля из User
-        return new org.springframework.security.core.userdetails.User(user.getPhone(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(phoneOrEmail, user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     //Преобразование кастомных ролей в GrantedAuthority
@@ -62,8 +74,11 @@ public class UsersService implements UserDetailsService {
     @Transactional //Чтобы одновременно не создать 2 одинаковых пользователя
     public User save(SystemUser systemUser) {
         User user = new User();
-        findByPhone(systemUser.getPhone()).ifPresent( u -> {
-            throw new RuntimeException("User with phone " + systemUser.getPhone() + " is already exist");
+        getUserByPhone(systemUser.getPhone()).ifPresent(u -> {
+            throw new RuntimeException("User with " + systemUser.getPhone() + " is already exist");
+        });
+        getUserByEmail(systemUser.getEmail()).ifPresent(u -> {
+            throw new RuntimeException("User with " + systemUser.getEmail() + " is already exist");
         });
         user.setPhone(systemUser.getPhone());
         user.setPassword(passwordEncoder.getPasswordEncoder().encode(systemUser.getPassword()));

@@ -46,10 +46,12 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(new ReqErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "Binding result has errors"), HttpStatus.NOT_ACCEPTABLE);
         }
-        Optional<User> existing = usersService.findByPhone(systemUser.getPhone());
-        if (existing.isPresent()) {
+        Optional<User> existingByPhone = usersService.getUserByPhone(systemUser.getPhone());
+        Optional<User> existingByEmail = usersService.getUserByEmail(systemUser.getEmail());
+        if (existingByPhone.isPresent() || existingByEmail.isPresent()) {
             model.addAttribute("registrationError", "User with phone number: [" + systemUser.getPhone() + "] is already exist");
             systemUser.setPhone(null);
+            systemUser.setEmail(null);
             model.addAttribute("systemUser", systemUser); // Заполнение ранее введенных полей если возникла ошибка при регистрации.
             return new ResponseEntity<>(new ReqErrorResponse(HttpStatus.CONFLICT.value(), "Already exist"), HttpStatus.CONFLICT);
         }
