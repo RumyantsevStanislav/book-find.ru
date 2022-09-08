@@ -17,13 +17,7 @@ export class BookService {
   }
 
   getBooks(): Observable<Book[]> {
-    let token = this.auth.getToken()
-    if (token == null) {
-      token = ""
-    }
-    const headers = new HttpHeaders()
-      .set('Authorization', "Bearer " + token);
-    return this.http.get<Book[]>(this.url, {observe: "body", headers: headers})
+    return this.http.get<Book[]>(this.url, {observe: "body"})
       .pipe(delay(1500))
   }
 
