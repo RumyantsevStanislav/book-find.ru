@@ -30,6 +30,7 @@ public class Publisher {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "publisher")
     @ToString.Exclude
+    @Getter(AccessLevel.NONE)
     private List<Book> books;
 
     @CreationTimestamp

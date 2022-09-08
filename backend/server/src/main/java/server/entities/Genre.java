@@ -25,6 +25,7 @@ public class Genre {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "genre")
     @ToString.Exclude
+    @Getter(AccessLevel.NONE)
     private List<Book> books;
 
     @CreationTimestamp

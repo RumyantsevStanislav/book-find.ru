@@ -26,6 +26,7 @@ public class Cover {
 
     @OneToOne(mappedBy = "cover")
     @Getter(AccessLevel.NONE)
+    @ToString.Exclude
     private Book book;
 
     @CreationTimestamp

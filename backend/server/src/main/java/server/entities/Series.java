@@ -30,6 +30,7 @@ public class Series {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "series")
     @ToString.Exclude
+    @Getter(AccessLevel.NONE)
     private List<Book> books;
     @CreationTimestamp
     @Column(name = "created_at")
