@@ -36,6 +36,10 @@ public class BooksService {
         return booksRepository.findByTitle(title);
     }
 
+    public Book findByIsbn(Long isbn) {
+        return booksRepository.findByIsbn(isbn);
+    }
+
     public List<Book> findAll() {
         return booksRepository.findAll();
     }
@@ -58,5 +62,9 @@ public class BooksService {
 
     public List<BookDto> getDtoData() {
         return booksRepository.findAllBy();
+    }
+
+    public Page<Book> findAll(Specification<Book> spec, int page, int size) {
+        return booksRepository.findAll(spec, PageRequest.of(page, size));
     }
 }
