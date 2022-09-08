@@ -27,6 +27,8 @@ public class LabirintParser {
         book.setDescription(getDescription(document));
         book.setPages(getPages(document));
         book.setEstimation(getEstimation(document));
+        book.setIsbn(getIsbn(document));
+        book.setStatus(Book.Status.ACTIVE);
         book.setPublisher(getPublisher(document));
         book.setSeries(getSeries(document));
         book.setCategories(getCategories(document));
@@ -77,6 +79,13 @@ public class LabirintParser {
         logger.info("Correct get estimation: {}", estimation);
         return estimation;
     }
+
+    private Long getIsbn(Document document) {
+        Long isbn = parseLong(onlyDigits(getElementText(document.selectFirst("div.isbn")).split(" ")[1]));
+        logger.info("Correct get labirintId: {}", isbn);
+        return isbn;
+    }
+
 
     private Integer getPages(Document document) {
         Integer pages = parseInt(getElementAttribute(document.selectFirst("div.pages2 > span"), "data-pages"));

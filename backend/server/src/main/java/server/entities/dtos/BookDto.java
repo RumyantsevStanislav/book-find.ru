@@ -7,6 +7,8 @@ import java.util.Set;
 
 public interface BookDto {
 
+    Long getIsbn();
+
 //    @Size(min = 4, message = "Title too short")
 //    @Min(value = 1, message = "Cannot be negative or zero")
     String getTitle();

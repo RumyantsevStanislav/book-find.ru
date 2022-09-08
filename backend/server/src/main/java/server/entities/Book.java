@@ -4,9 +4,10 @@ import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -36,7 +37,11 @@ public class Book {
     private Integer pages;
 
     private Float estimation;
+    @NaturalId
+    private Long isbn;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @ManyToMany
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "books_categories",
@@ -92,5 +97,11 @@ public class Book {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public enum Status {
+        ACTIVE(), HIDDEN();
     }
 }

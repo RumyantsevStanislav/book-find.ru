@@ -12,6 +12,8 @@ import java.util.List;
 public interface BooksRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
     Book findByTitle(String title);
 
+    Book findByIsbn(Long isbn);
+
     List<BookDto> findAllBy();
 
 }
