@@ -4,10 +4,14 @@
       <div class="card" *ngFor="let book of books">
         <p>
           <span>{{book.title}}</span>
-          <img src="../../../assets/images/{{book.cover.path}}.{{book.cover.extension}}">
+          <span>{{book.isbn}}</span>
+          <img src="../../../assets/images/{{book.cover.path}}.{{book.cover.extension}}" alt="{{book.title}}">
         </p>
         <div class="authors" *ngFor="let author of book.authors">
           <small>{{author.role}}: {{author.name}}</small>
+        </div>
+        <div>
+          <small><a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a></small>
         </div>
         <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
       </div>
