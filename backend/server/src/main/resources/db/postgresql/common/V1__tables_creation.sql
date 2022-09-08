@@ -115,11 +115,12 @@ drop table if exists users;
 create table users
 (
     id         serial,
-    phone      VARCHAR(30) not null UNIQUE,
+    phone      VARCHAR(30) unique,
     password   VARCHAR(80) not null,
-    email      VARCHAR(50) UNIQUE,
+    email      VARCHAR(50) unique,
     first_name VARCHAR(50),
     last_name  VARCHAR(50),
+    constraint check_not_null check (phone is not null or email is not null),
     PRIMARY KEY (id)
 );
 
@@ -139,4 +140,22 @@ create table users_roles
     primary key (user_id, role_id),
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (role_id) REFERENCES roles (id)
+);
+
+drop table if exists personal_books cascade;
+create table personal_books
+(
+    id         serial primary key,
+    isbn       bigint                              not null,
+    phone      varchar(255),
+    email      varchar(255),
+    status     varchar(255)                        not null,
+    estimation integer,
+    comment    varchar(255),
+    created_at timestamp default current_timestamp not null,
+    updated_at timestamp default current_timestamp not null,
+    unique (isbn, phone, email),
+    foreign key (isbn) references books (isbn),
+    foreign key (phone) references users (phone),
+    foreign key (email) references users (email)
 );
