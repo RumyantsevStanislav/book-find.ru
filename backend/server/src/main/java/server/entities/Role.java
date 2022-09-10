@@ -2,6 +2,7 @@ package server.entities;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -12,20 +13,19 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = "roles")
-public class Role implements GrantedAuthority {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String name;
+public class Role extends DefaultEntity implements GrantedAuthority {
+    @NaturalId
+    @Enumerated(EnumType.STRING)
+    private Privilege privilege;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Role role = (Role) o;
-        return id != null && Objects.equals(id, role.id);
+        return getId() != null && Objects.equals(getId(), role.getId());
     }
 
     @Override
@@ -35,6 +35,12 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return name;
+        return privilege.name();
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public enum Privilege {
+        ROLE_USER, ROLE_MANAGER, ROLE_ADMIN;
     }
 }

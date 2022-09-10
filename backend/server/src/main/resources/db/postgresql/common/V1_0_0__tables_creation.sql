@@ -127,8 +127,10 @@ create table users
 drop table if exists roles;
 create table roles
 (
-    id   smallserial,
-    name VARCHAR(50) not null,
+    id        serial,
+    privilege VARCHAR(50) unique not null,
+    created_at  timestamp default current_timestamp,
+    updated_at  timestamp default current_timestamp
     primary key (id)
 );
 

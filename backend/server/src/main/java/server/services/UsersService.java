@@ -68,7 +68,7 @@ public class UsersService implements UserDetailsService {
 
     //Преобразование кастомных ролей в GrantedAuthority
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getPrivilege().name())).collect(Collectors.toList());
     }
 
     @Transactional //Чтобы одновременно не создать 2 одинаковых пользователя
@@ -85,7 +85,7 @@ public class UsersService implements UserDetailsService {
         user.setFirstName(systemUser.getFirstName());
         user.setLastName(systemUser.getLastName());
         user.setEmail(systemUser.getEmail());
-        user.setRoles(List.of(rolesService.findByName("ROLE_CUSTOMER")));
+        user.setRoles(List.of(rolesService.findByName(Role.Privilege.ROLE_USER.name())));
         return usersRepository.save(user);
     }
 }
