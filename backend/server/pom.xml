@@ -54,6 +54,7 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
+            <version>1.4.200</version> <!--//GenerationType IDENTITY not allowed-->
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

@@ -6,13 +6,14 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL
-    username:
+    username: sa
     password:
   jpa:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        dialect: org.hibernate.dialect.H2Dialect
+        temp:
           use_jdbc_metadata_defaults: false
   flyway:
     locations: classpath:/db/postgresql/common,/db/postgresql/test
@@ -22,3 +23,20 @@ spring:
   web:
     resources:
       static-locations: file:src/main/resources/static/
+jwt:
+  secret: topsecret123z93847nb9875cncy753487et7tnv7tca8symlntsyvnli8579387r445b67n5gdnfvuyndkgdufynvy57857nyvr7t75rt857ny84v54
+#  h2:
+#    console:
+#      enabled: true
+#      settings:
+#        web-allow-others: false
+#      path: /h2
+#
+#logging:
+#  level.ru.dsci.stockdock.* : debug
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread]: %msg%n"
+#    file: "%d{yyyy-MM-dd HH:mm:ss.sss} [%thread] %-5level %logger{36}: %msg%n"
+#  file:
+#    name: logs/dev/stockdock.log
+#    path: logs/dev
