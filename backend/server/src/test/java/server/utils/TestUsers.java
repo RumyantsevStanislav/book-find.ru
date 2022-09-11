@@ -2,6 +2,7 @@ package server.utils;
 
 import server.entities.Role;
 import server.entities.User;
+import server.entities.dtos.SystemUser;
 
 import java.util.Collections;
 
@@ -65,6 +66,15 @@ public class TestUsers {
         Role role = getRoleUser();
         user.setRoles(Collections.singletonList(role));
         return user;
+    }
+
+    public static SystemUser getSystemUser() {
+        SystemUser systemUser = new SystemUser();
+        systemUser.setPhone(NEW_USER_PHONE);
+        systemUser.setEmail(NEW_USER_EMAIL);
+        systemUser.setPassword(NEW_USER_PASSWORD_DECODED);
+        systemUser.setMatchingPassword(NEW_USER_PASSWORD_DECODED);
+        return systemUser;
     }
 
     public static Role getRoleAdmin() {

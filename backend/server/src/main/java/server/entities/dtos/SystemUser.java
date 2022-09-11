@@ -17,6 +17,11 @@ public class SystemUser {
     private String phone;
 
     @NotNull(message = "is required")
+    @Size(min = 4, message = "is required")
+    @Email
+    private String email;
+
+    @NotNull(message = "is required")
     @Size(min = 4, message = "password is too short")
     private String password;
 
@@ -31,9 +36,4 @@ public class SystemUser {
     @NotNull(message = "is required")
     @Size(min = 1, message = "is required")
     private String lastName;
-
-    @NotNull(message = "is required")
-    @Size(min = 4, message = "is required")
-    @Email
-    private String email;
 }
