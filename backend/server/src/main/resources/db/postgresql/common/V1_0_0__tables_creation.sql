@@ -6,7 +6,7 @@
 drop table if exists categories cascade;
 create table categories
 (
-    id          smallserial primary key,
+    id          serial primary key,
     labirint_id integer,
     title       varchar(255) unique,
     created_at  timestamp default current_timestamp,
@@ -16,7 +16,7 @@ create table categories
 drop table if exists authors cascade;
 create table authors
 (
-    id          smallserial primary key,
+    id          serial primary key,
     labirint_id integer,
     name        varchar(255) unique,
     role        varchar(255),
@@ -27,7 +27,7 @@ create table authors
 drop table if exists publishers cascade;
 create table publishers
 (
-    id          smallserial primary key,
+    id          serial primary key,
     labirint_id integer,
     title       varchar(255) unique,
     description varchar(5000),
@@ -38,7 +38,7 @@ create table publishers
 drop table if exists genres cascade;
 create table genres
 (
-    id         smallserial primary key,
+    id         serial primary key,
     path       varchar(1000) unique,
     created_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp
@@ -47,7 +47,7 @@ create table genres
 drop table if exists series cascade;
 create table series
 (
-    id          smallserial primary key,
+    id          serial primary key,
     labirint_id integer,
     title       varchar(255) unique,
     description varchar(5000),
@@ -58,7 +58,7 @@ create table series
 drop table if exists covers cascade;
 create table covers
 (
-    id         smallserial primary key,
+    id         serial primary key,
     extension  varchar(8),
     path       varchar(255),
     created_at timestamp default current_timestamp,
