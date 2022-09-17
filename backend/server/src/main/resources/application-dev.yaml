@@ -15,8 +15,8 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
         temp:
           use_jdbc_metadata_defaults: false
-          flyway:
-            locations: classpath:/db/postgresql/common,/db/postgresql/dev
+  flyway:
+    locations: classpath:/db/postgresql/common,/db/postgresql/dev
   jackson:
     serialization:
       indent_output: true

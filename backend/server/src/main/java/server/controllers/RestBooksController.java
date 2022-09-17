@@ -3,6 +3,7 @@ package server.controllers;
 import server.entities.*;
 import server.entities.dtos.BookDto;
 import server.exceptions.BookNotFoundException;
+import server.exceptions.InfoResponse;
 import server.services.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -76,7 +77,7 @@ public class RestBooksController {
         checkSeries(book);
         try {
             booksService.saveOrUpdate(book);
-        } catch (RuntimeException runtimeException){
+        } catch (RuntimeException runtimeException) {
             //do nothing
         }
     }
@@ -84,20 +85,14 @@ public class RestBooksController {
     /*ResponseEntity - чтобы помимо объекта вернуть, например, статус-код*/
     @PutMapping(consumes = "application/json", produces = "application/json")
     @ApiOperation("Modifies an existing book")
-    public ResponseEntity<?> modifyBook(@RequestBody Book book) {
+    public ResponseEntity<InfoResponse> modifyBook(@RequestBody Book book) {
         if (book.getId() == null || booksService.existsById(book.getId())) {
             throw new BookNotFoundException("Book not found, id: " + book.getId());
         }
         if (book.getPrice() < 0) {
-            return new ResponseEntity<>("Book's price can not be negative", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new InfoResponse("Book's price can not be negative"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(booksService.saveOrUpdate(book), HttpStatus.OK);
-    }
-
-    /*Перехватывает исключения из сигнатуры и оборачивает в ResponseEntity*/
-    @ExceptionHandler
-    public ResponseEntity<?> handleException(BookNotFoundException exc) {
-        return new ResponseEntity<>(exc.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new InfoResponse("Успешно изменено"), HttpStatus.OK);
     }
 
     private void checkBook(Book book) {

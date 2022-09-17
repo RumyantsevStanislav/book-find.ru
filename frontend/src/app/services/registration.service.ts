@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable()
 export class RegistrationService {
-  private url = 'http://localhost:8189/book-find/register/process';
+  private url = 'http://localhost:8189/book-find/api/v1/users/register';
 
   constructor(private http: HttpClient) {
   }

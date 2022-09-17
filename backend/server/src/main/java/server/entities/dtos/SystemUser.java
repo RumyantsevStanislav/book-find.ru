@@ -6,6 +6,7 @@ import server.utils.validation.FieldMatch;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
@@ -22,7 +23,8 @@ public class SystemUser {
     private String email;
 
     @NotNull(message = "is required")
-    @Size(min = 4, message = "password is too short")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$",
+            message = "не менее 8 символов, включая заглавные и прописные буквы на латинице, цифры и спецсимволы")
     private String password;
 
     @NotNull(message = "is required")

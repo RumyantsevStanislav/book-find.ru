@@ -20,7 +20,8 @@ import server.services.UsersService;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @AllArgsConstructor
-@Profile("dev")
+//@Profile({"dev", "prod"})
+@Profile("!test")
 public class RestSecurityConfig implements WebMvcConfigurer {
     private UsersService usersService;
     private final JwtRequestFilter jwtRequestFilter;
@@ -41,6 +42,7 @@ public class RestSecurityConfig implements WebMvcConfigurer {
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
