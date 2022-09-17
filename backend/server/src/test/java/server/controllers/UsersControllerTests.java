@@ -20,6 +20,7 @@ import server.utils.TestUsers;
 
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -65,7 +66,9 @@ public class UsersControllerTests {
         mvc.perform(post("/api/v1/users/register").content(systemUserJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.message", is("Пользователь уже существует")))
+                .andExpect(jsonPath("$.messages").isArray())
+                .andExpect(jsonPath("$.messages", hasSize(1)))
+                .andExpect(jsonPath("$.messages[0]", is("Пользователь уже существует.")))
                 .andReturn();
     }
 
