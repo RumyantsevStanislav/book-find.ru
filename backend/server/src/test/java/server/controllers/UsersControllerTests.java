@@ -30,7 +30,7 @@ import static server.utils.Utils.mapper;
 
 @WebMvcTest(controllers = {UsersController.class}, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @AutoConfigureMockMvc(addFilters = false)
-@ActiveProfiles("test")
+@ActiveProfiles("unsecured")
 public class UsersControllerTests {
     @Autowired
     private MockMvc mvc;
@@ -50,7 +50,7 @@ public class UsersControllerTests {
 
     @Test
     @DisplayName("Success register")
-    public void successRegisterTest() throws Exception {
+    public void successRegistrationTest() throws Exception {
         given(usersService.save(systemUser)).willReturn(user);
         mvc.perform(post("/api/v1/users/register").content(systemUserJson)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -61,7 +61,7 @@ public class UsersControllerTests {
 
     @Test
     @DisplayName("User already exist")
-    public void failRegisterTest() throws Exception {
+    public void failRegistrationTest() throws Exception {
         Mockito.doReturn(Optional.of(user)).when(usersService).getUserByPhone(systemUser.getPhone());
         mvc.perform(post("/api/v1/users/register").content(systemUserJson)
                         .contentType(MediaType.APPLICATION_JSON))

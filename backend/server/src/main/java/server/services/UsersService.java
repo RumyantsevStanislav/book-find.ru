@@ -85,7 +85,7 @@ public class UsersService implements UserDetailsService {
         user.setFirstName(systemUser.getFirstName());
         user.setLastName(systemUser.getLastName());
         user.setEmail(systemUser.getEmail());
-        user.setRoles(List.of(rolesService.findByName(Role.Privilege.ROLE_USER.name())));
+        user.setRoles(List.of(rolesService.getByPrivilege(Role.Privilege.ROLE_USER)));
         return usersRepository.save(user);
     }
 }

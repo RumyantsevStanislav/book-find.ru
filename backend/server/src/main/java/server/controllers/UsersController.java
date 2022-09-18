@@ -2,6 +2,7 @@ package server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -43,6 +44,6 @@ public class UsersController {
             throw new ElementAlreadyExistsException("Пользователь уже существует.");
         }
         usersService.save(systemUser);
-        return ResponseEntity.ok(new ApiMessage("Вы успешно зарегистрированы!"));
+        return new ResponseEntity<>(new ApiMessage("Вы успешно зарегистрированы!"), HttpStatus.CREATED);
     }
 }

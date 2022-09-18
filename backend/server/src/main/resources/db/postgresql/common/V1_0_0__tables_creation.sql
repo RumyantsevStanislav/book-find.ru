@@ -126,12 +126,12 @@ create table users
     constraint check_not_null check (phone is not null or email is not null),
     PRIMARY KEY (id)
 );
-
+create type privilege as enum ('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN');
 drop table if exists roles;
 create table roles
 (
     id         serial,
-    privilege  VARCHAR(50) unique not null,
+    privilege  privilege unique not null,
     created_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp,
     primary key (id)

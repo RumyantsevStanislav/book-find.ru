@@ -17,6 +17,7 @@ import java.util.Objects;
 @Table(name = "roles")
 public class Role extends DefaultEntity implements GrantedAuthority {
     @NaturalId
+    //@Column(columnDefinition = "enum('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
     @Enumerated(EnumType.STRING)
     private Privilege privilege;
 

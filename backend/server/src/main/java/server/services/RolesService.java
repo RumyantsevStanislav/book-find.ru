@@ -14,7 +14,7 @@ public class RolesService {
         this.rolesRepository = rolesRepository;
     }
 
-    public Role findByName(String privilege) {
+    public Role getByPrivilege(Role.Privilege privilege) {
         return rolesRepository.findOneByPrivilege(privilege);
     }
 }

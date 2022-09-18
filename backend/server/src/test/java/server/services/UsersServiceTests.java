@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import server.configs.PasswordEncoder;
+import server.entities.Role;
 import server.entities.User;
 import server.entities.dtos.SystemUser;
 import server.repositories.UsersRepository;
@@ -80,7 +81,7 @@ public class UsersServiceTests {
         Mockito.doReturn(TestUsers.getUser()).when(usersRepository).save(any(User.class));
         Mockito.doReturn(bCryptPasswordEncoder).when(passwordEncoder).getPasswordEncoder();
         Mockito.doReturn(TestUsers.USER_PASSWORD_ENCODED).when(bCryptPasswordEncoder).encode(systemUser.getPassword());
-        Mockito.doReturn(TestUsers.getRoleUser()).when(rolesService).findByName(any(String.class));
+        Mockito.doReturn(TestUsers.getRoleUser()).when(rolesService).getByPrivilege(any(Role.Privilege.class));
         User savedUser = usersService.save(systemUser);
         Assertions.assertEquals(savedUser.getPassword(), TestUsers.USER_PASSWORD_ENCODED);
     }

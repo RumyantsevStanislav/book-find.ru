@@ -21,7 +21,7 @@ import server.services.UsersService;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @AllArgsConstructor
 //@Profile({"dev", "prod"})
-@Profile("!test")
+@Profile("!unsecured")
 public class RestSecurityConfig implements WebMvcConfigurer {
     private UsersService usersService;
     private final JwtRequestFilter jwtRequestFilter;
