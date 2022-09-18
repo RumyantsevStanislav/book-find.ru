@@ -29,17 +29,13 @@ import java.util.Optional;
 public class UsersController {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
-    private UsersService usersService;
+    private final UsersService usersService;
 
+    @Autowired
     public UsersController(UsersService usersService, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager) {
         this.usersService = usersService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
-    }
-
-    @Autowired
-    public void setUserService(UsersService usersService) {
-        this.usersService = usersService;
     }
 
     @InitBinder //Обрубает пробелы в полях формы на уровне контроллера
