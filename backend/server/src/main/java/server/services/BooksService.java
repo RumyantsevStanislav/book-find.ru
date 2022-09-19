@@ -29,7 +29,7 @@ public class BooksService {
         return booksRepository.findByTitle(title);
     }
 
-    public Optional<Book> getByIsbn(Long isbn) {
+    public Optional<BookDto> getByIsbn(Long isbn) {
         return booksRepository.findByIsbn(isbn);
     }
 

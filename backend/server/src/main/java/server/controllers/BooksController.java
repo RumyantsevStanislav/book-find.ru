@@ -21,10 +21,7 @@ import server.utils.BookFilter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @CrossOrigin("*")
@@ -50,9 +47,9 @@ public class BooksController {
     }
 
     @GetMapping(value = "/{isbn}", produces = "application/json")
-    @ApiOperation("Returns one of books by isbn")
-    public Book getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull Long isbn) {
-        return booksService.getByIsbn(isbn).orElseThrow(() -> new BookNotFoundException("Can't find book with isbn = " + isbn));
+    @ApiOperation("Returns one book by isbn.")
+    public Optional<BookDto> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull Long isbn) {
+        return Optional.ofNullable(booksService.getByIsbn(isbn).orElseThrow(() -> new BookNotFoundException("Can't find book with isbn = " + isbn)));
     }
 
     @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
@@ -90,12 +87,13 @@ public class BooksController {
         }
         return new ResponseEntity<>(new ApiMessage("Успешно изменено"), HttpStatus.CREATED);
     }
+
     @ApiOperation("Returns list of all books data transfer objects")
     @GetMapping(value = "/books", produces = "application/json")
     public Page<Book> showAll(@RequestParam Map<String, String> requestParams,
                               @RequestParam(name = "categories", required = false)
                               List<Long> categoriesIds,
-                              @RequestParam(name = "s")int size) {
+                              @RequestParam(name = "s") int size) {
         List<Category> categoriesFilter = null;
         if (categoriesIds != null) {
             categoriesFilter = categoriesService.getCategoriesByIds(categoriesIds);

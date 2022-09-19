@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import server.entities.Book;
 import server.entities.Category;
+import server.entities.dtos.BookDto;
 import server.utils.BookFilter;
 import server.utils.TestBooks;
 
@@ -30,8 +31,8 @@ public class BooksRepositoryTests {
 
     @Test
     public void bookRepositoryTest() {
-        Optional<Book> book = booksRepository.findByIsbn(TestBooks.ISBN);
-        Assertions.assertTrue(book.isPresent());
+        Optional<BookDto> bookDto = booksRepository.findByIsbn(TestBooks.ISBN);
+        Assertions.assertTrue(bookDto.isPresent());
 
         List<Book> bookList = booksRepository.findByTitle(TestBooks.BOOK_TITLE);
         Assertions.assertEquals(1, bookList.size());
