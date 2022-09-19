@@ -1,7 +1,7 @@
 package server.configs;
 
-import lombok.AllArgsConstructor;//??
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +32,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @Nullable HttpServletResponse response, @Nullable FilterChain filterChain) throws ServletException, IOException {
         //token contained in Header->Bearer
         String authHeader = request.getHeader("Authorization");
         String username = null;
@@ -54,6 +54,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             }
         }
-        filterChain.doFilter(request, response);
+        //TODO figure out what's going on
+        if (filterChain != null && response != null) {
+            filterChain.doFilter(request, response);
+        } else {
+            request.getSession().invalidate();
+        }
     }
 }
