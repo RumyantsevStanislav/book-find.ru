@@ -23,6 +23,9 @@ public class BooksRepositoryTests {
     private BooksRepository booksRepository;
 
     @Autowired
+    private CategoriesRepository categoriesRepository;
+
+    @Autowired
     private TestEntityManager entityManager;
 
     @Test
@@ -44,11 +47,11 @@ public class BooksRepositoryTests {
     @Test
     public void getPageBooksTest() {
         Map<String, String> parameters = Map.of("min_price", "0");
-        List<Category> categories = TestBooks.getCategories().stream().toList();
-        BookFilter bookFilter = new BookFilter(parameters, null);
+        List<Category> categories = Collections.singletonList(categoriesRepository.findByTitle(TestBooks.CATEGORY_TITLE_1));
+        BookFilter bookFilter = new BookFilter(parameters, categories);
         Page<Book> bookPage = booksRepository.findAll(bookFilter.getSpec(), PageRequest.of(0, 1));
-        Assertions.assertEquals(bookPage.getTotalElements(), 2);
-        Assertions.assertEquals(bookPage.getTotalPages(), 2);
+        Assertions.assertEquals(bookPage.getTotalElements(), 1);
+        Assertions.assertEquals(bookPage.getTotalPages(), 1);
         Assertions.assertEquals(bookPage.getContent().size(), 1);
     }
 
