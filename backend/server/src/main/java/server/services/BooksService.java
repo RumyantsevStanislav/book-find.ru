@@ -1,16 +1,17 @@
 package server.services;
 
-import server.entities.dtos.BookDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import server.entities.Book;
+import server.entities.dtos.BookDto;
 import server.exceptions.BookNotFoundException;
 import server.repositories.BooksRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BooksService {
@@ -22,9 +23,6 @@ public class BooksService {
     }
 
     public Book saveOrUpdate(Book book) {
-        if (findByTitle(book.getTitle()) != null) {
-            throw new RuntimeException("Book with title " + book.getTitle() + " is already exist");
-        }
         return booksRepository.save(book);
     }
 
@@ -32,20 +30,16 @@ public class BooksService {
         return booksRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Can't find book with id = " + id));
     }
 
-    public Book findByTitle(String title) {
+    public List<Book> getByTitle(String title) {
         return booksRepository.findByTitle(title);
     }
 
-    public Book findByIsbn(Long isbn) {
+    public Optional<Book> getByIsbn(Long isbn) {
         return booksRepository.findByIsbn(isbn);
     }
 
-    public List<Book> findAll() {
-        return booksRepository.findAll();
-    }
-
     //@Secured(роли)
-    public Page<Book> findAll(Specification<Book> spec, Integer page) {
+    public Page<Book> getAll(Specification<Book> spec, Integer page) {
         if (page < 1L) {
             page = 1;
         }
