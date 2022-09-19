@@ -7,12 +7,13 @@ import org.springframework.stereotype.Repository;
 import server.entities.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BooksRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
-    Book findByTitle(String title);
+    List<Book> findByTitle(String title);
 
-    Book findByIsbn(Long isbn);
+    Optional<Book> findByIsbn(Long isbn);
 
     List<BookDto> findAllBy();
 
