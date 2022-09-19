@@ -28,13 +28,16 @@ public class BooksRepositoryTests {
         Assertions.assertTrue(book.isPresent());
         List<Book> bookList = booksRepository.findByTitle(TestBooks.BOOK_TITLE);
         Assertions.assertEquals(1, bookList.size());
+        booksRepository.deleteByIsbn(TestBooks.ISBN);
+        List<Book> allBooks = booksRepository.findAll();
+        Assertions.assertEquals(1, allBooks.size());
         Book existingBook = TestBooks.getBook();
         Assertions.assertThrows(PersistenceException.class, () -> entityManager.persist(existingBook));
     }
 
     @Test
     public void initDbTest() {
-        List<Book> bookList = booksRepository.findAll();
-        Assertions.assertEquals(2, bookList.size());
+        List<Book> allBooks = booksRepository.findAll();
+        Assertions.assertEquals(2, allBooks.size());
     }
 }
