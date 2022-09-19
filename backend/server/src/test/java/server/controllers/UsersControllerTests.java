@@ -10,9 +10,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import server.configs.JwtRequestFilter;
+import server.configs.JwtTokenUtil;
 import server.entities.User;
 import server.entities.dtos.SystemUser;
 import server.services.UsersService;
@@ -32,18 +34,18 @@ import static server.utils.Utils.mapper;
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("unsecured")
 public class UsersControllerTests {
-    @Autowired
-    private MockMvc mvc;
-
-    @MockBean
-    private UsersService usersService;
-
-    @MockBean
-    private JwtRequestFilter jwtRequestFilter;
-
     SystemUser systemUser = TestUsers.getSystemUser();
     User user = TestUsers.getNewUser();
     String systemUserJson = mapper.writeValueAsString(systemUser);
+
+    @MockBean
+    AuthenticationManager authenticationManager;
+    @MockBean
+    private JwtTokenUtil jwtTokenUtil;
+    @MockBean
+    private UsersService usersService;
+    @Autowired
+    private MockMvc mvc;
 
     public UsersControllerTests() throws JsonProcessingException {
     }
@@ -54,7 +56,7 @@ public class UsersControllerTests {
         given(usersService.save(systemUser)).willReturn(user);
         mvc.perform(post("/api/v1/users/register").content(systemUserJson)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.message", is("Вы успешно зарегистрированы!")))
                 .andReturn();
     }
@@ -68,7 +70,7 @@ public class UsersControllerTests {
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.messages").isArray())
                 .andExpect(jsonPath("$.messages", hasSize(1)))
-                .andExpect(jsonPath("$.messages[0]", is("Пользователь уже существует.")))
+                .andExpect(jsonPath("$.messages[0]", is("Пользователь с таким телефоном уже существует.")))
                 .andReturn();
     }
 

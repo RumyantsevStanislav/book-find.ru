@@ -74,12 +74,6 @@ public class UsersService implements UserDetailsService {
     @Transactional //Чтобы одновременно не создать 2 одинаковых пользователя
     public User save(SystemUser systemUser) {
         User user = new User();
-        getUserByPhone(systemUser.getPhone()).ifPresent(u -> {
-            throw new RuntimeException("User with " + systemUser.getPhone() + " is already exist");
-        });
-        getUserByEmail(systemUser.getEmail()).ifPresent(u -> {
-            throw new RuntimeException("User with " + systemUser.getEmail() + " is already exist");
-        });
         user.setPhone(systemUser.getPhone());
         user.setPassword(passwordEncoder.getPasswordEncoder().encode(systemUser.getPassword()));
         user.setFirstName(systemUser.getFirstName());

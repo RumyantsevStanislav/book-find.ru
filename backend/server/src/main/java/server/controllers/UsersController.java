@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import server.configs.JwtTokenUtil;
-import server.entities.User;
 import server.entities.dtos.ApiMessage;
 import server.entities.dtos.JwtRequest;
 import server.entities.dtos.JwtResponse;
@@ -22,7 +21,6 @@ import server.exceptions.ElementAlreadyExistsException;
 import server.services.UsersService;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -49,11 +47,12 @@ public class UsersController {
         if (bindingResult.hasErrors()) {
             throw new AttributeNotValidException("Ошибка валидации", bindingResult);
         }
-        Optional<User> existingByPhone = usersService.getUserByPhone(systemUser.getPhone());
-        Optional<User> existingByEmail = usersService.getUserByEmail(systemUser.getEmail());
-        if (existingByPhone.isPresent() || existingByEmail.isPresent()) {
-            throw new ElementAlreadyExistsException("Пользователь уже существует.");
-        }
+        usersService.getUserByPhone(systemUser.getPhone()).ifPresent(u -> {
+            throw new ElementAlreadyExistsException("Пользователь с таким телефоном уже существует.");
+        });
+        usersService.getUserByEmail(systemUser.getPhone()).ifPresent(u -> {
+            throw new ElementAlreadyExistsException("Пользователь с таким email уже существует.");
+        });
         usersService.save(systemUser);
         return new ResponseEntity<>(new ApiMessage("Вы успешно зарегистрированы!"), HttpStatus.CREATED);
     }
