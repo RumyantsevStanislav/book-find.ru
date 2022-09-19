@@ -26,6 +26,7 @@ public class LabirintParser {
         book.setAuthors(getAuthors(document));
         book.setDescription(getDescription(document));
         book.setPages(getPages(document));
+        book.setYear(getYear(document));
         book.setEstimation(getEstimation(document));
         book.setIsbn(getIsbn(document));
         book.setStatus(Book.Status.ACTIVE);
@@ -91,6 +92,13 @@ public class LabirintParser {
         Integer pages = parseInt(getElementAttribute(document.selectFirst("div.pages2 > span"), "data-pages"));
         logger.info("Correct get pages: {}", pages);
         return pages;
+    }
+
+    private Integer getYear(Document document) {
+        Element yearElement = document.selectFirst("div.publisher");
+        Integer year = parseInt(onlyDigits(getElementText(yearElement)));
+        logger.info("Correct get year {}", year);
+        return year;
     }
 
     private Series getSeries(Document document) {

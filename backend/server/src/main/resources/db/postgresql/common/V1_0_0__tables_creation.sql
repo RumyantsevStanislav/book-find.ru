@@ -74,6 +74,7 @@ create table books
     description  varchar(5000),
     price        integer,
     pages        integer,
+    year         integer,
     estimation   numeric(3, 1),
     isbn         bigint,
     status       varchar(255),
