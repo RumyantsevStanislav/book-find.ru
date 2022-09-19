@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import server.configs.JwtRequestFilter;
 import server.configs.JwtTokenUtil;
 import server.entities.User;
 import server.entities.dtos.SystemUser;
