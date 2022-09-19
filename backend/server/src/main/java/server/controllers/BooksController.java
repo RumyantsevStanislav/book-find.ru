@@ -4,8 +4,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import server.entities.*;
@@ -15,11 +17,13 @@ import server.exceptions.AttributeNotValidException;
 import server.exceptions.BookNotFoundException;
 import server.exceptions.ElementAlreadyExistsException;
 import server.services.*;
+import server.utils.BookFilter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -51,17 +55,11 @@ public class BooksController {
         return booksService.getByIsbn(isbn).orElseThrow(() -> new BookNotFoundException("Can't find book with isbn = " + isbn));
     }
 
-    @GetMapping("/dto")
-    @ApiOperation("Returns list of all books data transfer objects")
-    public List<BookDto> getAllBooksDto() {
-        return booksService.getDtoData();
-    }
-
+    @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
     @DeleteMapping("/{id}")
     @ApiOperation("")
-    public String deleteOneBook(@PathVariable @NotNull Long id) {
-        booksService.deleteById(id);
-        return "OK";
+    public void deleteOneBook(@PathVariable @NotNull Long isbn) {
+        booksService.deleteByIsbn(isbn);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")/*описываем что ожидаем и что возвращаем*/
@@ -92,26 +90,22 @@ public class BooksController {
         }
         return new ResponseEntity<>(new ApiMessage("Успешно изменено"), HttpStatus.CREATED);
     }
-
-
-    //    @GetMapping(value = "/books", produces = "application/json")
-    //    Page<BookDto> getAllBooks(@RequestParam(defaultValue = "1", name = "p") Integer page,
-    //                              @RequestParam Map<String, String> params,
-    //                              @RequestParam (name = "s") int size);
-
-    //    @GetMapping
-    //    public String showAll(Model model, @RequestParam Map<String, String> requestParams, @RequestParam(name = "categories", required = false) List<Long> categoriesIds) {
-    //        List<Category> categoriesFilter = null;
-    //        if (categoriesIds != null) {
-    //            categoriesFilter = categoriesService.getCategoriesByIds(categoriesIds);
-    //        }
-    //        Integer pageNumber = Integer.parseInt(requestParams.getOrDefault("p", "1"));
-    //        BookFilter bookFilter = new BookFilter(requestParams, categoriesFilter);
-    //        Page<Book> books = booksService.getAll(bookFilter.getSpec(), pageNumber);
-    //        model.addAttribute("books", books);
-    //        model.addAttribute("filterDef", bookFilter.getFilterDefinition().toString());
-    //        return "all_books";
-    //    }
+    @ApiOperation("Returns list of all books data transfer objects")
+    @GetMapping(value = "/books", produces = "application/json")
+    public Page<Book> showAll(@RequestParam Map<String, String> requestParams,
+                              @RequestParam(name = "categories", required = false)
+                              List<Long> categoriesIds,
+                              @RequestParam(name = "s")int size) {
+        List<Category> categoriesFilter = null;
+        if (categoriesIds != null) {
+            categoriesFilter = categoriesService.getCategoriesByIds(categoriesIds);
+        }
+        int pageNumber = Integer.parseInt(requestParams.getOrDefault("p", "1"));
+        BookFilter bookFilter = new BookFilter(requestParams, categoriesFilter);
+        //model.addAttribute("books", books);
+        //model.addAttribute("filterDef", bookFilter.getFilterDefinition().toString());
+        return booksService.getAll(bookFilter.getSpec(), pageNumber, size);
+    }
 
     private void checkBook(Book book) {
         if (book.getId() != null) {

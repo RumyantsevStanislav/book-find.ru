@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import server.entities.Book;
 import server.entities.dtos.BookDto;
-import server.exceptions.BookNotFoundException;
 import server.repositories.BooksRepository;
 
 import java.util.List;
@@ -26,10 +25,6 @@ public class BooksService {
         return booksRepository.save(book);
     }
 
-    public Book findById(Long id) {
-        return booksRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Can't find book with id = " + id));
-    }
-
     public List<Book> getByTitle(String title) {
         return booksRepository.findByTitle(title);
     }
@@ -38,27 +33,15 @@ public class BooksService {
         return booksRepository.findByIsbn(isbn);
     }
 
-    //@Secured(роли)
-    public Page<Book> getAll(Specification<Book> spec, Integer page) {
-        if (page < 1L) {
-            page = 1;
-        }
-        return booksRepository.findAll(spec, PageRequest.of(page - 1, 10));
-    }
-
-    public void deleteById(Long id) {
-        booksRepository.deleteById(id);
+    public void deleteByIsbn(Long isbn) {
+        booksRepository.deleteByIsbn(isbn);
     }
 
     public boolean existsById(Long id) {
         return booksRepository.existsById(id);
     }
 
-    public List<BookDto> getDtoData() {
-        return booksRepository.findAllBy();
-    }
-
-    public Page<Book> findAll(Specification<Book> spec, int page, int size) {
+    public Page<Book> getAll(Specification<Book> spec, int page, int size) {
         return booksRepository.findAll(spec, PageRequest.of(page, size));
     }
 }

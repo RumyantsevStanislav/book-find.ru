@@ -15,6 +15,8 @@ public interface BooksRepository extends JpaRepository<Book, Long>, JpaSpecifica
 
     Optional<Book> findByIsbn(Long isbn);
 
+    void deleteByIsbn(Long isbn);
+
     List<BookDto> findAllBy();
 
 }
