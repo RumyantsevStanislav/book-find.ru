@@ -7,10 +7,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import server.entities.Book;
 import server.entities.dtos.BookDto;
+import server.entities.dtos.BookDtoImpl;
+import server.mappers.BookMapper;
 import server.repositories.BooksRepository;
 
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class BooksService {
@@ -41,7 +44,8 @@ public class BooksService {
         return booksRepository.existsById(id);
     }
 
-    public Page<Book> getAll(Specification<Book> spec, int page, int size) {
-        return booksRepository.findAll(spec, PageRequest.of(page, size));
+    public Page<BookDtoImpl> getPageDto(Specification<Book> spec, int page, int size) {
+        Page<Book> bookPage = booksRepository.findAll(spec, PageRequest.of(page, size));
+        return bookPage.map(BookMapper.BOOK_MAPPER::toDto);
     }
 }

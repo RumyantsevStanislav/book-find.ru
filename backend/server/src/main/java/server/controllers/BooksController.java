@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import server.entities.*;
 import server.entities.dtos.ApiMessage;
 import server.entities.dtos.BookDto;
+import server.entities.dtos.BookDtoImpl;
 import server.exceptions.AttributeNotValidException;
 import server.exceptions.BookNotFoundException;
 import server.exceptions.ElementAlreadyExistsException;
@@ -89,20 +90,19 @@ public class BooksController {
     }
 
     @ApiOperation("Returns list of all books data transfer objects")
-    @GetMapping(value = "/books", produces = "application/json")
-    public Page<Book> showAll(@RequestParam Map<String, String> requestParams,
-                              @RequestParam(name = "categories", required = false)
-                              List<Long> categoriesIds,
-                              @RequestParam(name = "s") int size) {
+    @GetMapping(value = "", produces = "application/json")
+    public Page<BookDtoImpl> showAll(@RequestParam Map<String, String> requestParams,
+                                     @RequestParam(name = "categories", required = false) List<Long> categoriesIds,
+                                     @RequestParam(name = "s") int size) {
         List<Category> categoriesFilter = null;
         if (categoriesIds != null) {
             categoriesFilter = categoriesService.getCategoriesByIds(categoriesIds);
         }
-        int pageNumber = Integer.parseInt(requestParams.getOrDefault("p", "1"));
+        int pageNumber = Integer.parseInt(requestParams.getOrDefault("p", "0"));
         BookFilter bookFilter = new BookFilter(requestParams, categoriesFilter);
         //model.addAttribute("books", books);
         //model.addAttribute("filterDef", bookFilter.getFilterDefinition().toString());
-        return booksService.getAll(bookFilter.getSpec(), pageNumber, size);
+        return booksService.getPageDto(bookFilter.getSpec(), pageNumber, size);
     }
 
     private void checkBook(Book book) {
