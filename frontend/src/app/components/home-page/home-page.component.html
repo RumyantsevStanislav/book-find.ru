@@ -1,23 +1,44 @@
 <main>
   <div class='books'>
     <div *ngIf="!loading; else loadingBlock">
-      <div class="card" *ngFor="let book of books">
-        <p>
-          <span>{{book.title}}</span>
-          <span>{{book.isbn}}</span>
-          <img src="../../../assets/images/{{book.cover.path}}.{{book.cover.extension}}" alt="{{book.title}}">
-        </p>
-        <div class="authors" *ngFor="let author of book.authors">
-          <small>{{author.role}}: {{author.name}}</small>
+
+      <form [formGroup]="searchForm" (ngSubmit)="search()" class="child shadowBorder p-4">
+        <div class="form-group">
+          <label>Элементов на странице</label>
+          <select formControlName="size">
+            <option *ngFor="let size of sizes" [ngValue]="size.id">{{size.value}}</option>
+          </select>
         </div>
-        <div>
-          <small><a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a></small>
+        <div class="form-group">
+          <label>Название</label>
+          <!--          <input type="text" class="form-control" [(ngModel)]="size" name="size" #size="ngModel">-->
         </div>
-        <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
+        <button class="btn" type="submit">Искать</button>
+      </form>
+
+      <div *ngIf="booksPage !== undefined && !booksPage.empty; else notFoundBlock">
+        <div class="card" *ngFor="let book of booksPage.content">
+          <p>
+            <span>{{book.title}}</span>
+            <span>{{book.isbn}}</span>
+            <img src="../../../assets/images/{{book.cover.path}}.{{book.cover.extension}}" alt="{{book.title}}">
+          </p>
+          <div class="authors" *ngFor="let author of book.authors">
+            <small>{{author.role}}: {{author.name}}</small>
+          </div>
+          <div>
+            <small><a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a></small>
+            <!--            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>-->
+          </div>
+          <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
+        </div>
       </div>
     </div>
     <ng-template #loadingBlock>
       <p>Loading...</p>
+    </ng-template>
+    <ng-template #notFoundBlock>
+      <p>По Вашему запросу ничего не найдено</p>
     </ng-template>
   </div>
 </main>
