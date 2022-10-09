@@ -17,20 +17,26 @@
       </form>
 
       <div *ngIf="booksPage !== undefined && !booksPage.empty; else notFoundBlock">
-        <div class="card" *ngFor="let book of booksPage.content">
-          <p>
-            <span>{{book.title}}</span>
-            <span>{{book.isbn}}</span>
-            <img src="../../../assets/images/{{book.cover.path}}.{{book.cover.extension}}" alt="{{book.title}}">
-          </p>
-          <div class="authors" *ngFor="let author of book.authors">
-            <small>{{author.role}}: {{author.name}}</small>
+        <div class="row row-cols-1 row-cols-md-3 g-4" *ngFor="let book of booksPage.content">
+          <div class="col">
+            <div class="card h-100">
+              <img class="card-img-top" src="../../../assets/images/{{book.cover.path}}.{{book.cover.extension}}"
+                   alt="{{book.title}}">
+              <div class="card-body">
+                <h5 class="card-title">{{book.title}}</h5>
+                <p class="card-text"></p>
+                <span>{{book.isbn}}</span>
+                <div class="authors" *ngFor="let author of book.authors">
+                  <small>{{author.role}}: {{author.name}}</small>
+                </div>
+              </div>
+              <div class="card-footer">
+                <small><a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a></small>
+                <!--            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>-->
+              </div>
+              <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
+            </div>
           </div>
-          <div>
-            <small><a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a></small>
-            <!--            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>-->
-          </div>
-          <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 @Component({
   selector: 'app-home',
   templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.css']
+  styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
   searchForm: FormGroup = new FormGroup({size: new FormControl('')});
