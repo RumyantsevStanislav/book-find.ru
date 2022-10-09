@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {BookPageComponent} from "./components/book-page/book-page.component";
-import {MainComponent} from "./shared/main/main.component";
+import {MainMenuComponent} from "./shared/main-menu/main-menu.component";
 import {HomePageComponent} from "./components/home-page/home-page.component";
 import {LoginPageComponent} from "./components/login-page/login-page.component";
 import {RegistrationComponent} from "./components/registration/registration.component";
