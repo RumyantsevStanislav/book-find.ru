@@ -1,8 +1,22 @@
-<header>
-  <nav>
-    <div>
-<!--      <book-card *ngFor="let book of books" [book]="b"></book-card>-->
-      <router-outlet></router-outlet>
-    </div>
-  </nav>
-</header>
+<!--section, article, header, footer, nav, aside, main, hgroup-->
+<div class="entire-content">
+  <header>
+    <app-main></app-main>
+  </header>
+
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+
+  <div class="additional-content-1">
+
+  </div>
+
+  <div class="additional-content-2">
+
+  </div>
+
+  <footer>
+    <p>Footer</p>
+  </footer>
+</div>
