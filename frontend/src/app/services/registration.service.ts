@@ -8,7 +8,7 @@ export class RegistrationService {
   constructor(private http: HttpClient) {
   }
 
-  registration(body: string, header: HttpHeaders) {
-    return this.http.post(this.url, body, {observe: "body", headers: header});
+  registration(body: string, headers: HttpHeaders) {
+    return this.http.post(this.url, body, {observe: "body", headers: headers});
   }
 }
