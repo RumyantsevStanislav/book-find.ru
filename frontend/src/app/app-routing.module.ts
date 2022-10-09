@@ -7,16 +7,21 @@ import {LoginPageComponent} from "./components/login-page/login-page.component";
 import {RegistrationComponent} from "./components/registration/registration.component";
 
 const routes: Routes = [
-  {
-    path: '', component: MainComponent, children: [
-      //Если попадаем на главную('') - не знаем куда идти, поэтому редиректим.
-      {path: '', redirectTo: '/', pathMatch: 'full'},
-      {path: '', component: HomePageComponent},
-      {path: 'login', component: LoginPageComponent},
-      {path: 'registration', component: RegistrationComponent},
-      {path: 'book/:id', component: BookPageComponent}
-    ]
-  },
+  {path: '', redirectTo: '/', pathMatch: 'full'},
+  {path: '', component: HomePageComponent},
+  {path: 'login', component: LoginPageComponent},
+  {path: 'registration', component: RegistrationComponent},
+  {path: 'book/:id', component: BookPageComponent},
+  // {
+  //   path: '', component: AppComponent, children: [
+  //     //Если попадаем на главную('') - не знаем куда идти, поэтому редиректим.
+  //     {path: '', redirectTo: '/', pathMatch: 'full'},
+  //     {path: '', component: HomePageComponent},
+  //     {path: 'login', component: LoginPageComponent},
+  //     {path: 'registration', component: RegistrationComponent},
+  //     {path: 'book/:id', component: BookPageComponent}
+  //   ]
+  // },
   {path: 'admin', loadChildren: () => import ("./admin/admin.module").then(m => m.AdminModule)}
 ];
 
