@@ -25,8 +25,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static server.utils.Utils.mapper;
 
 @WebMvcTest(controllers = {UsersController.class}, excludeAutoConfiguration = SecurityAutoConfiguration.class)
@@ -63,13 +62,14 @@ public class UsersControllerTests {
     @Test
     @DisplayName("User already exist")
     public void failRegistrationTest() throws Exception {
-        Mockito.doReturn(Optional.of(user)).when(usersService).getUserByPhone(systemUser.getPhone());
+        Mockito.doReturn(Optional.of(user)).when(usersService).getUserByPhoneOrEmail(systemUser.getPhoneOrEmail());
         mvc.perform(post("/api/v1/users/register").content(systemUserJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.messages").isArray())
                 .andExpect(jsonPath("$.messages", hasSize(1)))
-                .andExpect(jsonPath("$.messages[0]", is("Пользователь с таким телефоном уже существует.")))
+                .andExpect(jsonPath("$.messages[0]", is("Пользователь уже существует.")))
+                //.andExpect(content().json("{\"errors\":[\"Task name must not be blank!\"],\"errorMessage\":\"Validation failed. 1 error(s)\"}"));
                 .andReturn();
     }
 

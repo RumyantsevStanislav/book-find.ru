@@ -43,7 +43,7 @@ public class UsersService implements UserDetailsService {
     }
 
     public Optional<User> getUserByPhoneOrEmail(String phoneOrEmail) {
-        if (phoneOrEmail.contains("@")) {
+        if (isEmail(phoneOrEmail)) {
             return usersRepository.findByEmail(phoneOrEmail);
         } else {
             return usersRepository.findByPhone(phoneOrEmail);
@@ -74,12 +74,18 @@ public class UsersService implements UserDetailsService {
     @Transactional //Чтобы одновременно не создать 2 одинаковых пользователя
     public User save(SystemUser systemUser) {
         User user = new User();
-        user.setPhone(systemUser.getPhone());
+        String phoneOrEmail = systemUser.getPhoneOrEmail();
+        if (isEmail(phoneOrEmail)) {
+            user.setEmail(phoneOrEmail);
+        } else {
+            user.setPhone(phoneOrEmail);
+        }
         user.setPassword(passwordEncoder.getPasswordEncoder().encode(systemUser.getPassword()));
-        user.setFirstName(systemUser.getFirstName());
-        user.setLastName(systemUser.getLastName());
-        user.setEmail(systemUser.getEmail());
         user.setRoles(List.of(rolesService.getByPrivilege(Role.Privilege.ROLE_USER)));
         return usersRepository.save(user);
+    }
+
+    private boolean isEmail(String phoneOrEmail) {
+        return phoneOrEmail.contains("@");
     }
 }

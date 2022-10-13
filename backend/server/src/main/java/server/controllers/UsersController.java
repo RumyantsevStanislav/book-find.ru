@@ -9,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import server.configs.JwtTokenUtil;
@@ -19,11 +20,13 @@ import server.entities.dtos.SystemUser;
 import server.exceptions.AttributeNotValidException;
 import server.exceptions.ElementAlreadyExistsException;
 import server.services.UsersService;
+import server.utils.validation.Marker;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@Validated
 public class UsersController {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
@@ -43,15 +46,13 @@ public class UsersController {
     }
 
     @PostMapping("/register")
+    @Validated({Marker.OnCreate.class})
     public ResponseEntity<ApiMessage> register(@Valid @RequestBody SystemUser systemUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new AttributeNotValidException("Ошибка валидации", bindingResult);
         }
-        usersService.getUserByPhone(systemUser.getPhone()).ifPresent(u -> {
-            throw new ElementAlreadyExistsException("Пользователь с таким телефоном уже существует.");
-        });
-        usersService.getUserByEmail(systemUser.getPhone()).ifPresent(u -> {
-            throw new ElementAlreadyExistsException("Пользователь с таким email уже существует.");
+        usersService.getUserByPhoneOrEmail(systemUser.getPhoneOrEmail()).ifPresent(u -> {
+            throw new ElementAlreadyExistsException("Пользователь уже существует.");
         });
         usersService.save(systemUser);
         return new ResponseEntity<>(new ApiMessage("Вы успешно зарегистрированы!"), HttpStatus.CREATED);

@@ -3,39 +3,42 @@ package server.entities.dtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import server.utils.validation.FieldMatch;
+import server.utils.validation.Marker;
+import server.utils.validation.PhoneOrEmail;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
-@FieldMatch(first = "password", second = "matchingPassword", message = "The password fields must match")
+@FieldMatch(first = "password", second = "matchingPassword", message = "Пароли не совпадают")
 public class SystemUser {
-    @NotNull(message = "phone number is required")
-    @Size(min = 8, message = "phone number length must be 8")
+    @NotBlank(groups = Marker.OnCreate.class, message = "Поле 'Телефон или email' обязательно")
+    @PhoneOrEmail(groups = Marker.OnCreate.class, message = "Некорректный телефон/email")
+    private String phoneOrEmail;
+
+    @NotBlank(groups = Marker.OnUpdate.class, message = "Поле 'Телефон' обязательно")
+    @Pattern(groups = Marker.OnUpdate.class, regexp = "^((\\+7)?|7?|8?)\\d{10}$", message = "Некорректный телефон")
     private String phone;
 
-    @NotNull(message = "is required")
-    @Size(min = 4, message = "is required")
-    @Email
+    @NotBlank(groups = Marker.OnUpdate.class, message = "Поле 'email' обязательно")
+    @Email(groups = Marker.OnUpdate.class, message = "Некорректный email")
     private String email;
 
-    @NotNull(message = "is required")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$",
-            message = "не менее 8 символов, включая заглавные и прописные буквы на латинице, цифры и спецсимволы")
+    @NotBlank(groups = Marker.OnCreate.class, message = "Поле 'Пароль' обязательно")
+    @Pattern(groups = Marker.OnCreate.class, regexp = "^.*(?=.*\\d)(?=.*[a-zа-яё])(?=.*[A-ZА-ЯЁ]).*$",/*(?=.*[\Q!"#$%&'()*+,\-./:;<=>?@[]^_`{|}\E])*/
+            message = "Обязательно: заглавные буквы, строчные буквы, цифры.")
+    @Size(min = 8, message = "Длина пароля не менее 8 символов")
+    @Size(max = 20, message = "Длина пароля не более 20 символов")
     private String password;
 
-    @NotNull(message = "is required")
-    @Size(min = 4, message = "password is too short")
+    @NotBlank(groups = Marker.OnCreate.class, message = "Поле 'Повторите пароль' обязательно")
     private String matchingPassword;
 
-    @NotNull(message = "is required")
-    @Size(min = 1, message = "is required")
+    @NotBlank(groups = Marker.OnUpdate.class, message = "Поле 'Имя' обязательно")
+    @Size(groups = Marker.OnUpdate.class, min = 2, message = "Не менее 2-х символов")
     private String firstName;
 
-    @NotNull(message = "is required")
-    @Size(min = 1, message = "is required")
+    @NotBlank(groups = Marker.OnUpdate.class, message = "Поле 'Фамилия' обязательно")
+    @Size(groups = Marker.OnUpdate.class, min = 2, message = "Не менее 2-х символов")
     private String lastName;
 }

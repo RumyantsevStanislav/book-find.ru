@@ -22,9 +22,9 @@ public class TestUsers {
             NONEXISTENT_PHONE = "00000000",
             NONEXISTENT_EMAIL = "nonexistent@gmail.com",
             INCORRECT_PASSWORD = "12345",
-            NEW_USER_PHONE = "44444444",
+            NEW_USER_PHONE = "81234567890",
             NEW_USER_EMAIL = "new_user@gmail.com",
-            NEW_USER_PASSWORD_DECODED = "1234";
+            NEW_USER_PASSWORD_DECODED = "Qwerty12";
 
 
     public static User getAdmin() {
@@ -61,8 +61,7 @@ public class TestUsers {
     public static User getNewUser() {
         User user = new User();
         user.setPhone(NEW_USER_PHONE);
-        user.setEmail(NEW_USER_EMAIL);
-        user.setPassword(NEW_USER_PASSWORD_DECODED);
+        user.setPassword(USER_PASSWORD_ENCODED);
         Role role = getRoleUser();
         user.setRoles(Collections.singletonList(role));
         return user;
@@ -70,8 +69,7 @@ public class TestUsers {
 
     public static SystemUser getSystemUser() {
         SystemUser systemUser = new SystemUser();
-        systemUser.setPhone(NEW_USER_PHONE);
-        systemUser.setEmail(NEW_USER_EMAIL);
+        systemUser.setPhoneOrEmail(NEW_USER_PHONE);
         systemUser.setPassword(NEW_USER_PASSWORD_DECODED);
         systemUser.setMatchingPassword(NEW_USER_PASSWORD_DECODED);
         return systemUser;
