@@ -16,6 +16,13 @@ import {RegistrationComponent} from './components/registration/registration.comp
 import {RegistrationService} from "./services/registration.service";
 import {TokenInterceptorService} from "./services/interceptors/token-interceptor.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {MatInputModule} from "@angular/material/input";
+import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {NgbAlertModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -32,6 +39,13 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
     SharedModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    NgbPaginationModule,
+    NgbAlertModule
   ],
   providers: [BookService, BookPageComponent, AuthService, AuthGuard, RegistrationService, {
     provide: HTTP_INTERCEPTORS,

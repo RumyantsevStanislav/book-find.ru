@@ -3,15 +3,13 @@ export interface User {
   password: string
 }
 
-export class SystemUser {
-  constructor(
-    public userName: string,
-    public firstName: string,
-    public lastName: string,
-    public password: string,
-    public matchingPassword: string,
-    public email: string,
-    public birthDay: string
-  ) {
-  }
+export interface SystemUser {
+  phoneOrEmail: string,
+  phone?: string,
+  email?: string,
+  password: string,
+  matchingPassword: string,
+  firstName?: string,
+  lastName?: string,
+  birthDay?: string
 }

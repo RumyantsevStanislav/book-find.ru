@@ -17,7 +17,8 @@ public class SystemUser {
     private String phoneOrEmail;
 
     @NotBlank(groups = Marker.OnUpdate.class, message = "Поле 'Телефон' обязательно")
-    @Pattern(groups = Marker.OnUpdate.class, regexp = "^((\\+7)?|7?|8?)\\d{10}$", message = "Некорректный телефон")
+    @Pattern(groups = Marker.OnUpdate.class, regexp = "^((\\+7)?|7?|8?)\\d$", message = "Некорректный телефон")
+    @Size(groups = Marker.OnUpdate.class, min = 10, max = 12, message = "Телефон должен состоять из 10-12 символов")
     private String phone;
 
     @NotBlank(groups = Marker.OnUpdate.class, message = "Поле 'email' обязательно")
@@ -27,8 +28,8 @@ public class SystemUser {
     @NotBlank(groups = Marker.OnCreate.class, message = "Поле 'Пароль' обязательно")
     @Pattern(groups = Marker.OnCreate.class, regexp = "^.*(?=.*\\d)(?=.*[a-zа-яё])(?=.*[A-ZА-ЯЁ]).*$",/*(?=.*[\Q!"#$%&'()*+,\-./:;<=>?@[]^_`{|}\E])*/
             message = "Обязательно: заглавные буквы, строчные буквы, цифры.")
-    @Size(min = 8, message = "Длина пароля не менее 8 символов")
-    @Size(max = 20, message = "Длина пароля не более 20 символов")
+    @Size(groups = Marker.OnCreate.class, min = 8, message = "Длина пароля не менее 8 символов")
+    @Size(groups = Marker.OnCreate.class, max = 20, message = "Длина пароля не более 20 символов")
     private String password;
 
     @NotBlank(groups = Marker.OnCreate.class, message = "Поле 'Повторите пароль' обязательно")

@@ -1,5 +1,9 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {SystemUser} from "../models/User";
+import {ApiError, ApiMessage} from "../models/Response";
+import {map, Observable, throwError} from "rxjs";
+import {catchError} from "rxjs/operators";
 
 @Injectable()
 export class RegistrationService {
@@ -8,7 +12,25 @@ export class RegistrationService {
   constructor(private http: HttpClient) {
   }
 
-  registration(body: string, headers: HttpHeaders) {
-    return this.http.post(this.url, body, {observe: "body", headers: headers});
+  registration(systemUser: SystemUser, headers: HttpHeaders): Observable<ApiMessage> {
+    return this.http.post<ApiMessage>(this.url, systemUser, {
+      observe: "body",
+      headers: headers
+    }).pipe(catchError(this.handleError.bind(this)));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.log('Handle ' + errorMessage);
+    return throwError(() => {
+      return errorMessage;
+    });
   }
 }
