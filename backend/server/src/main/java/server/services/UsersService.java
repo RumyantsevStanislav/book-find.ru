@@ -13,9 +13,11 @@ import server.configs.PasswordEncoder;
 import server.entities.PasswordResetToken;
 import server.entities.Role;
 import server.entities.User;
+import server.entities.VerificationToken;
 import server.entities.dtos.SystemUser;
 import server.repositories.PasswordResetTokenRepository;
 import server.repositories.UsersRepository;
+import server.repositories.VerificationTokenRepository;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +28,6 @@ import java.util.stream.Collectors;
 public class UsersService implements UserDetailsService { //см. Борисов UsersServiceImpl
     private UsersRepository usersRepository;
     private RolesService rolesService;
-
     private PasswordEncoder passwordEncoder;
     private VerificationTokenRepository verificationTokenRepository;
     private PasswordResetTokenRepository passwordResetTokenRepository;
@@ -72,7 +73,7 @@ public class UsersService implements UserDetailsService { //см. Борисов
         return usersRepository.findByEmail(email);
     }
 
-    @Override
+    //@Override
     @Transactional
     public UserDetails loadUserByUsername(String phoneOrEmail) throws UsernameNotFoundException {
         User user = getUserByPhoneOrEmail(phoneOrEmail).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", phoneOrEmail)));
