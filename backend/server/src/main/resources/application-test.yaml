@@ -20,11 +20,27 @@ spring:
   jackson:
     serialization:
       indent_output: true
+  mail:
+    host: 192.168.1.6 #smtp.gmail.com book-find.ru #
+    port: 25
+    protocol: smtp
+    username:
+    password:
+    templates:
+      path: /templates
+    properties:
+      mail:
+        smtp:
+          auth: false #true
+          starttls:
+            enable: false #true # Enable a TLS-protected connection.
   web:
     resources:
       static-locations: file:src/main/resources/static/
 jwt:
   secret: topsecret123z93847nb9875cncy753487et7tnv7tca8symlntsyvnli8579387r445b67n5gdnfvuyndkgdufynvy57857nyvr7t75rt857ny84v54
+support:
+  email: "info@book-find.ru"
 #  h2:
 #    console:
 #      enabled: true

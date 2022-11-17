@@ -19,7 +19,8 @@ import java.util.Objects;
 @AllArgsConstructor
 public class DefaultEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", initialValue = 1, allocationSize = 2)
+    @GeneratedValue(strategy = GenerationType.IDENTITY/*SEQUENCE, generator = "user_seq"*/)
     private Long id;
 
     @CreationTimestamp
@@ -31,6 +32,17 @@ public class DefaultEntity {
     @Column(name = "updated_at", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime updated_at;
+
+    @PrePersist
+    public void onCreate() {
+        this.created_at = OffsetDateTime.now();
+        this.updated_at = OffsetDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updated_at = OffsetDateTime.now();
+    }
 
     @Override
     public boolean equals(Object o) {

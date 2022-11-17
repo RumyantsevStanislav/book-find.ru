@@ -3,10 +3,14 @@ values ('ROLE_USER'),
        ('ROLE_MANAGER'),
        ('ROLE_ADMIN');
 
-insert into users (phone, email, password, first_name, last_name)
-values ('11111111', null, '$2a$10$ts2FXg1jVvuuEIJqIItTB.Ra1ZklHcSYyrnt3AkGVJkekFUjWcu9K', null, null),
-       ('22222222', null, '$2a$10$ts2FXg1jVvuuEIJqIItTB.Ra1ZklHcSYyrnt3AkGVJkekFUjWcu9K', null, null),
-       ('33333333', 'user@gmail.com', '$2a$10$ts2FXg1jVvuuEIJqIItTB.Ra1ZklHcSYyrnt3AkGVJkekFUjWcu9K', null, null);
+insert into users (phone, email, password, first_name, last_name, enabled, account_non_expired, credentials_non_expired,
+                   account_non_locked)
+values ('11111111', null, '$2a$10$ts2FXg1jVvuuEIJqIItTB.Ra1ZklHcSYyrnt3AkGVJkekFUjWcu9K', null, null, true, true, true,
+        true),
+       ('22222222', null, '$2a$10$ts2FXg1jVvuuEIJqIItTB.Ra1ZklHcSYyrnt3AkGVJkekFUjWcu9K', null, null, true, true, true,
+        true),
+       ('33333333', 'user@gmail.com', '$2a$10$ts2FXg1jVvuuEIJqIItTB.Ra1ZklHcSYyrnt3AkGVJkekFUjWcu9K', null, null, true,
+        true, true, true);
 
 insert into users_roles (user_id, role_id)
 values (1, 1),
