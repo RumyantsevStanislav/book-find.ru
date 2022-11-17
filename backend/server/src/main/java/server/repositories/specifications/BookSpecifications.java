@@ -1,8 +1,8 @@
 package server.repositories.specifications;
 
-import server.entities.Category;
 import org.springframework.data.jpa.domain.Specification;
 import server.entities.Book;
+import server.entities.Category;
 
 public class BookSpecifications {
     public static Specification<Book> priceGreaterOrEqualsThen(int minPrice) {
@@ -19,6 +19,7 @@ public class BookSpecifications {
 
     public static Specification<Book> categoryIs(Category category) {
         return (Specification<Book>) (root, criteriaQuery, criteriaBuilder) -> {
+            // TODO: 17.11.2022 figure out
 
             //            Join join = root.join("categories");
             //            return criteriaBuilder.equal(join.get("id"), category.getId());

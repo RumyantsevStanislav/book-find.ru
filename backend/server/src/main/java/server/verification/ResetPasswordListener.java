@@ -30,6 +30,7 @@ public class ResetPasswordListener extends AbstractListener<OnResetPasswordEvent
         this.sendResetPasswordToken(event);
     }
 
+    // TODO: 17.11.2022 take out string expressions to properies
     private void sendResetPasswordToken(OnResetPasswordEvent event) {
         //TODO cut throw Exception
         User user = service.getUserByEmail(event.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));

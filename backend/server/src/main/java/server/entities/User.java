@@ -17,6 +17,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+// TODO: 17.11.2022 research
 //@EqualsAndHashCode(callSuper = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -44,7 +45,7 @@ public class User extends DefaultEntity {
 
     @Column(name = "credentials_non_expired")
     private boolean credentialsNonExpired = true;
-    
+
     @Column(name = "account_non_locked")
     private boolean accountNonLocked = true;
 
@@ -54,7 +55,7 @@ public class User extends DefaultEntity {
     private OffsetDateTime last_login_at;
 
     @ManyToMany
-    //Для новых сущностей вызывается persist(), а для уже существующих сущностей (у которых id!=null) вызывается merge().
+    // TODO: 17.11.2022 research and check everywhere: Для новых сущностей вызывается persist(), а для уже существующих сущностей (у которых id!=null) вызывается merge().
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),

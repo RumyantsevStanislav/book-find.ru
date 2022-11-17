@@ -38,7 +38,7 @@ spring:
     resources:
       static-locations: file:src/main/resources/static/
 jwt:
-  secret: topsecret123z93847nb9875cncy753487et7tnv7tca8symlntsyvnli8579387r445b67n5gdnfvuyndkgdufynvy57857nyvr7t75rt857ny84v54
+  secret:
 support:
   email: "info@book-find.ru"
 #  h2:

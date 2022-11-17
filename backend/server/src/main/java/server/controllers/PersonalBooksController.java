@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+// TODO: 17.11.2022 remove on production
 @CrossOrigin("*")
 @RequestMapping("/api/v1/library")
 public class PersonalBooksController {

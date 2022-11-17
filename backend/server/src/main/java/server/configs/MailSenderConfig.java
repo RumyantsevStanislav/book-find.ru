@@ -3,7 +3,9 @@ package server.configs;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -63,6 +65,7 @@ public class MailSenderConfig {
         message.setText("This is the test email template for your email:\n%s\n");
         return message;
     }
+    // TODO: 17.11.2022 figure out how to send another types of message
 
     //    @Bean
     //    @Primary

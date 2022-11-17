@@ -2,6 +2,8 @@ package server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import server.configs.JwtTokenUtil;
 import server.entities.PasswordResetToken;
 import server.entities.User;
@@ -29,7 +32,10 @@ import server.verification.OnRegistrationCompleteEvent;
 import server.verification.OnResendTokenEvent;
 import server.verification.OnResetPasswordEvent;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Calendar;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -38,15 +44,24 @@ public class UsersController {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
     private final UsersService usersService;
+    private final ApplicationEventPublisher eventPublisher;
+    private final MessageSource messages;
 
     @Autowired
-    public UsersController(UsersService usersService, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager) {
+    public UsersController(UsersService usersService, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, ApplicationEventPublisher eventPublisher, MessageSource messages) {
         this.usersService = usersService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
+        this.eventPublisher = eventPublisher;
+        this.messages = messages;
     }
 
-    @InitBinder //Обрубает пробелы в полях формы на уровне контроллера
+    /**
+     * Cutting spaces in form fields on controller level.
+     *
+     * @param dataBinder
+     */
+    @InitBinder //
     public void initBinder(WebDataBinder dataBinder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
@@ -54,7 +69,7 @@ public class UsersController {
 
     @PostMapping("/register")
     @Validated({Marker.OnCreate.class})
-    public ResponseEntity<ApiMessage> register(@Valid @RequestBody SystemUser systemUser, BindingResult bindingResult) {
+    public ResponseEntity<ApiMessage> register(@Valid @RequestBody SystemUser systemUser, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             throw new AttributeNotValidException("Ошибка валидации", bindingResult);
         }
@@ -67,6 +82,7 @@ public class UsersController {
         return new ResponseEntity<>(new ApiMessage("Вы успешно зарегистрированы!"), HttpStatus.CREATED);
     }
 
+    // TODO: 17.11.2022 fix cross origin 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/auth")
     public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest) throws Exception {
@@ -86,6 +102,7 @@ public class UsersController {
     public ResponseEntity<ApiMessage> confirmRegistration(WebRequest request, @RequestParam("token") String token) {
         Locale locale = request.getLocale();
         VerificationToken verificationToken = usersService.getVerificationToken(token);
+        // TODO: 17.11.2022 fix duplicated lines 
         if (verificationToken == null) {
             String messageValue = messages.getMessage("auth.message.invalidToken", null, locale);
             return new ResponseEntity<>(new ApiMessage(messageValue), HttpStatus.NOT_FOUND);
@@ -101,7 +118,9 @@ public class UsersController {
         return new ResponseEntity<>(new ApiMessage(messageValue), HttpStatus.ACCEPTED);
     }
 
+    // TODO: 17.11.2022 GET with token is a bad idea 
     @GetMapping("/resendRegistrationToken")
+    // TODO: 17.11.2022 choose unify response and use it 
     public GenericResponse resendRegistrationToken(HttpServletRequest request, @RequestParam("token") String existingToken) {
         String appUrl = request.getContextPath();
         eventPublisher.publishEvent(new OnResendTokenEvent(existingToken, request.getLocale(), appUrl));
@@ -115,9 +134,9 @@ public class UsersController {
         return new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale()));
     }
 
+    // TODO: 17.11.2022 GET with token is a bad idea
     @GetMapping("/changePassword")
-    public ResponseEntity<ApiMessage> showChangePasswordPage(Locale locale,/*is it possible?*/ @RequestParam("token") String token) {
-        //Locale locale = request.getLocale();
+    public ResponseEntity<ApiMessage> showChangePasswordPage(Locale locale, @RequestParam("token") String token) {
         PasswordResetToken passwordResetToken = usersService.getPasswordResetToken(token);
         if (passwordResetToken == null) {
             String messageValue = messages.getMessage("auth.message.invalidToken", null, locale);
@@ -129,6 +148,7 @@ public class UsersController {
             String messageValue = messages.getMessage("auth.message.expired", null, locale);
             return new ResponseEntity<>(new ApiMessage(messageValue), HttpStatus.UNAUTHORIZED);
         }
+        // TODO: 17.11.2022 is it a good practice to send language to frontend?
         //String result = validatePasswordResetToken(token); //jwtTokenUtil?
         //        if (result != null) {
         //            String message = messages.getMessage("auth.message." + result, null, locale);
@@ -157,12 +177,14 @@ public class UsersController {
 
     @PostMapping("/updatePassword")
     @PreAuthorize("hasRole('ROLE_USER')")
+    // TODO: 17.11.2022 configure annotation 
     //@PreAuthorize annotation, since it should only accessible to logged in users.
     public GenericResponse changeUserPassword(Locale locale, @RequestParam("password") String password, @RequestParam("oldpassword") String oldPassword) {
         User user = usersService.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found")); //WTF?
 
         if (!usersService.isValidOldPassword(user, oldPassword)) {
+            // TODO: 17.11.2022 confugure exception handling 
             //throw new InvalidOldPasswordException();
             return new GenericResponse("Invalid old password");
         }
@@ -170,6 +192,7 @@ public class UsersController {
         return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
     }
 
+    // TODO: 17.11.2022 use it instead of duplicated code above
     public String validatePasswordResetToken(String token) {
         //        final PasswordResetToken passwordResetToken = passwordTokenRepository.findByToken(token);
         //
@@ -179,6 +202,7 @@ public class UsersController {
         return "";
     }
 
+    // TODO: 17.11.2022 use or remove
     private boolean isTokenFound(PasswordResetToken passToken) {
         return passToken != null;
     }

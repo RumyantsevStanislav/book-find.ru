@@ -16,6 +16,7 @@ public interface BookMapper {
     @Mapping(source = "book.authors", target = "authorDtoSet")
     @Mapping(source = "book.cover", target = "coverDtoImpl")
     BookDtoImpl toDto(Book book);
+    // TODO: 17.11.2022  figure out
 
     //    @Mapping(source = "categoryDto", target = "category")
     //    Book toBook(BookDto bookDto);

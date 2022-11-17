@@ -24,8 +24,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+// TODO: 17.11.2022  create interfaces fo services and controllers //см. Борисов Spring
 @Service
-public class UsersService implements UserDetailsService { //см. Борисов UsersServiceImpl
+public class UsersService implements UserDetailsService {
     private UsersRepository usersRepository;
     private RolesService rolesService;
     private PasswordEncoder passwordEncoder;

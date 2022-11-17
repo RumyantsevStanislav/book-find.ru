@@ -11,6 +11,7 @@ import java.util.Locale;
 @Getter
 @Setter
 @ToString
+// TODO: 17.11.2022 use parent for each ApplicationEvent
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
     private String appUrl;
     private Locale locale;

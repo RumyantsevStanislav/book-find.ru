@@ -28,6 +28,7 @@ public class RegistrationListener extends AbstractListener<OnRegistrationComplet
         this.confirmRegistration(event);
     }
 
+    // TODO: 17.11.2022 take out string expressions to properies
     private void confirmRegistration(OnRegistrationCompleteEvent event) {
         User user = event.getUser();
         VerificationToken verificationToken = service.createVerificationToken(user);

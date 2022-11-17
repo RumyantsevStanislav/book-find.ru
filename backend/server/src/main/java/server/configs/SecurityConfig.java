@@ -1,111 +1,68 @@
 package server.configs;
 
-import org.springframework.context.annotation.Profile;
-import server.services.UsersService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import server.services.UsersService;
 
-//@EnableWebSecurity // (debug = true) - будут сыпаться логи работы безопасности
-//Защита на уровне методов, а не эндпоинтов. Пример - @Secured над мотодом в BooksService. Существует ещё на уровне представлений (views)
-//@EnableGlobalMethodSecurity(securedEnabled = true)
-@Profile("disabled") //Такого профиля нет, класс работать не будет.
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    //Spring объект UserDetails - username, password, List<GrantedAuthority>
-    private UserDetailsService userDetailsService;
-
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
+@AllArgsConstructor
+// TODO: 17.11.2022 leave one profile annotation
+//@Profile({"dev", "prod"})
+@Profile("!unsecured")
+public class SecurityConfig implements WebMvcConfigurer {
     private UsersService usersService;
+    private final JwtRequestFilter jwtRequestFilter;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public void setUserDetailsService(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @Autowired
-    public void setUsersService(UsersService usersService) {
-        this.usersService = usersService;
-    }
-
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests()
-                .antMatchers("/authenticated/**").authenticated() //Только для аутентифицированных
-                .antMatchers("/admins/**").hasRole("ADMIN") // Только для роли ADMIN
-                //.antMatchers("/admins/**").hasAnyRole("ADMIN", "SUPERADMIN") //Автоматически добавляет ROLE_
-                //.antMatchers("/emails/**").hasAnyAuthority("CAN_READ_EMAIL") //Не добавляет ROLE_
-                .anyRequest().permitAll() //Все остальные - незащищённая область
-                .and()
-                //Логин/пароль подшиваются в header, можно использовать для отправки JSON
-                //Стандартное окно в браузере (вместо формы formLogin).
-                //.httpBasic()
-                .formLogin() //Форма, куда вписать логин/пароль дефолтная от Spring
-                //.loginPage("login") //Использование своей формы ввода логина/пароля. Опционально
-                //.loginProcessingUrl("/authenticateTheUser") //Адрес, куда отправить логин/пароль. Опционально
-                //.successForwardUrl("/pageForAuthenticateUsers") //Редирект после успешной авторизации. Опционально
-                .and()
-                .csrf().disable()//обычно отключают для REST
-                .logout().logoutSuccessUrl("/"); //Можно настроить процесс logout, например почистить cookies
-    }
-
-    //In memory authentication. Настроили своих юзеров. Спринг не будет выдавать пароль при запуске.
-//    @Bean
-//    public UserDetailsService users() {
-//        UserDetails user = User.builder()
-//                .username("user")
-//                .password("{bcrypt}$2y$12$mFUdPh8.ESnhu.eyDjxrYuSigUIOboDP94mt7vuNhf604Yw0iuKQa")
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password("{bcrypt}$2y$12$mFUdPh8.ESnhu.eyDjxrYuSigUIOboDP94mt7vuNhf604Yw0iuKQa")
-//                .roles("USER", "ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(user, admin);
-//    }
-
-//    @Bean
-//    public JdbcUserDetailsManager users(DataSource dataSource) {
-//Можно создать своих юзеров
-//        UserDetails user = User.builder()
-//                .username("user")
-//                .password("{bcrypt}$2y$12$mFUdPh8.ESnhu.eyDjxrYuSigUIOboDP94mt7vuNhf604Yw0iuKQa")
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password("{bcrypt}$2y$12$mFUdPh8.ESnhu.eyDjxrYuSigUIOboDP94mt7vuNhf604Yw0iuKQa")
-//                .roles("USER", "ADMIN")
-//                .authorities("ROLE_USER", "ROLE_ADMIN", "CAN_READ_SOMETHING")
-//                .build();
-//Если созданные юзеры существуют - можем их заменить.
-//        JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-//        if (users.userExists(user.getUsername())) {
-//            users.deleteUser(user.getUsername());
-//        }
-//        if (users.userExists(admin.getUsername())) {
-//            users.deleteUser(admin.getUsername());
-//        }
-//        users.createUser(user);
-//        users.createUser(admin);
-//        return users;
-//    }
+    // TODO: 17.11.2022 configure security of methods depends on roles
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/authenticated").authenticated()
+                .anyRequest().permitAll()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
-    //По умолчанию Spring использует таблицы users и authorities для хранения пользователей (cм. sql.txt)
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(usersService); //или userDetailsService для InMemory  и таблицы из sql.txt
+        authenticationProvider.setPasswordEncoder(passwordEncoder.getPasswordEncoder());
+        authenticationProvider.setUserDetailsService(usersService);
         return authenticationProvider;
     }
 
+    // TODO: 17.11.2022 test another cors mapping ways
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:4200")
+                .allowedMethods("*");
+    }
 }

@@ -20,6 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Table(name = "password_reset_tokens")
 public class PasswordResetToken extends DefaultEntity {
+    // TODO: 17.11.2022 move to properties
     private static final int EXPIRATION = 60 * 24;
 
     private String token;

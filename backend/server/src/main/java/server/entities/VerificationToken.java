@@ -19,7 +19,9 @@ import java.util.UUID;
 @Entity
 @RequiredArgsConstructor
 @Table(name = "verification_tokens")
+// TODO: 17.11.2022  create parent to Token classes
 public class VerificationToken extends DefaultEntity {
+    // TODO: 17.11.2022 move to properties
     private static final int EXPIRATION = 60 * 24;
 
     private String token;

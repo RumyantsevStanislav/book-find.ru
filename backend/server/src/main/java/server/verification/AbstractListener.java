@@ -23,10 +23,12 @@ public abstract class AbstractListener<T extends ApplicationEvent> implements Ap
         email.setSubject(subject);
         email.setText(body);
         email.setTo(user.getEmail());
-        email.setFrom(Objects.requireNonNull(supportEmail/*environment.getProperty("support.email")*/));
+        // TODO: 17.11.2022  think about using environment.getProperty("support.email")
+        email.setFrom(Objects.requireNonNull(supportEmail));
         return email;
     }
 
+    // TODO: 17.11.2022 refactor constructEmail method
     // ? String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     // ? SimpleMailMessage email = constructResendVerificationTokenEmail(appUrl, request.getLocale(), newToken, user);
     //    private SimpleMailMessage constructResendVerificationTokenEmail(String contextPath, Locale locale, VerificationToken newToken, User user) {

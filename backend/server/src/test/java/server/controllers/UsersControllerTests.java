@@ -25,7 +25,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static server.utils.Utils.mapper;
 
 @WebMvcTest(controllers = {UsersController.class}, excludeAutoConfiguration = SecurityAutoConfiguration.class)
@@ -69,6 +70,7 @@ public class UsersControllerTests {
                 .andExpect(jsonPath("$.messages").isArray())
                 .andExpect(jsonPath("$.messages", hasSize(1)))
                 .andExpect(jsonPath("$.messages[0]", is("Пользователь уже существует.")))
+                // TODO: 17.11.2022 fifure out
                 //.andExpect(content().json("{\"errors\":[\"Task name must not be blank!\"],\"errorMessage\":\"Validation failed. 1 error(s)\"}"));
                 .andReturn();
     }

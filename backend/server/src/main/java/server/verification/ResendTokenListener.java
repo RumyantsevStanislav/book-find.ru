@@ -28,6 +28,7 @@ public class ResendTokenListener extends AbstractListener<OnResendTokenEvent> {
         this.resendToken(event);
     }
 
+    // TODO: 17.11.2022 take out string expressions to properies
     private void resendToken(OnResendTokenEvent event) {
         VerificationToken verificationToken = service.generateNewVerificationToken(event.getExistingToken());
         User user = verificationToken.getUser();

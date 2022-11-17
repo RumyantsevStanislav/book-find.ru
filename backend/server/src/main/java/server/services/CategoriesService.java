@@ -1,10 +1,10 @@
 package server.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import server.entities.Category;
 import server.entities.dtos.CategoryDto;
 import server.repositories.CategoriesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class CategoriesService {
         return categoriesRepository.findAllById(ids);
     }
 
-    public  List<CategoryDto> getDtoData(){
+    public List<CategoryDto> getDtoData() {
         return categoriesRepository.findAllBy();
     }
 }

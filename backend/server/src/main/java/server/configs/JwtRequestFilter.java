@@ -38,6 +38,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            // TODO: 17.11.2022 maybe another way exist
             //Cut "Bearer "
             jwt = authHeader.substring(7);
             try {
@@ -54,7 +55,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             }
         }
-        //TODO figure out what's going on
+        // TODO: 17.11.2022 figure out what's going on
         if (filterChain != null && response != null) {
             filterChain.doFilter(request, response);
         } else {

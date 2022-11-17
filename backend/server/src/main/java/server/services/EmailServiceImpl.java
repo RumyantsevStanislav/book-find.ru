@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 
+// TODO: 17.11.2022 include in project
 @Component
 public class EmailServiceImpl implements EmailService {
 

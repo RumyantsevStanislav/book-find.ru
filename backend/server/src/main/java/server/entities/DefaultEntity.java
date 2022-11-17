@@ -14,12 +14,12 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-//(force = true) все final поля инициализируются 0 / false / null. Для полей с ограничениями, например @NotNull, никаких проверок при присвоении не генерируется, поэтому эти условия могут не выполняться, пока эти поля не будут инициализированы подобающим образом позже.
+// TODO: 17.11.2022 researc (force = true) все final поля инициализируются 0 / false / null. Для полей с ограничениями, например @NotNull, никаких проверок при присвоении не генерируется, поэтому эти условия могут не выполняться, пока эти поля не будут инициализированы подобающим образом позже.
 @MappedSuperclass
 @AllArgsConstructor
 public class DefaultEntity {
     @Id
-    //@SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", initialValue = 1, allocationSize = 2)
+    // TODO: 17.11.2022 research @SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", initialValue = 1, allocationSize = 2)
     @GeneratedValue(strategy = GenerationType.IDENTITY/*SEQUENCE, generator = "user_seq"*/)
     private Long id;
 

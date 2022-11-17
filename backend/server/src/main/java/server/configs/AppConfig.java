@@ -22,13 +22,16 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) { registry.addInterceptor(localeChangeInterceptor());}
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
 
+    // TODO: 17.11.2022 figure out how it works 
     @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor(){
+    public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
-        return  localeChangeInterceptor;
+        return localeChangeInterceptor;
     }
 
 }

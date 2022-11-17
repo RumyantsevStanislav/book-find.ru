@@ -44,7 +44,8 @@ spring:
       static-locations: file:src/main/resources/static/
 jwt:
   secret:
-  email:
+support:
+  email: "info@book-find.ru"
 
 #  logging.level.root=INFO
 #  logging.level.org.springframework.security=DEBUG

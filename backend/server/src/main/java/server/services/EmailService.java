@@ -2,6 +2,7 @@ package server.services;
 
 import javax.mail.MessagingException;
 
+// TODO: 17.11.2022 include in project
 public interface EmailService {
     void sendSimpleMessage(String to, String subject, String text);
 

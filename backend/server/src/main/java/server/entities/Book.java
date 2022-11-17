@@ -2,7 +2,6 @@ package server.entities;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.*;
 
@@ -27,7 +26,8 @@ public class Book {
 
     @Column(name = "labirint_id")
     private Long labirintId;
-
+    // TODO: 17.11.2022 use limitations on each fields of each entities
+    //@Column(nullable = false, updatable = false, unique = true, length = 50)
     private String title;
 
     private String description;
@@ -79,6 +79,13 @@ public class Book {
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "cover_id")
     private Cover cover;
+
+    // TODO: 17.11.2022 is it really need?
+
+    //    @OneToMany(mappedBy = "book")
+    //    @Getter(AccessLevel.NONE)
+    //    @ToString.Exclude
+    //    private Set<PersonalBook> personalBooks = new HashSet<>();
 
     @CreationTimestamp
     @Column(name = "created_at")

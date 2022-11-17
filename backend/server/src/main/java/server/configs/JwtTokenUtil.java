@@ -64,6 +64,7 @@ public record JwtTokenUtil(String secret) {
                 .compact();
     }
 
+    // TODO: 17.11.2022  refactor deprecated methods
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secret)

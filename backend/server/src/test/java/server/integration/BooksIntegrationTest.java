@@ -8,7 +8,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import server.repositories.BooksRepository;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT /*classes = Book.class* Инициализирует только этот бин в контексте. Через new плохо, т.к. есть PostConstruct и т.д.*/)
+// TODO: 17.11.2022 research: classes = Book.class* Инициализирует только этот бин в контексте. Через new плохо, т.к. есть PostConstruct и т.д.
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class BooksIntegrationTest {
     @Autowired

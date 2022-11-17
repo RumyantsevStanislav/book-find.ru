@@ -63,6 +63,7 @@ public class BookControllerTest {
         Assertions.assertThrows(Exception.class,
                 () -> mvc.perform(get("/api/v1/books/" + TestBooks.ISBN)
                         .contentType(MediaType.APPLICATION_JSON)));
+        // TODO: 17.11.2022 figure out
         //.andExpect(jsonPath("$", hasSize(1)))
         //.andExpect(jsonPath("$").isArray())
         //.andExpect(jsonPath("$[0].title", is(allBooks.get(0).getTitle())));
