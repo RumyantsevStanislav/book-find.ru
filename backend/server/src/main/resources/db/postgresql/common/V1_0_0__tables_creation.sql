@@ -115,15 +115,19 @@ create table books_authors
 drop table if exists users;
 create table users
 (
-    id            serial,
-    phone         VARCHAR(30) unique,
-    email         VARCHAR(50) unique,
-    password      VARCHAR(80) not null,
-    first_name    VARCHAR(50),
-    last_name     VARCHAR(50),
-    created_at    timestamp default current_timestamp,
-    updated_at    timestamp default current_timestamp,
-    last_login_at timestamp default current_timestamp,
+    id                      serial,
+    phone                   VARCHAR(30) unique,
+    email                   VARCHAR(50) unique,
+    password                VARCHAR(80) not null,
+    first_name              VARCHAR(50),
+    last_name               VARCHAR(50),
+    enabled                 boolean,
+    account_non_expired     boolean,
+    credentials_non_expired boolean,
+    account_non_locked      boolean,
+    created_at              timestamp default current_timestamp,
+    updated_at              timestamp default current_timestamp,
+    last_login_at           timestamp default current_timestamp,
     constraint check_not_null check (phone is not null or email is not null),
     PRIMARY KEY (id)
 );
@@ -132,7 +136,7 @@ drop table if exists roles;
 create table roles
 (
     id         serial,
-    privilege  privilege unique not null,
+    privilege  varchar(50) unique not null,
     created_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp,
     primary key (id)
@@ -164,4 +168,28 @@ create table personal_books
     foreign key (isbn) references books (isbn),
     foreign key (phone) references users (phone),
     foreign key (email) references users (email)
+);
+
+drop table if exists verification_tokens cascade;
+create table verification_tokens
+(
+    id          serial primary key,
+    user_id     serial                              not null,
+    token       varchar(255)                        not null,
+    expiry_date timestamp                           not null,
+    created_at  timestamp default current_timestamp not null,
+    updated_at  timestamp default current_timestamp not null,
+    foreign key (user_id) references users (id)
+);
+
+drop table if exists password_reset_tokens cascade;
+create table password_reset_tokens
+(
+    id          serial primary key,
+    user_id     serial                              not null,
+    token       varchar(255)                        not null,
+    expiry_date timestamp                           not null,
+    created_at  timestamp default current_timestamp not null,
+    updated_at  timestamp default current_timestamp not null,
+    foreign key (user_id) references users (id)
 );

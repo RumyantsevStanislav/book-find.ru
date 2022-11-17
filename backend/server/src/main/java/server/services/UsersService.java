@@ -10,9 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.configs.PasswordEncoder;
+import server.entities.PasswordResetToken;
 import server.entities.Role;
 import server.entities.User;
 import server.entities.dtos.SystemUser;
+import server.repositories.PasswordResetTokenRepository;
 import server.repositories.UsersRepository;
 
 import java.util.Collection;
@@ -21,11 +23,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UsersService implements UserDetailsService {
+public class UsersService implements UserDetailsService { //см. Борисов UsersServiceImpl
     private UsersRepository usersRepository;
     private RolesService rolesService;
 
     private PasswordEncoder passwordEncoder;
+    private VerificationTokenRepository verificationTokenRepository;
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -40,6 +44,16 @@ public class UsersService implements UserDetailsService {
     @Autowired
     public void setRolesService(RolesService rolesService) {
         this.rolesService = rolesService;
+    }
+
+    @Autowired
+    public void setVerificationTokenRepository(VerificationTokenRepository verificationTokenRepository) {
+        this.verificationTokenRepository = verificationTokenRepository;
+    }
+
+    @Autowired
+    public void setPasswordResetTokenRepository(PasswordResetTokenRepository passwordResetTokenRepository) {
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     public Optional<User> getUserByPhoneOrEmail(String phoneOrEmail) {
@@ -84,6 +98,59 @@ public class UsersService implements UserDetailsService {
         user.setRoles(List.of(rolesService.getByPrivilege(Role.Privilege.ROLE_USER)));
         return usersRepository.save(user);
     }
+
+    public VerificationToken createVerificationToken(User user) {
+        VerificationToken verificationToken = new VerificationToken(user);
+        verificationTokenRepository.save(verificationToken);
+        return verificationToken;
+    }
+
+    public VerificationToken generateNewVerificationToken(String existingToken) {
+        VerificationToken existingVerificationToken = getVerificationToken(existingToken);
+        VerificationToken newVerificationToken = new VerificationToken(existingVerificationToken.getUser());
+        existingVerificationToken.setToken(newVerificationToken.getToken());
+        existingVerificationToken.setExpiryDate(existingVerificationToken.getExpiryDate());
+        verificationTokenRepository.save(existingVerificationToken);
+        return existingVerificationToken;
+    }
+
+    public VerificationToken getVerificationToken(String token) {
+        return verificationTokenRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Токен не найден!"));
+    }
+
+    public void activateUser(User user) {
+        User existingUser = getUserByEmail(user.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Пользователь не существует"));
+        existingUser.setEnabled(true);
+        usersRepository.save(existingUser);
+    }
+
+    public User getUser(String token) {
+        return getVerificationToken(token).getUser();
+    }
+
+    public PasswordResetToken createPasswordResetToken(User user) {
+        PasswordResetToken passwordResetToken = new PasswordResetToken(user);
+        passwordResetTokenRepository.save(passwordResetToken);
+        return passwordResetToken;
+    }
+
+    public PasswordResetToken getPasswordResetToken(String token) {
+        return passwordResetTokenRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Токен не найден!"));
+    }
+
+    public User getUserByPasswordResetToken(String token) {
+        return getPasswordResetToken(token).getUser();
+    }
+
+    public void changeUserPassword(User user, String password) {
+        user.setPassword(passwordEncoder.getPasswordEncoder().encode(password));
+        usersRepository.save(user);
+    }
+
+    public boolean isValidOldPassword(User user, String oldPassword) {
+        return user.getPassword().equals(passwordEncoder.getPasswordEncoder().encode(oldPassword));
+    }
+
 
     private boolean isEmail(String phoneOrEmail) {
         return phoneOrEmail.contains("@");

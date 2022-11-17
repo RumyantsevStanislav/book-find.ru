@@ -37,6 +37,17 @@ public class User extends DefaultEntity {
 
     private String lastName;
 
+    private boolean enabled = false;
+
+    @Column(name = "account_non_expired")
+    private boolean accountNonExpired = true;
+
+    @Column(name = "credentials_non_expired")
+    private boolean credentialsNonExpired = true;
+    
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked = true;
+
     @UpdateTimestamp
     @Column(name = "last_login_at", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
