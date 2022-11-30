@@ -12,7 +12,7 @@ import {BookComponent} from "./shared/book/book.component";
 import {SharedModule} from "./shared/shared.module";
 import {AuthService} from "./services/auth.service";
 import {AuthGuard} from "./services/auth.guard";
-import {RegistrationComponent} from './components/registration/registration.component';
+import {RegistrationFormComponent} from './components/shared/registration-form/registration-form.component';
 import {RegistrationService} from "./services/registration.service";
 import {TokenInterceptorService} from "./services/interceptors/token-interceptor.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
@@ -22,6 +22,17 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {NgbAlertModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgMaterialModule} from './ng-material/ng-material.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SignModalComponent} from './components/shared/sign-modal/sign-modal.component';
+import {RefDirective} from "./ref.directive";
+import {ClickOutsideDirective} from "./clickOutside.directive";
+import {HeaderComponent} from './components/shared/header/header.component';
+import {SidebarComponent} from './components/shared/header/sidebar/sidebar.component';
+import {LogoComponent} from './components/shared/header/logo/logo.component';
+import {SearchComponent} from './components/shared/header/search/search.component';
+import {PersonalComponent} from './components/shared/header/personal/personal.component';
+import {AdminModule} from "./admin/admin.module";
 
 
 @NgModule({
@@ -31,7 +42,15 @@ import {NgbAlertModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
     MainMenuComponent,
     HomePageComponent,
     BookComponent,
-    RegistrationComponent
+    RegistrationFormComponent,
+    SignModalComponent,
+    RefDirective,
+    ClickOutsideDirective,
+    HeaderComponent,
+    SidebarComponent,
+    LogoComponent,
+    SearchComponent,
+    PersonalComponent
   ],
   imports: [
     BrowserModule,
@@ -45,13 +64,17 @@ import {NgbAlertModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
     MatSortModule,
     MatProgressSpinnerModule,
     NgbPaginationModule,
-    NgbAlertModule
+    NgbAlertModule,
+    NgMaterialModule,
+    BrowserAnimationsModule,
+    AdminModule,
   ],
   providers: [BookService, BookPageComponent, AuthService, AuthGuard, RegistrationService, {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,
     multi: true,
   }],
+  entryComponents: [SignModalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

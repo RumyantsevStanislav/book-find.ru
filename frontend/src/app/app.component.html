@@ -1,20 +1,37 @@
-<!--section, article, header, footer, nav, aside, main, hgroup-->
-<div class="entire-content">
-  <header>
+<!--header, nav, main, section(объединяющий тэг), article, aside(объединяющий тэг), hgroup, footer,-->
+<!--    <button mat-raised-button color="primary" (click)="openDialog()">Open dialog</button>-->
+<!--  <hgroup>-->
+<!--    <h1>Название сайта</h1>-->
+<!--    <h3>Здесь описание сайта</h3>-->
+<!--  </hgroup>-->
+<ng-template appRef><</ng-template>
+<div class="root-container">
+
+  <app-header></app-header>
+
+  <nav>
     <app-main></app-main>
-  </header>
+  </nav>
 
-  <div class="main-content">
+  <main>
+    <p>Только уникальный контент. Не виден браузерами без main фиг. display:block; фиг.</p>
     <router-outlet></router-outlet>
-  </div>
+  </main>
 
-  <div class="additional-content-1">
+  <aside>
+    Photo
+    <!--    <nav>-->
+    Sidebar
+    <!--    </nav>-->
+  </aside>
 
-  </div>
+  <section id="content-1">
+    Section1
+  </section>
 
-  <div class="additional-content-2">
-
-  </div>
+  <section class="content-2">
+    Section2
+  </section>
 
   <footer>
     <p>Footer</p>

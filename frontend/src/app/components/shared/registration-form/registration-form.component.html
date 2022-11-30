@@ -1,0 +1,56 @@
+<form class="" [formGroup]="form" (ngSubmit)="registration()">
+  <div class="">
+    <label>Телефон или email</label>
+    <input type="text" class="" formControlName="phoneOrEmail">
+    <small class="" *ngIf="form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.errors?.required">
+      Обязательно для заполнения</small>
+    <small class=""
+           *ngIf="form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.errors?.phoneOrEmail">
+      Некорректный телефон/email</small>
+    <!--      <pre>{{form.get('phoneOrEmail')?.errors | json}}</pre>-->
+  </div>
+
+  <div class="" formGroupName="passwords">
+    <div class="">
+      <label>Пароль</label>
+      <div class="">
+        <input type="{{visiblePassword}}" class="form-control" formControlName="password">
+        <span class="" (click)="changeVisiblePassword()">
+            <img src="../../../../assets/images/eye.png" height="15" width="20"/></span>
+
+        <small class=""
+               *ngIf="form.get('passwords')?.get('password')?.touched && form.get('passwords')?.get('password')?.errors?.required">
+          Обязательно для заполнения</small>
+        <small class="" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.minlength">
+          Не менее 8 символов</small>
+        <small class="" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.maxlength">
+          Не более 20 символов</small>
+        <small class="" *ngIf="form.get('password')?.touched && form.get('password')?.errors?.pattern">
+          Используйте заглавные буквы, строчные буквы и цифры</small>
+      </div>
+    </div>
+    <div class="">
+      <label>Повторите пароль</label>
+      <div class="">
+        <input type="{{visiblePassword}}" class="form-control" formControlName="matchingPassword">
+        <span class="" (click)="changeVisiblePassword()">
+            <img src="../../../../assets/images/eye.png" height="15" width="20"/></span>
+        <small class=""
+               *ngIf="form.get('matchingPassword')?.touched && form.get('matchingPassword')?.errors?.required">
+          Обязательно для заполнения</small>
+        <small class=""
+               *ngIf="form.get('matchingPassword')?.touched && (form.controls['matchingPassword']?.value != form.controls['password']?.value)">
+          Пароли не совпадают</small>
+      </div>
+    </div>
+    <pre>{{form.get('passwords')?.errors | json}}</pre>
+  </div>
+  <div class="row pr-3 pl-3 pt-3">
+    <!--[disabled]="form.errors || password.errors || systemUser.password != systemUser.password || lastName.errors || firstName.errors || email.errors || birthYear.errors"-->
+    <button [disabled]="form.invalid || submitted" type="submit" class="">Зарегистрироваться</button>
+    <div class="col-2"></div>
+    <button
+      class="btn btn-warning col-5" [routerLink]="['']">Отмена
+    </button>
+  </div>
+</form>

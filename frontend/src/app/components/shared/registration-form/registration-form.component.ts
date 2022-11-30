@@ -1,21 +1,21 @@
 import {Component, OnInit} from '@angular/core';
-import {SystemUser} from "../../models/User";
+import {SystemUser} from "../../../models/User";
 import {HttpErrorResponse, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {RegistrationService} from "../../services/registration.service";
+import {RegistrationService} from "../../../services/registration.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {phoneOrEmailValidator} from "../PhoneOrEmailValidator";
-import {ConfirmedValidator} from "../ConfirmedValidator";
-import {ApiError, ApiMessage} from "../../models/Response";
-import {Page} from "../../models/Page";
-import {Book} from "../../models/Book";
+import {phoneOrEmailValidator} from "../../PhoneOrEmailValidator";
+import {ConfirmedValidator} from "../../ConfirmedValidator";
+import {ApiError, ApiMessage} from "../../../models/Response";
+import {Page} from "../../../models/Page";
+import {Book} from "../../../models/Book";
 
 @Component({
   selector: 'app-registration',
-  templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+  templateUrl: './registration-form.component.html',
+  styleUrls: ['./registration-form.component.scss']
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationFormComponent implements OnInit {
 
   visiblePassword = 'password';
   form: FormGroup

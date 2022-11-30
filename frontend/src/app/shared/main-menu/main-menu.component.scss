@@ -5,7 +5,7 @@
   justify-content: space-around;
   background-color: antiquewhite;
   //width: 100%; - плохо для разных разрешений экрана.
-  max-width: 1200px;
+  //max-width: 1200px;
   height: 100%; //50vh/vw - % высоты/ширины экрана
 }
 
@@ -26,4 +26,12 @@ div.nav-item {
 
 .nav-link:hover dropdown-menu {
   display: block;
+}
+
+use {
+  fill: black;
+}
+
+use:hover {
+  fill: red;
 }

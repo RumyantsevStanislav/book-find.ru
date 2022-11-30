@@ -15,10 +15,4 @@ export class MainMenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  logout(event: Event) {
-    event.preventDefault();
-    this.auth.logout();
-    this.router.navigate(['/', 'login']).then(r => '/');
-    this.router.navigate(['/', 'registration']).then(r => '/');
-  }
 }

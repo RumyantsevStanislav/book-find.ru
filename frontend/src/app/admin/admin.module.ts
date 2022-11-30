@@ -2,7 +2,7 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {RouterModule} from "@angular/router";
 import {AdminComponent} from './shared/components/admin/admin.component';
-import {LoginPageComponent} from '../components/login-page/login-page.component';
+import {LoginFormComponent} from '../components/shared/login-form/login-form.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
 import {SharedModule} from "../shared/shared.module";
@@ -14,7 +14,7 @@ import {AuthGuard} from "../services/auth.guard";
 @NgModule({
   declarations: [
     AdminComponent,
-    LoginPageComponent,
+    LoginFormComponent,
     DashboardPageComponent,
     AddBookPageComponent,
     EditBookPageComponent
@@ -28,14 +28,14 @@ import {AuthGuard} from "../services/auth.guard";
       {
         path: '', component: AdminComponent, children: [
           {path: '', redirectTo: '/admin/login', pathMatch: 'full'},
-          //{path: 'login', component: LoginPageComponent},
+          //{path: 'login', component: LoginFormComponent},
           {path: 'dashboard', component: DashboardPageComponent, canActivate: [AuthGuard]},
           {path: 'create', component: AddBookPageComponent, canActivate: [AuthGuard]},
           {path: 'book/:id/edit', component: EditBookPageComponent, canActivate: [AuthGuard]},
         ]
       }
     ])],
-  exports: [RouterModule],
+  exports: [RouterModule, LoginFormComponent],
   providers: [AuthService, AuthGuard]
 })
 export class AdminModule {

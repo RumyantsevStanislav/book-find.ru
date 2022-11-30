@@ -8,10 +8,7 @@
     <div class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
       <a class="nav-link" aria-current="page" [routerLink]="['', '/']">КНИГОПОИСК</a>
     </div>
-    <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Введите запрос" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Найти</button>
-    </form>
+
     <div class="nav-item dropdown" routerLinkActive="active">
       <div class="dropdown-toggle">
         <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -26,18 +23,6 @@
           <div><a class="dropdown-item" href="#">Something else here</a></div>
         </div>
       </div>
-    </div>
-    <div class="nav-item" *ngIf="!auth.isAuthenticated()" routerLinkActive="active">
-      <a class="nav-link" [routerLink]="['/', 'login']">Войти</a>
-    </div>
-    <!--      <div  routerLinkActive="active">-->
-    <!--        <a [routerLink]="['/admin', 'create']">Добавить</a>-->
-    <!--      </div>-->
-    <div class="nav-item" *ngIf="auth.isAuthenticated()">
-      <a class="nav-link" href="#" (click)="logout($event)">Выйти</a>
-    </div>
-    <div class="nav-item" *ngIf="!auth.isAuthenticated()" routerLinkActive="active">
-      <a class="nav-link" [routerLink]="['/', 'registration']">Регистрация</a>
     </div>
   </div>
 </nav>

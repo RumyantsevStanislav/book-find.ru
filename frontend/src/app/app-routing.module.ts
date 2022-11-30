@@ -3,22 +3,22 @@ import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {BookPageComponent} from "./components/book-page/book-page.component";
 import {MainMenuComponent} from "./shared/main-menu/main-menu.component";
 import {HomePageComponent} from "./components/home-page/home-page.component";
-import {LoginPageComponent} from "./components/login-page/login-page.component";
-import {RegistrationComponent} from "./components/registration/registration.component";
+import {LoginFormComponent} from "./components/shared/login-form/login-form.component";
+import {RegistrationFormComponent} from "./components/shared/registration-form/registration-form.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/', pathMatch: 'full'},
   {path: '', component: HomePageComponent},
-  {path: 'login', component: LoginPageComponent},
-  {path: 'registration', component: RegistrationComponent},
+  {path: 'login', component: LoginFormComponent},
+  {path: 'registration', component: RegistrationFormComponent},
   {path: 'book/:id', component: BookPageComponent},
   // {
   //   path: '', component: AppComponent, children: [
   //     //Если попадаем на главную('') - не знаем куда идти, поэтому редиректим.
   //     {path: '', redirectTo: '/', pathMatch: 'full'},
   //     {path: '', component: HomePageComponent},
-  //     {path: 'login', component: LoginPageComponent},
-  //     {path: 'registration', component: RegistrationComponent},
+  //     {path: 'login', component: LoginFormComponent},
+  //     {path: 'registration', component: RegistrationFormComponent},
   //     {path: 'book/:id', component: BookPageComponent}
   //   ]
   // },
