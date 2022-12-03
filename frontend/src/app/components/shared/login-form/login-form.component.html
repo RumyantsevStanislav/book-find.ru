@@ -6,14 +6,15 @@
   <div class="alert-info" *ngIf="message">
     {{message}}
   </div>
-  <div [ngClass]="{invalid: form.get('username')?.touched && form.get('username')?.invalid}">
+  <div [ngClass]="{invalid: form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.invalid}">
     <div>
-      <label for="username">Телефон или email</label>
-      <input id="username" type="text" formControlName="username">
-      <div *ngIf=" form.get('username')?.touched && form.get('username')?.invalid" class="validation">
-        <small *ngIf="form.get('username')?.errors?.required">Поле обязательно</small>
-        <!--        <small *ngIf="form.get('email')?.errors?.email">Это не email?</small>-->
-      </div>
+      <label for="phoneOrEmail">Телефон или email</label>
+      <input id="phoneOrEmail" type="text" formControlName="phoneOrEmail">
+      <small class="" *ngIf="form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.errors?.required">
+        Обязательно для заполнения</small>
+      <small class=""
+             *ngIf="form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.errors?.phoneOrEmail">
+        Некорректный телефон/email</small>
     </div>
   </div>
   <div [ngClass]="{invalid: form.get('password')?.touched && form.get('password')?.invalid}">

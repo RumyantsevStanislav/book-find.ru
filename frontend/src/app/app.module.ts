@@ -14,7 +14,8 @@ import {AuthService} from "./services/auth.service";
 import {AuthGuard} from "./services/auth.guard";
 import {RegistrationFormComponent} from './components/shared/registration-form/registration-form.component';
 import {RegistrationService} from "./services/registration.service";
-import {TokenInterceptorService} from "./services/interceptors/token-interceptor.service";
+import {TokenInterceptor} from "./services/interceptors/token.interceptor";
+import {ErrorInterceptor} from "./services/interceptors/error.interceptor";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {MatInputModule} from "@angular/material/input";
 import {MatTableModule} from "@angular/material/table";
@@ -71,7 +72,7 @@ import {AdminModule} from "./admin/admin.module";
   ],
   providers: [BookService, BookPageComponent, AuthService, AuthGuard, RegistrationService, {
     provide: HTTP_INTERCEPTORS,
-    useClass: TokenInterceptorService,
+    useClass: TokenInterceptor,
     multi: true,
   }],
   entryComponents: [SignModalComponent],

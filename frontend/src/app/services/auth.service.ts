@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {AuthResponse} from "../models/JWT";
 import {User} from "../models/User";
 import {Observable, Subject, throwError} from "rxjs";
@@ -7,7 +7,7 @@ import {catchError, tap} from "rxjs/operators";
 
 @Injectable()
 export class AuthService {
-  public error$: Subject<string> = new Subject<string>()
+  public error$: Subject<string> = new Subject<string>() //stream. subscribing example in login-form.component
 
   constructor(private http: HttpClient) {
   }
@@ -27,10 +27,11 @@ export class AuthService {
   }
 
   login(user: User): Observable<any> {
-    return this.http.post(`http://localhost:8189/book-find/auth`, user)
+    return this.http.post(`http://localhost:8189/book-find/api/v1/users/auth`, user)
       .pipe(
-        tap<any>(this.setToken),
-        catchError(this.handleError.bind(this))
+        tap<any>(this.setToken)
+        // ,
+        // catchError(this.handleError)
       )
   }
 
@@ -43,8 +44,18 @@ export class AuthService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    console.log(error)
-    this.error$.next(error.error.message)
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+      errorMessage = `Client Error: ${error.error.message}`;
+    } else {
+      // server-side error
+      errorMessage = `Service Error Code: ${error.status}\nMessage: ${error.error}`;
+      this.error$.next('Test')
+    }
+    return throwError(() => {
+      return error;
+    });
     // const {message} = error.error.error //it is from firebase
     // switch (message) {
     //   case 'EMAIL_NOT_FOUND':
@@ -57,13 +68,12 @@ export class AuthService {
     //     this.error$.next('Неверный пароль')
     //     break
     // }
-    return throwError(error)
   }
 
   private setToken(response: AuthResponse | null) {
     if (response) {
       console.log(response)
-      const expDate = new Date(new Date().getTime() + +response.expiresIn * 1000+3600000)
+      const expDate = new Date(new Date().getTime() + +response.expiresIn * 1000 + 3600000)
       localStorage.setItem('token', response.token)
       localStorage.setItem('token-exp', expDate.toString())
     } else {

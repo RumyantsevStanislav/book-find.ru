@@ -7,7 +7,7 @@ import {catchError} from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class TokenInterceptorService implements HttpInterceptor {
+export class TokenInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthService) {
   }
@@ -24,14 +24,15 @@ export class TokenInterceptorService implements HttpInterceptor {
         },
       });
     }
-    return next.handle(request).pipe(
-      catchError((err) => {
-        if (err.status === 401) {
-          this.authService.logout();
-        }
-        const error = err.error.message || err.statusText;
-        return throwError(error);
-      })
-    );
+    return next.handle(request)
+      .pipe(
+        catchError((err) => {
+          if (err.status === 401) {
+            this.authService.logout();
+          }
+          //const error = err.error.message || err.statusText;
+          return throwError(err);
+        })
+      );
   }
 }

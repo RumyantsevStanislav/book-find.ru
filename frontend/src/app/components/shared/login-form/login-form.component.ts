@@ -3,6 +3,9 @@ import {AuthService} from "../../../services/auth.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {User} from "../../../models/User";
+import {HttpErrorResponse} from "@angular/common/http";
+import {ApiError} from "../../../models/Response";
+import {phoneOrEmailValidator} from "../../PhoneOrEmailValidator";
 
 @Component({
   selector: 'app-login',
@@ -14,12 +17,13 @@ export class LoginFormComponent implements OnInit {
   form: FormGroup
   submitted = false
   message: string | undefined
+  apiError: ApiError | undefined
 
   constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute) {
     this.form = new FormGroup({
-      username: new FormControl(null, [
+      phoneOrEmail: new FormControl(null, [
         Validators.required,
-        Validators.email || Validators.pattern('[- +()0-9]+')
+        phoneOrEmailValidator(),
       ]),
       password: new FormControl(null, [
         Validators.required,
@@ -34,6 +38,7 @@ export class LoginFormComponent implements OnInit {
         this.message = 'Введите данные'
       }
     })
+    this.auth.error$.next("Test")
   }
 
   submit() {
@@ -42,16 +47,31 @@ export class LoginFormComponent implements OnInit {
     }
     this.submitted = true
     const user: User = {
-      username: this.form.value.username,
+      phoneOrEmail: this.form.value.phoneOrEmail,
       password: this.form.value.password,
     }
 
-    this.auth.login(user).subscribe(() => {
-      this.form.reset()
-      this.router.navigate(['', '/']).then(r => '/')
-      this.submitted = false
-    }, () => {
-      this.submitted = false
-    })
+    this.auth.login(user).subscribe({
+      next: (req) => {
+        this.form.reset()
+        this.router.navigate(['', '/']).then(r => '/')
+        this.submitted = false
+      },
+      error: (response: HttpErrorResponse) => {
+        let apiError: ApiError
+        this.apiError = response.error
+        if (this.apiError != undefined) {
+          this.message = this.apiError.messages[0]
+        }
+        this.submitted = false
+
+      },
+      complete: () => {
+        console.log('Complete')
+        // this.router.navigate(['', '/']).then(r => '/')
+        this.submitted = false
+
+      }
+    });
   }
 }
