@@ -1,4 +1,4 @@
-.nav-container {
+nav {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -9,9 +9,12 @@
   height: 100%; //50vh/vw - % высоты/ширины экрана
 }
 
-div.nav-item {
-  background-color: aquamarine;
+.nav-item {
 
+}
+
+.dropdown {
+  cursor: pointer;
 }
 
 .dropdown-menu {
@@ -24,14 +27,6 @@ div.nav-item {
   z-index: 1;
 }
 
-.nav-link:hover dropdown-menu {
+.dropdown-toggle:hover .dropdown-menu {
   display: block;
-}
-
-use {
-  fill: black;
-}
-
-use:hover {
-  fill: red;
 }

@@ -6,7 +6,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BookPageComponent} from "./components/book-page/book-page.component";
 import {AppRoutingModule} from "./app-routing.module";
 import {BookService} from "./services/books-service/books.service";
-import {MainMenuComponent} from './shared/main-menu/main-menu.component';
+import {NavigationComponent} from './components/shared/navigation/navigation.component';
 import {HomePageComponent} from './components/home-page/home-page.component';
 import {BookComponent} from "./shared/book/book.component";
 import {SharedModule} from "./shared/shared.module";
@@ -39,7 +39,7 @@ import {AdminModule} from "./admin/admin.module";
   declarations: [
     AppComponent,
     BookPageComponent,
-    MainMenuComponent,
+    NavigationComponent,
     HomePageComponent,
     BookComponent,
     RegistrationFormComponent,

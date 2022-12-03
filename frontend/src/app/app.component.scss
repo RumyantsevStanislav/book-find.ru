@@ -29,10 +29,10 @@
 app-header {
   grid-column: span 12;
   background-color: darkgray;
-  place-self: stretch stretch;
+  //place-self: stretch stretch;
 }
 
-nav {
+app-navigation {
   background: #a7ffeb;
   grid-column: span 12;
 }
