@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -69,10 +69,13 @@ public class UsersController {
 
     @PostMapping("/register")
     @Validated({Marker.OnCreate.class})
-    public ResponseEntity<ApiMessage> register(@Valid @RequestBody SystemUser systemUser, BindingResult bindingResult, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            throw new AttributeNotValidException("Ошибка валидации", bindingResult);
-        }
+    public ResponseEntity<ApiMessage> register(@Valid @RequestBody SystemUser systemUser, /*BindingResult bindingResult,*/ HttpServletRequest request) {
+        // TODO: 02.12.2022  if fields not valid - throws ConstraintViolationException.
+        //  Without @Validated(Marker.) and @Validated on class is possible to use BindingResult
+
+        //        if (bindingResult.hasErrors()) {
+        //            throw new AttributeNotValidException("Ошибка валидации", bindingResult);
+        //        }
         usersService.getUserByPhoneOrEmail(systemUser.getPhoneOrEmail()).ifPresent(u -> {
             throw new ElementAlreadyExistsException("Пользователь уже существует.");
         });
@@ -85,15 +88,15 @@ public class UsersController {
     // TODO: 17.11.2022 fix cross origin 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/auth")
-    public ResponseEntity<JwtResponse> createAuthToken(@RequestBody JwtRequest authRequest) throws Exception {
-        try {
-            authenticate(authRequest.getUsername(), authRequest.getPassword());
-        } catch (BadCredentialsException ex) {
-            //return new ResponseEntity<>(new InfoResponse("Incorrect username or password"), HttpStatus.UNAUTHORIZED);
-        }
-
-        UserDetails userDetails = usersService.loadUserByUsername(authRequest.getUsername());
-
+    @Validated({Marker.OnCreate.class})
+    public ResponseEntity<JwtResponse> createAuthToken(@Valid @RequestBody JwtRequest authRequest/*, BindingResult bindingResult*/) {
+        //        if (bindingResult.hasErrors()) {
+        //            throw new AttributeNotValidException("Ошибка валидации", bindingResult);
+        //        }
+        Authentication authentication = authenticate(authRequest.getPhoneOrEmail(), authRequest.getPassword());
+        //} catch (BadCredentialsException badCredentialsException) {
+        // TODO: 01.12.2022 fix double loadUserByUsername in this method
+        UserDetails userDetails = usersService.loadUserByUsername(authRequest.getPhoneOrEmail());
         String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }
@@ -184,7 +187,7 @@ public class UsersController {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found")); //WTF?
 
         if (!usersService.isValidOldPassword(user, oldPassword)) {
-            // TODO: 17.11.2022 confugure exception handling 
+            // TODO: 17.11.2022 configure exception handling
             //throw new InvalidOldPasswordException();
             return new GenericResponse("Invalid old password");
         }
@@ -213,8 +216,8 @@ public class UsersController {
     }
 
 
-    private void authenticate(String username, String password) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+    private Authentication authenticate(String username, String password) {
+        return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 
 }

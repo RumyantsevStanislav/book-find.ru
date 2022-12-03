@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-@FieldMatch(first = "password", second = "matchingPassword", message = "Пароли не совпадают")
+@FieldMatch(groups = Marker.OnCreate.class, first = "password", second = "matchingPassword", message = "Пароли не совпадают")
 public class SystemUser {
     @NotBlank(groups = Marker.OnCreate.class, message = "Поле 'Телефон или email' обязательно")
     @PhoneOrEmail(groups = Marker.OnCreate.class, message = "Некорректный телефон/email")

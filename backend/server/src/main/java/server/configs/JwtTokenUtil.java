@@ -46,7 +46,7 @@ public record JwtTokenUtil(String secret) {
         List<String> rolesList = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-        //Можно ещё добавить полезную информацию о клиентеб если есть.
+        //Можно ещё добавить полезную информацию о клиенте, если есть.
         claims.put("username", userDetails.getUsername());
         claims.put("role", rolesList);
         return doGenerateToken(claims, userDetails.getUsername());

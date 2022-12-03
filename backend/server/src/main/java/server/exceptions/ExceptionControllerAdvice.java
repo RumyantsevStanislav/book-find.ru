@@ -4,16 +4,20 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import server.entities.dtos.ApiError;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 @Slf4j
-public class ExceptionControllerAdvice {
+public class ExceptionControllerAdvice implements WebMvcConfigurer {
     @ExceptionHandler
     public ResponseEntity<Error> handleJwtExpired(ExpiredJwtException exception) {
         log.error("JWT Token expired");
@@ -32,6 +36,23 @@ public class ExceptionControllerAdvice {
         log.info("Trying to save/modify an element with not valid fields.");
         final ApiError apiError = new ApiError(exception.getBindingResult().getFieldErrors().stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.toList()));
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({BadCredentialsException.class})
+    public ResponseEntity<ApiError> handleBadCredentialsException(final BadCredentialsException exception, final WebRequest request) {
+        log.info("Trying to authorize with invalid username or password.");
+        final ApiError apiError = new ApiError(exception.getLocalizedMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({ConstraintViolationException.class})
+    public ResponseEntity<ApiError> handleConstraintViolationExceptionException(final ConstraintViolationException exception, final WebRequest request) {
+        log.info("Trying to save/modify an element with not valid fields.");
+        /*error.getPropertyPath() + ": " + */
+        final ApiError apiError = new ApiError(exception.getConstraintViolations().stream()
+                .map(ConstraintViolation::getMessageTemplate)
                 .collect(Collectors.toList()));
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
