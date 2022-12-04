@@ -5,27 +5,22 @@
       <use xlink:href="../assets/images/icons/persons.svg#person"/>
     </svg>
   </a>
-  <div class="dropdown" *ngIf="isToggle">
-    <div class="dropdown-item">Enter</div>
-    <div class="dropdown-item">Register</div>
-  </div>
 </div>
 
-<div class="header-personal-item" *ngIf="auth.isAuthenticated()" routerLinkActive="active" clickOutside
-     (clickOutside)="clickOutside()">
-  <div class="sign-toggle" (mouseover)="toggle()" (mouseout)="toggle()">
-    <a class="nav-link" [routerLink]="['/', 'login']">
+<div class="header-personal-item dropdown" *ngIf="auth.isAuthenticated()" routerLinkActive="active">
+  <div class="dropdown-toggle">
+    <a class="nav-link">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi bi-person" viewBox="0 0 16 16">
         <use xlink:href="../assets/images/icons/persons.svg#person-fill"/>
       </svg>
     </a>
-  </div>
-  <div class="dropdown" *ngIf="isToggle">
-    <ul>
-      <li><a class="nav-link" href="#">Профиль</a></li>
-      <li><a class="nav-link" href="#">Моя библиотека</a></li>
-      <li><a class="nav-link" href="#" (click)="logout($event)">Выйти</a></li>
-    </ul>
+    <div class="dropdown-menu">
+      <ul>
+        <li><a class="nav-link" href="#">Профиль</a></li>
+        <li><a class="nav-link" href="#">Моя библиотека</a></li>
+        <li><a class="nav-link" href="#" (click)="logout($event)">Выйти</a></li>
+      </ul>
+    </div>
   </div>
 </div>
 

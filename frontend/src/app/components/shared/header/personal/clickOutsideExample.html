@@ -1,0 +1,17 @@
+<div class="header-personal-item dropdown" *ngIf="auth.isAuthenticated()" routerLinkActive="active" clickOutside
+     (clickOutside)="clickOutside()">
+  <div class="dropdown-toggle" (click)="toggle()">
+    <a class="nav-link" [routerLink]="['/', 'login']">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi bi-person" viewBox="0 0 16 16">
+        <use xlink:href="../assets/images/icons/persons.svg#person-fill"/>
+      </svg>
+    </a>
+  </div>
+  <div class="dropdown-menu" *ngIf="isToggle">
+    <ul>
+      <li><a class="nav-link" href="#">Профиль</a></li>
+      <li><a class="nav-link" href="#">Моя библиотека</a></li>
+      <li><a class="nav-link" href="#" (click)="logout($event)">Выйти</a></li>
+    </ul>
+  </div>
+</div>

@@ -29,3 +29,11 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.dropdown {
+  cursor: pointer;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
