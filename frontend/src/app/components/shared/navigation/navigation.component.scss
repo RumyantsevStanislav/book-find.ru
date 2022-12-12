@@ -5,7 +5,7 @@ nav {
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  background-color: antiquewhite;
+  background-color: #1C2633;
   //width: 100%; - плохо для разных разрешений экрана.
   //max-width: 1200px;
   height: 100%; //50vh/vw - % высоты/ширины экрана
@@ -13,17 +13,20 @@ nav {
 
 .nav-item {
   position: relative;
+  color: white;
+  cursor: pointer;
+  font-size: 1.25rem;
 }
 
 .dropdown-menu {
   @include dropdown-menu();
   animation-name: dropdown-animate;
-  animation-duration: 0.8s;
+  animation-duration: 0.3s;
 }
 
 @keyframes dropdown-animate {
   from {
-    top: 300px;
+    top: 50px;
   }
   to {
     top: 1em;
