@@ -26,9 +26,25 @@
   //}
 }
 
+@media (max-width: 1200px) {
+
+}
+
+@media (max-width: 992px) { //старый монитор 1024
+
+}
+
+@media (max-width: 767px) { //планшет
+
+}
+
+@media (max-width: 500px) { //планшет
+
+}
+
 app-header {
   grid-column: span 12;
-  background-color: darkgray;
+  background-color: #232F3E;
   //place-self: stretch stretch;
 }
 
@@ -45,7 +61,6 @@ aside {
 }
 
 main {
-  background: #84ffff;
   grid-column: 3 / span 10;
   grid-row-start: 3;
 }

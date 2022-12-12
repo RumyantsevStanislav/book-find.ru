@@ -13,7 +13,7 @@ import {phoneOrEmailValidator} from "../../PhoneOrEmailValidator";
   styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent implements OnInit {
-
+//TODO figure out css styles
   form: FormGroup
   submitted = false
   message: string | undefined
@@ -27,7 +27,7 @@ export class LoginFormComponent implements OnInit {
       ]),
       password: new FormControl(null, [
         Validators.required,
-        Validators.minLength(3)
+        Validators.minLength(8)
       ])
     })
   }
@@ -63,6 +63,7 @@ export class LoginFormComponent implements OnInit {
         if (this.apiError != undefined) {
           this.message = this.apiError.messages[0]
         }
+        this.form.get('password')?.reset()
         this.submitted = false
 
       },

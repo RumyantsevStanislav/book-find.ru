@@ -35,7 +35,7 @@ export class PersonalComponent implements OnInit {
 
   showSignModal() {
     const signModalComponent = this.viewContainerRef.createComponent(SignModalComponent);
-    signModalComponent.instance.title = 'Dynamic title'
+    signModalComponent.instance.title = 'Войти'
     signModalComponent.instance.close.subscribe(() => {
       signModalComponent.destroy()
     })

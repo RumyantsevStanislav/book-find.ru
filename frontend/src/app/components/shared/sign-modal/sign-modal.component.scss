@@ -7,13 +7,71 @@
   background: rgba(0, 0, 0, .3);
 }
 
-.modal {
-  //m0-auto
-  padding: 1rem;
+.sign-modal-container {
+  padding: 15px;
   background: #fff;
   margin-top: 3rem;
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  width: 40%;
+  height: 40%;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.sign-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.sign-modal-form {
+
+}
+
+.sign-modal-close {
+  cursor: pointer;
+  font-size: 1.5em;
+  width: 2em;
+  height: 2em;
+
+  use {
+    fill: black;
+  }
+}
+
+.sign-modal-tools {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 1.5em;
+
+  input {
+    width: 1.5em;
+    height: 1.5em;
+    margin-right: 1em;
+  }
+
+  label {
+  }
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.sign-modal-close:hover use {
+  fill: red;
+}
+
+.sign-modal-toggle-type {
+  justify-self: stretch;
 }

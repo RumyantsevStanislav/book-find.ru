@@ -1,0 +1,57 @@
+@import "../../../../../vars";
+
+.search-container {
+
+}
+
+.search-form {
+
+}
+
+.search-items {
+  display: flex;
+}
+
+.input-area {
+  height: 3em;
+  padding-left: 1em;
+  vertical-align: center;
+  width: 20em;
+  border-radius: 5px 0 0 5px;
+}
+
+.input-area::placeholder {
+  color: #212529;
+  opacity: 0.4;
+}
+
+.input-area:focus {
+  color: #212529;
+  background-color: #fff;
+  outline: 0;
+}
+
+.search-button {
+  background-color: $brand-color;
+  width: 3em;
+  height: 3em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 5px 5px 0;
+  transition: opacity 0.15s ease-in-out;
+
+  .search-icon {
+    width: 50%;
+    height: 50%;
+  }
+}
+
+.search-button:hover {
+  opacity: 0.5;
+}
+
+use {
+  fill: white;
+}

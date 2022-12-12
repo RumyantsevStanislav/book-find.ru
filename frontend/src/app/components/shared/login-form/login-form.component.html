@@ -1,35 +1,61 @@
-<form class="login" [formGroup]="form" (ngSubmit)="submit()">
-  <h2>Войти</h2>
-  <div class="alert alert-danger" *ngIf="auth.error$ | async as error">
-    {{error}}
-  </div>
-  <div class="alert-info" *ngIf="message">
-    {{message}}
-  </div>
-  <div [ngClass]="{invalid: form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.invalid}">
-    <div>
-      <label for="phoneOrEmail">Телефон или email</label>
-      <input id="phoneOrEmail" type="text" formControlName="phoneOrEmail">
-      <small class="" *ngIf="form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.errors?.required">
-        Обязательно для заполнения</small>
-      <small class=""
-             *ngIf="form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.errors?.phoneOrEmail">
-        Некорректный телефон/email</small>
+<div class="login-form-container">
+  <form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="alert alert-danger" *ngIf="auth.error$ | async as error">
+      {{error}}
     </div>
-  </div>
-  <div [ngClass]="{invalid: form.get('password')?.touched && form.get('password')?.invalid}">
-    <div>
-      <label for="password">Password</label>
-      <input id="password" type="password" formControlName="password">
-      <div class="validation" *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
-        <div>
-          <small *ngIf="form.get('password')?.errors?.required">Введите пароль</small>
-          <small *ngIf="form.get('password')?.errors?.minlength">
-            Пароль должен быть не менее {{form.get('password')?.errors?.minlength?.requiredLength}},
-            сейчас он {{form.get('password')?.errors?.minlength?.actualLength}}</small>
-        </div>
+    <div class="alert alert-info" *ngIf="message">
+      {{message}}
+    </div>
+    <div class="text-field__wrapper">
+      <div class="text-field text-field_floating-2">
+        <input class="text-field__input" id="phoneOrEmail" type="text"
+               [ngClass]="{'text-field__input_invalid': form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.invalid,
+               'text-field__input_valid': form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.valid}"
+               formControlName="phoneOrEmail"
+               placeholder="Телефон или email">
+        <label class="text-field__label" for="phoneOrEmail">Телефон или email</label>
+      </div>
+      <div class="text-field__message"
+           [ngClass]="{'text-field__message_invalid': form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.invalid}"
+           *ngIf="form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.errors?.phoneOrEmail">
+        Некорректный телефон/email
+      </div>
+      <div class="text-field__message"
+           [ngClass]="{'text-field__message_invalid': form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.invalid}"
+           *ngIf="form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.errors?.required">
+        Обязательно для заполнения
+      </div>
+      <div class="text-field__message"
+           [ngClass]="{'text-field__message_valid': form.get('phoneOrEmail')?.touched && form.get('phoneOrEmail')?.valid}"
+           *ngIf="form.get('phoneOrEmail')?.touched && !form.get('phoneOrEmail')?.errors?.required && !form.get('phoneOrEmail')?.errors?.phoneOrEmail">
+        Отлично!
       </div>
     </div>
-  </div>
-  <button type="submit" [disabled]="form.invalid || submitted">Войти</button>
-</form>
+    <div class="text-field__wrapper">
+      <div class="text-field text-field_floating-2">
+        <input class="text-field__input text-field__input_valid" id="password" type="password"
+               [ngClass]="{'text-field__input_invalid': form.get('password')?.touched && form.get('password')?.invalid,
+               'text-field__input_valid': form.get('password')?.touched && form.get('password')?.valid}"
+               formControlName="password"
+               placeholder="Пароль">
+        <label class="text-field__label" for="password">Пароль</label>
+      </div>
+      <div class="text-field__message"
+           [ngClass]="{'text-field__message_invalid': form.get('password')?.touched && form.get('password')?.invalid}"
+           *ngIf="form.get('password')?.errors?.required">Введите пароль
+      </div>
+      <div class="text-field__message"
+           [ngClass]="{'text-field__message_invalid': form.get('password')?.touched && form.get('password')?.invalid}"
+           *ngIf="form.get('password')?.errors?.minlength">
+        {{form.get('password')?.errors?.minlength?.actualLength}}
+        /{{form.get('password')?.errors?.minlength?.requiredLength}}
+      </div>
+      <div class="text-field__message"
+           [ngClass]="{'text-field__message_valid': form.get('password')?.touched && form.get('password')?.valid}"
+           *ngIf="form.get('password')?.touched && !form.get('password')?.errors?.required && !form.get('password')?.errors?.password">
+        Отлично!
+      </div>
+    </div>
+    <button class="sign-in-btn" type="submit" [disabled]="form.invalid || submitted">Войти</button>
+  </form>
+</div>

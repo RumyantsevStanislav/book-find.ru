@@ -12,6 +12,7 @@ export class SignModalComponent implements OnInit {
 
   isSignIn = true;
   isSignUp = false;
+  buttonText = "Регистрация"
 
   constructor() {
   }
@@ -22,6 +23,8 @@ export class SignModalComponent implements OnInit {
   toggleSignType() {
     this.isSignIn = !this.isSignIn
     this.isSignUp = !this.isSignUp
+    this.title = this.isSignIn ? "Войти" : "Регистрация"
+    this.buttonText = this.isSignIn ? "Регистрация" : "Войти"
   }
 
   clickOutsideSignModal() {

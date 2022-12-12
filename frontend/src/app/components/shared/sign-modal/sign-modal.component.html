@@ -1,16 +1,34 @@
 <div class="backdrop"></div>
 
-<div class="modal">
-  <nav class="navbar">
+<div class="sign-modal-container">
+  <div class="sign-modal-header">
     <h1>{{title}}</h1>
-  </nav>
-  <div *ngIf="isSignIn">
+    <div class="sign-modal-close" (click)="close.emit()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x" viewBox="0 0 16 16">
+        <use xlink:href="../assets/images/icons/navigation.svg#x"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="sign-modal-form" *ngIf="isSignIn">
     <app-login></app-login>
-    <a href="#" (click)="toggleSignType()">Регистрация</a>
   </div>
-  <div *ngIf="isSignUp">
+
+  <div class="sign-modal-form" *ngIf="isSignUp">
     <app-registration></app-registration>
-    <a href="#" (click)="toggleSignType()">Войти</a>
   </div>
-  <button class="btn" (click)="close.emit()">Close</button>
+
+  <div class="sign-modal-tools">
+    <div class="remember">
+      <input type="checkbox" id="remember-me">
+      <label for="remember-me">Запомнить меня</label>
+    </div>
+    <a href="#">Забыли пароль?</a>
+  </div>
+
+  <div class="sign-modal-toggle-type">
+    <a href="#"><h1 (click)="toggleSignType()">{{buttonText}}</h1></a>
+  </div>
+
+
 </div>

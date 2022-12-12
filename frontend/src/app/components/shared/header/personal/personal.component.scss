@@ -3,13 +3,43 @@
 //.nav-link:hover dropdown-menu {
 //  display: block;
 //}
+.personal-container {
 
-use {
-  fill: black;
 }
 
-a:hover use {
-  fill: red;
+.personal-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.personal-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.person-icon {
+  width: 3em;
+  height: 3em;
+}
+
+.person-label {
+  color: lightgray;
+}
+
+use {
+  fill: lightgray;
+}
+
+.personal-item:hover {
+  use {
+    fill: white;
+  }
+
+  .person-label {
+    color: white;
+  }
 }
 
 .dropdown-menu {
