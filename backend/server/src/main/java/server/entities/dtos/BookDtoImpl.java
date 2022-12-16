@@ -7,12 +7,14 @@ public class BookDtoImpl implements BookDto {
     private final String title;
     private final Set<AuthorDto> authorDtoSet;
     private final CoverDtoImpl coverDto;
+    private final Float estimation;
 
-    public BookDtoImpl(Long isbn, String title, Set<AuthorDto> authorDtoSet, CoverDtoImpl coverDtoImpl) {
+    public BookDtoImpl(Long isbn, String title, Set<AuthorDto> authorDtoSet, CoverDtoImpl coverDtoImpl, Float estimation) {
         this.isbn = isbn;
         this.title = title;
         this.authorDtoSet = authorDtoSet;
         this.coverDto = coverDtoImpl;
+        this.estimation = estimation;
     }
 
     @Override
@@ -33,5 +35,10 @@ public class BookDtoImpl implements BookDto {
     @Override
     public CoverDtoImpl getCover() {
         return coverDto;
+    }
+
+    @Override
+    public Float getEstimation() {
+        return estimation;
     }
 }

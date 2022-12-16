@@ -34,6 +34,7 @@ import {LogoComponent} from './components/shared/header/logo/logo.component';
 import {SearchComponent} from './components/shared/header/search/search.component';
 import {PersonalComponent} from './components/shared/header/personal/personal.component';
 import {AdminModule} from "./admin/admin.module";
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import {AdminModule} from "./admin/admin.module";
     NgMaterialModule,
     BrowserAnimationsModule,
     AdminModule,
+    NgxPaginationModule
   ],
   providers: [BookService, BookPageComponent, AuthService, AuthGuard, RegistrationService, {
     provide: HTTP_INTERCEPTORS,

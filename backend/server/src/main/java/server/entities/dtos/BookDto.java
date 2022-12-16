@@ -15,4 +15,6 @@ public interface BookDto {
     Set<AuthorDto> getAuthors();
 
     CoverDto getCover();
+
+    Float getEstimation();
 }

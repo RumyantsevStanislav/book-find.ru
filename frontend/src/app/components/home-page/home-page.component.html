@@ -9,34 +9,29 @@
             <option *ngFor="let size of sizes" [ngValue]="size.id">{{size.value}}</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Название</label>
-          <!--          <input type="text" class="form-control" [(ngModel)]="size" name="size" #size="ngModel">-->
-        </div>
         <button class="btn" type="submit">Искать</button>
       </form>
 
-      <div *ngIf="booksPage !== undefined && !booksPage.empty; else notFoundBlock">
-        <div class="row row-cols-1 row-cols-md-3 g-4" *ngFor="let book of booksPage.content">
-          <div class="col">
-            <div class="card h-100">
-              <img class="card-img-top" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
-                   alt="{{book.title}}">
-              <div class="card-body">
-                <h5 class="card-title">{{book.title}}</h5>
-                <p class="card-text"></p>
-                <span>{{book.isbn}}</span>
-                <div class="authors" *ngFor="let author of book.authors">
-                  <small>{{author.role}}: {{author.name}}</small>
-                </div>
-              </div>
-              <div class="card-footer">
-                <small><a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a></small>
-                <!--            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>-->
-              </div>
-              <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
-            </div>
+      <div class="books-container" *ngIf="booksPage !== undefined && !booksPage.empty; else notFoundBlock">
+        <div class="book-card" *ngFor="let book of booksPage.content |
+        paginate: {
+        itemsPerPage: pageSize,
+        currentPage: page,
+        totalItems: count}">
+          <img class="book-card-img" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
+               alt="{{book.title}}">
+          <div class="book-card-estimation">{{book.estimation | number:'1.1'}}</div>
+          <div class="book-card-title">{{book.title}}</div>
+          <!--            <p class="card-text"></p>-->
+          <!--            <span>{{book.isbn}}</span>-->
+          <!--            <div class="authors" *ngFor="let author of book.authors">-->
+          <!--              <small>{{author.role}}: {{author.name}}</small>-->
+          <!--            </div>-->
+          <div class="card-footer">
+            <a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a>
+            <!--            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>-->
           </div>
+          <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
         </div>
       </div>
     </div>

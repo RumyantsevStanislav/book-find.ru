@@ -1,5 +1,5 @@
 export interface Page<Type> {
-  content: Set<Type>
+  content: Type[]
   pageable: Pageable
   last: boolean
   totalElements: number

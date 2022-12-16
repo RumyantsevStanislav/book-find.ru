@@ -7,6 +7,7 @@ public class ToDo {
     // TODO: 17.11.2022 update and clean pom.xml
     // TODO: 17.11.2022 optimize queries count
     // TODO: 17.11.2022 split project on microservices
-    // TODO: 03.12.2022 blocking login after 3 times failing 
+    // TODO: 03.12.2022 blocking login after 3 times failing
+    // TODO: 16.12.2022 parse estimations count from labirint 
 }
 

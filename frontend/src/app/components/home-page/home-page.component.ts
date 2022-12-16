@@ -15,8 +15,12 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class HomePageComponent implements OnInit {
   searchForm: FormGroup = new FormGroup({size: new FormControl('')});
+  page = 1;
+  count = 0;
+  pageSize = 5;
+  pageSizes = [3, 6, 9];
 
-  sizes = [{id: "1", value: 1}, {id: "2", value: 2}]
+  sizes = [{id: "1", value: 1}, {id: "2", value: 2}, {id: "3", value: 3}, {id: "4", value: 4}, {id: "5", value: 5}]
 
   public personalBook: PersonalBook = new PersonalBook(0, '', 0, '');
   booksPage: Page<Book> | undefined;
@@ -28,7 +32,7 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
-      size: new FormControl("2"),
+      size: new FormControl("5"),
     })
     let params = new HttpParams().set("s", this.searchForm.get("size")?.value);
     this.getBooks(params)
@@ -42,6 +46,10 @@ export class HomePageComponent implements OnInit {
     this.getBooks(params)
   }
 
+  /**
+   *
+   * @param params
+   */
   getBooks(params?: HttpParams): void {
     this.loading = true;
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')

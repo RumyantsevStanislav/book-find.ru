@@ -4,6 +4,7 @@ export interface Book {
   //id?: number
   authors: Set<Author>
   cover: Cover
+  estimation: number
 }
 
 export interface Cover {
