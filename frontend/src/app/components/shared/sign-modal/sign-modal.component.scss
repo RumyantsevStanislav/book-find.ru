@@ -1,3 +1,5 @@
+@import "../../../../vars";
+
 .backdrop {
   position: fixed;
   top: 0;
@@ -73,5 +75,12 @@
 }
 
 .sign-modal-toggle-type {
+  cursor: pointer;
+  width: 100%;
+  height: calc(3.25em + 2px);
+  color: white;
+  background-color: $brand-color;
+  border: 1px solid #bdbdbd;
+  border-radius: 0.25em;
   justify-self: stretch;
 }

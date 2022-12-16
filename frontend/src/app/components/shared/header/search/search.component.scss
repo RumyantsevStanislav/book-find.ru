@@ -10,14 +10,16 @@
 
 .search-items {
   display: flex;
+  align-items: center;
+  justify-items: stretch;
 }
 
 .input-area {
   height: 3em;
   padding-left: 1em;
-  vertical-align: center;
   width: 20em;
   border-radius: 5px 0 0 5px;
+  flex-grow: 1;
 }
 
 .input-area::placeholder {
