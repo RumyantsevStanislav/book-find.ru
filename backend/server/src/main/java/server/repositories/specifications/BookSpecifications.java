@@ -4,6 +4,7 @@ import org.springframework.data.jpa.domain.Specification;
 import server.entities.Book;
 import server.entities.Category;
 
+// TODO: 24.12.2022 optimize methods -> root.get("parameter")
 public class BookSpecifications {
     public static Specification<Book> priceGreaterOrEqualsThen(int minPrice) {
         return (Specification<Book>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice);
@@ -13,8 +14,25 @@ public class BookSpecifications {
         return (Specification<Book>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice);
     }
 
+    // TODO: 24.12.2022 figure out with criteriaQuery
     public static Specification<Book> titleLike(String title) {
-        return (Specification<Book>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("title"), String.format("%%%s%%", title));
+        return (Specification<Book>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.upper(root.get("title")), String.format("%%%s%%", title).toUpperCase());
+    }
+
+    public static Specification<Book> estimationGreaterOrEqualsThen(int minEstimation) {
+        return (Specification<Book>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("estimation"), minEstimation);
+    }
+
+    public static Specification<Book> estimationLesserOrEqualsThen(int maxEstimation) {
+        return (Specification<Book>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("estimation"), maxEstimation);
+    }
+
+    public static Specification<Book> yearGreaterOrEqualsThen(int minYear) {
+        return (Specification<Book>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("year"), minYear);
+    }
+
+    public static Specification<Book> yearLesserOrEqualsThen(int maxYear) {
+        return (Specification<Book>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("year"), maxYear);
     }
 
     public static Specification<Book> categoryIs(Category category) {

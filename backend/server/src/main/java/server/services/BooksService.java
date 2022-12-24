@@ -45,6 +45,7 @@ public class BooksService {
     }
 
     public Page<BookDtoImpl> getPageDto(Specification<Book> spec, int page, int size) {
+        //// TODO: 24.12.2022 cast to Page<BookDto_2> (because it is not the same as BookDto)
         Page<Book> bookPage = booksRepository.findAll(spec, PageRequest.of(page, size));
         return bookPage.map(BookMapper.BOOK_MAPPER::toDto);
     }
