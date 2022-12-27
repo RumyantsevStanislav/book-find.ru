@@ -1,46 +1,11 @@
-<main>
-  <div class='books'>
-    <div *ngIf="!loading; else loadingBlock">
-
-      <form [formGroup]="searchForm" (ngSubmit)="search()" class="child shadowBorder p-4">
-        <div class="form-group">
-          <label>Элементов на странице</label>
-          <select formControlName="size">
-            <option *ngFor="let size of sizes" [ngValue]="size.id">{{size.value}}</option>
-          </select>
-        </div>
-        <button class="btn" type="submit">Искать</button>
-      </form>
-
-      <div class="books-container" *ngIf="booksPage !== undefined && !booksPage.empty; else notFoundBlock">
-        <div class="book-card" *ngFor="let book of booksPage.content |
-        paginate: {
-        itemsPerPage: pageSize,
-        currentPage: page,
-        totalItems: count}">
-          <img class="book-card-img" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
-               alt="{{book.title}}">
-          <div class="book-card-estimation">{{book.estimation | number:'1.1'}}</div>
-          <div class="book-card-title">{{book.title}}</div>
-          <!--            <p class="card-text"></p>-->
-          <!--            <span>{{book.isbn}}</span>-->
-          <!--            <div class="authors" *ngFor="let author of book.authors">-->
-          <!--              <small>{{author.role}}: {{author.name}}</small>-->
-          <!--            </div>-->
-          <div class="card-footer">
-            <a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a>
-            <!--            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>-->
-          </div>
-          <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
-        </div>
-      </div>
-    </div>
-    <ng-template #loadingBlock>
-      <p>Loading...</p>
-    </ng-template>
-    <ng-template #notFoundBlock>
-      <p>По Вашему запросу ничего не найдено</p>
-    </ng-template>
+<form [formGroup]="searchForm" (ngSubmit)="search()" class="child shadowBorder p-4">
+  <div class="form-group">
+    <label>Элементов на странице</label>
+    <select formControlName="size">
+      <option *ngFor="let size of sizes" [ngValue]="size.id">{{size.value}}</option>
+    </select>
   </div>
-</main>
+  <button class="btn" type="submit">Искать</button>
+</form>
+<app-books-slider *ngFor="let filter of filters" [filter]=filter></app-books-slider>
 

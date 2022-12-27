@@ -1,0 +1,35 @@
+<div class="books-slider-wrapper" *ngIf="!loading; else loadingBlock">
+  <div class="info-popup" *ngIf="infoPopup">Пожалуйста, зарегистрируйтесь!</div>
+  <div class="books-slider-header">
+    <h2>{{filter?.header}}</h2>
+    <h3>{{filter?.showAll}}</h3>
+  </div>
+  <div class="books-container" *ngIf="booksPage !== undefined && !booksPage.empty; else notFoundBlock">
+    <div class="book-card" *ngFor="let book of booksPage.content |
+        paginate: {
+        itemsPerPage: pageSize,
+        currentPage: page,
+        totalItems: count}">
+      <img class="book-card-img" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
+           alt="{{book.title}}">
+      <div class="book-card-estimation">{{book.estimation | number:'1.1'}}</div>
+      <div class="book-card-title">{{book.title}}</div>
+      <!--            <p class="card-text"></p>-->
+      <!--            <span>{{book.isbn}}</span>-->
+      <!--            <div class="authors" *ngFor="let author of book.authors">-->
+      <!--              <small>{{author.role}}: {{author.name}}</small>-->
+      <!--            </div>-->
+      <div class="card-footer">
+        <a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a>
+        <!--            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>-->
+      </div>
+      <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
+    </div>
+  </div>
+</div>
+<ng-template #loadingBlock>
+  <p>Loading...</p>
+</ng-template>
+<ng-template #notFoundBlock>
+  <p>По Вашему запросу ничего не найдено</p>
+</ng-template>

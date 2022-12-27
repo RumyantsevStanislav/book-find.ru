@@ -5,11 +5,12 @@ import {NavigationComponent} from "./components/shared/navigation/navigation.com
 import {HomePageComponent} from "./components/home-page/home-page.component";
 import {LoginFormComponent} from "./components/shared/login-form/login-form.component";
 import {RegistrationFormComponent} from "./components/shared/registration-form/registration-form.component";
+import {SignModalComponent} from "./components/shared/sign-modal/sign-modal.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/', pathMatch: 'full'},
   {path: '', component: HomePageComponent},
-  {path: 'login', component: LoginFormComponent},
+  {path: 'login', component: SignModalComponent},
   {path: 'registration', component: RegistrationFormComponent},
   {path: 'book/:id', component: BookPageComponent},
   // {

@@ -7,6 +7,7 @@ import {PersonalBook} from "../../models/PersonalBook";
 import {HttpHeaders, HttpParams} from "@angular/common/http";
 import {Page} from "../../models/Page";
 import {FormControl, FormGroup} from "@angular/forms";
+import {Filter, singleParamName} from "../../models/Filter";
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,8 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class HomePageComponent implements OnInit {
   searchForm: FormGroup = new FormGroup({size: new FormControl('')});
+
+  filters: Filter[] | undefined;
   page = 1;
   count = 0;
   pageSize = 5;
@@ -31,11 +34,29 @@ export class HomePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let filterBest = new class implements Filter {
+      singleParams: Map<singleParamName, string> = new Map<singleParamName, string>()
+        .set(singleParamName.MIN_ESTIMATION, String(5))
+        .set(singleParamName.PAGE_SIZE, String(5));
+      //categories: string[] = ["Категория1", "Категория2"];
+      header: string = "Высокий рейтинг";
+      showAll: string = "Смотреть все"
+    }
+    let filterNew = new class implements Filter {
+      singleParams: Map<singleParamName, string> = new Map<singleParamName, string>()
+        .set(singleParamName.MIN_RELEASE_DATE, String(2021))
+        .set(singleParamName.PAGE_SIZE, String(5));
+      //categories: string[] = ["Категория1", "Категория2"];
+      header: string = "Новинки";
+      showAll: string = "Все новинки"
+    }
+    this.filters = [filterBest, filterNew]
+
     this.searchForm = new FormGroup({
       size: new FormControl("5"),
     })
     let params = new HttpParams().set("s", this.searchForm.get("size")?.value);
-    this.getBooks(params)
+    //this.getBooks(params)
   }
 
   search(): void {
@@ -62,14 +83,4 @@ export class HomePageComponent implements OnInit {
       // });
     })
   }
-
-  addToLibrary(isbn: number) {
-    this.personalBook.status = "Прочитано"
-    this.personalBook.isbn = isbn
-    this.personalBooksService.addToLibrary(this.personalBook).subscribe((req) => {
-      console.log(req)
-      this.router.navigate(['', '/']).then(r => '/')
-    }, error => console.log(error));
-  }
-
 }

@@ -35,6 +35,7 @@ import {SearchComponent} from './components/shared/header/search/search.componen
 import {PersonalComponent} from './components/shared/header/personal/personal.component';
 import {AdminModule} from "./admin/admin.module";
 import {NgxPaginationModule} from 'ngx-pagination';
+import { BooksSliderComponent } from './components/home-page/books-slider/books-slider.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
     SidebarComponent,
     LogoComponent,
     SearchComponent,
-    PersonalComponent
+    PersonalComponent,
+    BooksSliderComponent
   ],
   imports: [
     BrowserModule,
