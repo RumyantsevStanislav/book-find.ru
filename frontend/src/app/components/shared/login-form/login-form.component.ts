@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {AuthService} from "../../../services/auth.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Params, Router} from "@angular/router";
@@ -6,6 +6,7 @@ import {User} from "../../../models/User";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ApiError} from "../../../models/Response";
 import {phoneOrEmailValidator} from "../../PhoneOrEmailValidator";
+import {SignModalDirective} from "../../../sign-modal.directive";
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginFormComponent implements OnInit {
 //TODO figure out css styles
   form: FormGroup
   submitted = false
+  @Output() isSuccess = new EventEmitter<void>()
   message: string | undefined
   apiError: ApiError | undefined
 
@@ -54,6 +56,7 @@ export class LoginFormComponent implements OnInit {
     this.auth.login(user).subscribe({
       next: (req) => {
         this.form.reset()
+        this.isSuccess.emit()
         this.router.navigate(['', '/']).then(r => '/')
         this.submitted = false
       },

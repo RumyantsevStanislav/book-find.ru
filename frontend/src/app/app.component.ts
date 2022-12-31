@@ -23,14 +23,6 @@ export class AppComponent implements OnInit {
 
   }
 
-  showSignModal() {
-    const signModalComponent = this.viewContainerRef.createComponent(SignModalComponent);
-    signModalComponent.instance.title = 'Dynamic title'
-    signModalComponent.instance.close.subscribe(() => {
-      signModalComponent.destroy()
-    })
-  }
-
   openDialog() {
     const dialogRef = this.dialog.open(MatBasicComponent);
     dialogRef.afterClosed().subscribe(result => {

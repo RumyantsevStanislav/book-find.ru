@@ -27,7 +27,7 @@ export class SignModalComponent implements OnInit {
     this.buttonText = this.isSignIn ? "Регистрация" : "Войти"
   }
 
-  clickOutsideSignModal() {
+  public clickOutsideSignModal() {
     this.close.emit();
   }
 

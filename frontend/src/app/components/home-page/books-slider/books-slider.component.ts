@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {PersonalBook} from "../../../models/PersonalBook";
 import {Page} from "../../../models/Page";
@@ -10,6 +10,7 @@ import {PersonalBooksService} from "../../../services/personal-books/personal-bo
 import {Filter} from "../../../models/Filter";
 import {AuthService} from "../../../services/auth.service";
 import {MatDialog} from "@angular/material/dialog";
+import {SignModalDirective} from "../../../sign-modal.directive";
 
 @Component({
   selector: 'app-books-slider',
@@ -19,6 +20,7 @@ import {MatDialog} from "@angular/material/dialog";
 export class BooksSliderComponent implements OnInit {
 
   @Input() filter: Filter | undefined
+  @ViewChild(SignModalDirective, {static: true}) signModal!: SignModalDirective;
 
   infoPopup = false
 
@@ -86,8 +88,9 @@ export class BooksSliderComponent implements OnInit {
 
   addToLibrary(isbn: number) {
     if (!this.authService.isAuthenticated()) {
-      this.infoPopup = true
-      setTimeout(() => this.infoPopup = false, 1000);
+      this.signModal.showSignModal()
+      // this.infoPopup = true
+      // setTimeout(() => this.infoPopup = false, 1000);
       //this.router.navigate(['/', 'login']).then(r => '/')
     } else {
       this.personalBook.status = "Прочитано"

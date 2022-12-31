@@ -12,7 +12,7 @@ export class PersonalComponent implements OnInit {
 
   isToggle = false;
 
-  @ViewChild(SignModalDirective, {static: true}) adHost!: SignModalDirective;
+  @ViewChild(SignModalDirective, {static: true}) signModal!: SignModalDirective;
 
   constructor(private router: Router, public auth: AuthService) {
   }

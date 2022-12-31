@@ -1,7 +1,7 @@
-<div *adHost></div>
+<div *signModal></div>
 <div class="personal-container">
   <div class="personal-item" *ngIf="!auth.isAuthenticated()" routerLinkActive="active" clickOutside
-       (clickOutside)="clickOutside()" (click)="adHost.showSignModal()">
+       (clickOutside)="clickOutside()" (click)="signModal.showSignModal()">
     <div class="personal-link">
       <svg xmlns="http://www.w3.org/2000/svg" class="person-icon" viewBox="0 0 16 16">
         <use xlink:href="../assets/images/icons/persons.svg#person"/>
