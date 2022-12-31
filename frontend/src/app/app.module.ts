@@ -35,7 +35,9 @@ import {SearchComponent} from './components/shared/header/search/search.componen
 import {PersonalComponent} from './components/shared/header/personal/personal.component';
 import {AdminModule} from "./admin/admin.module";
 import {NgxPaginationModule} from 'ngx-pagination';
-import { BooksSliderComponent } from './components/home-page/books-slider/books-slider.component';
+import {BooksSliderComponent} from './components/home-page/books-slider/books-slider.component';
+import {SignModalDirective} from "./sign-modal.directive";
+import {ColoryDirective} from "./colory.directive";
 
 
 @NgModule({
@@ -48,13 +50,15 @@ import { BooksSliderComponent } from './components/home-page/books-slider/books-
     RegistrationFormComponent,
     SignModalComponent,
     RefDirective,
+    SignModalDirective,
     ClickOutsideDirective,
     HeaderComponent,
     SidebarComponent,
     LogoComponent,
     SearchComponent,
     PersonalComponent,
-    BooksSliderComponent
+    BooksSliderComponent,
+    ColoryDirective
   ],
   imports: [
     BrowserModule,

@@ -1,18 +1,20 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../../../services/auth.service";
-import {SignModalComponent} from "../../sign-modal/sign-modal.component";
+import {SignModalDirective} from "../../../../sign-modal.directive";
 
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
-  styleUrls: ['./personal.component.scss']
+  styleUrls: ['./personal.component.scss'],
 })
 export class PersonalComponent implements OnInit {
 
   isToggle = false;
 
-  constructor(private router: Router, public auth: AuthService, private viewContainerRef: ViewContainerRef) {
+  @ViewChild(SignModalDirective, {static: true}) adHost!: SignModalDirective;
+
+  constructor(private router: Router, public auth: AuthService) {
   }
 
   ngOnInit(): void {
@@ -31,14 +33,6 @@ export class PersonalComponent implements OnInit {
 
   clickOutside() {
     this.isToggle = false;
-  }
-
-  showSignModal() {
-    const signModalComponent = this.viewContainerRef.createComponent(SignModalComponent);
-    signModalComponent.instance.title = 'Войти'
-    signModalComponent.instance.close.subscribe(() => {
-      signModalComponent.destroy()
-    })
   }
 
 }
