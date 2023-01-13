@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {delay} from "rxjs/operators";
-
-import {Book} from "../../models/Book";
+import {map} from 'rxjs/operators';
+import {Book, BookFull} from "../../models/Book";
 import {AuthService} from "../auth.service";
 import {Page} from "../../models/Page";
 
@@ -19,7 +19,20 @@ export class BookService {
 
   getBooks(headers: HttpHeaders, params?: HttpParams): Observable<Page<Book>> {
     return this.http.get<Page<Book>>(this.url, {headers: headers, params: params, observe: "body"})
-      .pipe(delay(1500))
+      .pipe(/*delay(1500)*/)
+  }
+
+  //todo is it a good way to get one book?
+  getBookByIsbn(isbn: number): Observable<BookFull> {
+    return this.http.get<BookFull>(this.url + `${isbn}`)
+      .pipe(map((bookFull: BookFull) => {
+        return {
+          ...bookFull,
+          // cast response fields to yours
+          // someField: response.someField,
+          // date: new Date(book.date)
+        }
+      }))
   }
 
   // getBooks(): Observable<any> {

@@ -21,6 +21,11 @@
 
   &-title {
     font-size: 1.25rem;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &-estimation {

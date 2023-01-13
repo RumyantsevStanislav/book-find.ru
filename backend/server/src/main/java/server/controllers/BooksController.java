@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import server.entities.*;
 import server.entities.dtos.ApiMessage;
 import server.entities.dtos.BookDto;
+import server.entities.dtos.BookDtoFull;
 import server.entities.dtos.BookDtoImpl;
 import server.exceptions.AttributeNotValidException;
 import server.exceptions.BookNotFoundException;
@@ -49,12 +50,12 @@ public class BooksController {
 
     @GetMapping(value = "/{isbn}", produces = "application/json")
     @ApiOperation("Returns one book by isbn.")
-    public Optional<BookDto> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull Long isbn) {
-        return Optional.ofNullable(booksService.getByIsbn(isbn).orElseThrow(() -> new BookNotFoundException("Can't find book with isbn = " + isbn)));
+    public Optional<BookDtoFull> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull Long isbn) {
+        return Optional.ofNullable(booksService.getByIsbn(isbn)).orElseThrow(() -> new BookNotFoundException("Can't find book with isbn = " + isbn));
     }
 
     @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{isbn}")
     @ApiOperation("")
     public void deleteOneBook(@PathVariable @NotNull Long isbn) {
         booksService.deleteByIsbn(isbn);

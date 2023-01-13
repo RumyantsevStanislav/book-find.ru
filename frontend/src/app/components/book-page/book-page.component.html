@@ -1,9 +1,27 @@
-<div class="book-card">
+<div class="book-card" *ngIf="bookFull$ | async as book; else loading">
   <h1>Book title</h1>
   <button routerLink="/" class="btn">На главную</button>
-  <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci alias amet beatae dolor error et fugiat, iste iure necessitatibus non possimus quasi soluta voluptas. Amet inventore placeat quae quaerat voluptatum!</span><span>Ab aliquam cumque eos et facilis harum impedit nostrum odit quo reprehenderit sunt suscipit tempora, unde velit veniam voluptates voluptatibus? Accusamus autem cupiditate facilis impedit in laborum perferendis saepe voluptatibus.</span><span>Cupiditate deleniti dolores excepturi maxime odio provident quaerat quod reiciendis suscipit veniam! Alias aperiam architecto beatae commodi cum eos et, laudantium porro possimus quidem quis rem veniam. Omnis, rerum, temporibus.</span>
-  </p>
-  <!--  <p>{{book.id}}</p>-->
-  <!--  <p>{{book.title}}</p>-->
+  <p>{{book.title}}</p>
+  <p>{{book.description}}</p>
+  <p>{{book.price}}</p>
+  <p>{{book.pages}}</p>
+  <p>{{book.year}}</p>
+  <p>{{book.estimation}}</p>
+  <p>{{book.isbn}}</p>
+  <div *ngFor="let category of book.categories">
+    <p>{{category.title}}</p>
+  </div>
+  <div *ngFor="let author of book.authors">
+    <p>{{author.name}}:{{author.role}}</p>
+  </div>
+  <p>{{book.publisher?.title}}</p>
+  <p>{{book.publisher?.description}}</p>
+  <p>{{book.genre?.path}}</p>
+  <p>{{book.series?.title}}</p>
+  <p>{{book.series?.description}}</p>
+  <img class="book-card-img" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
+       alt="{{book.title}}">
 </div>
-
+<ng-template #loading>
+  <p class="text-center">Загружаю описание книги...</p>
+</ng-template>

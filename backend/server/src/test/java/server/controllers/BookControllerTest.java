@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import server.configs.JwtRequestFilter;
 import server.entities.Book;
 import server.entities.dtos.BookDto;
+import server.entities.dtos.BookDtoFull;
 import server.services.*;
 import server.utils.TestBooks;
 
@@ -52,8 +53,8 @@ public class BookControllerTest {
     public void getBookDtoByIsbn() throws Exception {
         Book book = TestBooks.getBook();
         ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
-        BookDto bookDto = factory.createProjection(BookDto.class, book);
-        given(bookService.getByIsbn(TestBooks.ISBN)).willReturn(Optional.of(bookDto));
+        BookDtoFull bookDtoFull = factory.createProjection(BookDtoFull.class, book);
+        given(bookService.getByIsbn(TestBooks.ISBN)).willReturn(Optional.of(bookDtoFull));
         mvc.perform(get("/api/v1/books/" + TestBooks.ISBN)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

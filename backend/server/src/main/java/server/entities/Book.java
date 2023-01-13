@@ -39,6 +39,7 @@ public class Book {
     private Integer year;
 
     private Float estimation;
+
     @NaturalId
     private Long isbn;
 

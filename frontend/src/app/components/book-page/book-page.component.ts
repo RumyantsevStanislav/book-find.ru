@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-// import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-// import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Params} from "@angular/router";
 import {BookService} from "../../services/books-service/books.service";
-import {Book} from "../../models/Book";
+import {Book, BookFull} from "../../models/Book";
+import {Observable, switchMap} from "rxjs";
 
 @Component({
   selector: 'book-card',
@@ -11,34 +11,19 @@ import {Book} from "../../models/Book";
   providers: [BookService]
 })
 export class BookPageComponent implements OnInit {
-  books: Book[] = [];
+  bookFull$: Observable<BookFull> | undefined;
 
-  //@Input() book: Book
-
-  constructor(/*private formBuilder: FormBuilder, private router: Router, private bookService: BookService*/) {
+  constructor(
+    private router: ActivatedRoute,
+    private bookService: BookService
+  ) {
   }
 
-//
-//   addForm: FormGroup | undefined;
-//
   ngOnInit() {
-    //this.addForm = this.formBuilder.group({
-    //id: [],
-    //title: ['', Validators.required],
-    //author: ['', Validators.required]
-  }
+    this.bookFull$ = this.router.params.pipe(switchMap((params: Params) => {
+        return this.bookService.getBookByIsbn(params['isbn'])
+      })
+    );
 
-  //);
-//
-//   }
-//observe
-//   onSubmit() {
-//     // @ts-ignore
-//     this.bookService.addBook(this.addForm.value)
-//       .subscribe(data => {
-//         this.router.navigate(['list-books']);
-//       });
-//   }
-//
-// }
+  }
 }

@@ -14,7 +14,7 @@
       <img class="book-card-img" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
            alt="{{book.title}}">
       <div class="book-card-estimation">{{book.estimation | number:'1.1'}}</div>
-      <div class="book-card-title">{{book.title}}</div>
+      <div class="book-card-title" [routerLink]="['/book', book.isbn]">{{book.title}}</div>
       <!--            <p class="card-text"></p>-->
       <!--            <span>{{book.isbn}}</span>-->
       <!--            <div class="authors" *ngFor="let author of book.authors">-->

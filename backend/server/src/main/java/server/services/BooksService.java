@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import server.entities.Book;
-import server.entities.dtos.BookDto;
+import server.entities.dtos.BookDtoFull;
 import server.entities.dtos.BookDtoImpl;
 import server.mappers.BookMapper;
 import server.repositories.BooksRepository;
@@ -32,7 +32,7 @@ public class BooksService {
         return booksRepository.findByTitle(title);
     }
 
-    public Optional<BookDto> getByIsbn(Long isbn) {
+    public Optional<BookDtoFull> getByIsbn(Long isbn) {
         return booksRepository.findByIsbn(isbn);
     }
 

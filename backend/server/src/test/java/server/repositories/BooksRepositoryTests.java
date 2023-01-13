@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import server.entities.Book;
 import server.entities.Category;
 import server.entities.dtos.BookDto;
+import server.entities.dtos.BookDtoFull;
 import server.utils.BookFilter;
 import server.utils.TestBooks;
 
@@ -31,8 +32,8 @@ public class BooksRepositoryTests {
 
     @Test
     public void bookRepositoryTest() {
-        Optional<BookDto> bookDto = booksRepository.findByIsbn(TestBooks.ISBN);
-        Assertions.assertTrue(bookDto.isPresent());
+        Optional<BookDtoFull> bookDtoFull = booksRepository.findByIsbn(TestBooks.ISBN);
+        Assertions.assertTrue(bookDtoFull.isPresent());
 
         List<Book> bookList = booksRepository.findByTitle(TestBooks.BOOK_TITLE);
         Assertions.assertEquals(1, bookList.size());

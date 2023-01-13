@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import server.entities.Book;
 import server.entities.dtos.BookDto;
+import server.entities.dtos.BookDtoFull;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public interface BooksRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
     List<Book> findByTitle(String title);
 
-    Optional<BookDto> findByIsbn(Long isbn);
+    Optional<BookDtoFull> findByIsbn(Long isbn);
 
     void deleteByIsbn(Long isbn);
 

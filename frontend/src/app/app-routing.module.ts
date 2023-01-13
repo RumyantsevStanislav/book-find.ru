@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'login', component: SignModalComponent},
   {path: 'registration', component: RegistrationFormComponent},
-  {path: 'book/:id', component: BookPageComponent},
+  {path: 'book/:isbn', component: BookPageComponent},
   // {
   //   path: '', component: AppComponent, children: [
   //     //Если попадаем на главную('') - не знаем куда идти, поэтому редиректим.
