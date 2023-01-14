@@ -174,7 +174,7 @@ drop table if exists verification_tokens cascade;
 create table verification_tokens
 (
     id          serial primary key,
-    user_id     serial                              not null,
+    user_id     bigint                              not null,
     token       varchar(255)                        not null,
     expiry_date timestamp                           not null,
     created_at  timestamp default current_timestamp not null,
@@ -186,7 +186,7 @@ drop table if exists password_reset_tokens cascade;
 create table password_reset_tokens
 (
     id          serial primary key,
-    user_id     serial                              not null,
+    user_id     bigint                              not null,
     token       varchar(255)                        not null,
     expiry_date timestamp                           not null,
     created_at  timestamp default current_timestamp not null,

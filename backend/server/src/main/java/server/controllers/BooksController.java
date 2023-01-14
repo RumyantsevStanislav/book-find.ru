@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import server.entities.*;
 import server.entities.dtos.ApiMessage;
-import server.entities.dtos.BookDto;
 import server.entities.dtos.BookDtoFull;
 import server.entities.dtos.BookDtoImpl;
 import server.exceptions.AttributeNotValidException;
@@ -23,7 +22,10 @@ import server.utils.BookFilter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
@@ -50,8 +52,8 @@ public class BooksController {
 
     @GetMapping(value = "/{isbn}", produces = "application/json")
     @ApiOperation("Returns one book by isbn.")
-    public Optional<BookDtoFull> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull Long isbn) {
-        return Optional.ofNullable(booksService.getByIsbn(isbn)).orElseThrow(() -> new BookNotFoundException("Can't find book with isbn = " + isbn));
+    public ResponseEntity<BookDtoFull> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull Long isbn) {
+        return new ResponseEntity<>(booksService.getByIsbn(isbn).orElseThrow(() -> new BookNotFoundException("Can't find book with isbn = " + isbn)), HttpStatus.OK);
     }
 
     @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
