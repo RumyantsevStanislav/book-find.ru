@@ -35,6 +35,7 @@ public class LabirintParser {
         book.setCategories(getCategories(document));
         book.setGenre(getGenre(document));
         book.setPrice(0);
+        book.setCover(getCover(book));
         return book;
     }
 
@@ -183,6 +184,14 @@ public class LabirintParser {
 
     private String getElementAttribute(Element element, String attribute) {
         return element == null ? "" : element.attr(attribute);
+    }
+
+    // TODO: 14.01.2023 refactor it when the path will be more complex
+    private Cover getCover(Book book) {
+        Cover cover = new Cover();
+        cover.setPath(book.getLabirintId().toString());
+        cover.setExtension("jpg");
+        return cover;
     }
 
 }

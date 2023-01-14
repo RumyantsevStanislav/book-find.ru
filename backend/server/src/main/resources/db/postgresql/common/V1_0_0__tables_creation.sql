@@ -142,6 +142,11 @@ create table roles
     primary key (id)
 );
 
+insert into roles (privilege)
+values ('ROLE_USER'),
+       ('ROLE_MANAGER'),
+       ('ROLE_ADMIN');
+
 drop table if exists users_roles;
 create table users_roles
 (
