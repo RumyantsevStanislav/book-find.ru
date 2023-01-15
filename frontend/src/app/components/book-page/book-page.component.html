@@ -1,26 +1,35 @@
 <div class="book-card" *ngIf="bookFull$ | async as book; else loading">
-  <h1>Book title</h1>
-  <button routerLink="/" class="btn">На главную</button>
-  <p>{{book.title}}</p>
-  <p>{{book.description}}</p>
-  <p>{{book.price}}</p>
-  <p>{{book.pages}}</p>
-  <p>{{book.year}}</p>
-  <p>{{book.estimation}}</p>
-  <p>{{book.isbn}}</p>
-  <div *ngFor="let category of book.categories">
-    <p>{{category.title}}</p>
-  </div>
-  <div *ngFor="let author of book.authors">
-    <p>{{author.name}}:{{author.role}}</p>
-  </div>
-  <p>{{book.publisher?.title}}</p>
-  <p>{{book.publisher?.description}}</p>
+  <!--  <button routerLink="/" class="btn">На главную</button>-->
   <p>{{book.genre?.path}}</p>
-  <p>{{book.series?.title}}</p>
-  <p>{{book.series?.description}}</p>
-  <img class="book-card-img" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
-       alt="{{book.title}}">
+  <h2>{{book.title}}</h2>
+  <div class="book-card-spec">
+    <div class="book-card-spec-left">
+      <div class="book-card-cover">
+        <img class="book-card-img" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
+             alt="{{book.title}}">
+      </div>
+      <div class="book-card-info">
+        <div *ngFor="let author of book.authors">
+          <p>{{author.role}}: {{author.name}}</p>
+        </div>
+        <!--      <p>{{book.price}}</p>-->
+        <p>Страниц: {{book.pages}}</p>
+        <!--      <p>ISBN: {{book.isbn}}</p>-->
+        <div *ngFor="let category of book.categories">
+          <p>{{category.title}}</p>
+        </div>
+        <p>{{book.publisher?.title}}, {{book.year}}</p>
+        <!--      <p>{{book.publisher?.description}}</p>-->
+        <p>Серия: {{book.series?.title}}</p>
+        <!--      <p>{{book.series?.description}}</p>-->
+        <a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a>
+      </div>
+    </div>
+    <div class="book-card-description">
+      <p>{{book.estimation}}</p>
+      <p>{{book.description}}</p>
+    </div>
+  </div>
 </div>
 <ng-template #loading>
   <p class="text-center">Загружаю описание книги...</p>

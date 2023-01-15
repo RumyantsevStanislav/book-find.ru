@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
 import {BookService} from "../../services/books-service/books.service";
-import {Book, BookFull} from "../../models/Book";
+import {BookFull} from "../../models/Book";
 import {Observable, switchMap} from "rxjs";
+import {PersonalBooksService} from "../../services/personal-books/personal-books.service";
 
 @Component({
   selector: 'book-card',
@@ -15,7 +16,8 @@ export class BookPageComponent implements OnInit {
 
   constructor(
     private router: ActivatedRoute,
-    private bookService: BookService
+    private bookService: BookService,
+    private personalBooksService: PersonalBooksService
   ) {
   }
 
@@ -24,6 +26,10 @@ export class BookPageComponent implements OnInit {
         return this.bookService.getBookByIsbn(params['isbn'])
       })
     );
-
   }
+
+  addToLibrary(isbn: number) {
+    this.personalBooksService.addToLibrary(isbn);
+  }
+
 }

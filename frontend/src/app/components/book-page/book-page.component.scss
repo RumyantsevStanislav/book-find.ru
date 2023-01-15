@@ -1,0 +1,25 @@
+.book-card {
+  padding: 1rem;
+
+  &-spec {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+
+    &-left {
+      display: flex;
+    }
+  }
+
+  &-cover {
+
+  }
+
+  &-info {
+
+  }
+
+  &-description {
+    max-width: 50%;
+  }
+}

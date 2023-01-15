@@ -1,7 +1,8 @@
-import {Injectable} from '@angular/core';
+import {Injectable, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {delay} from "rxjs/operators";
 import {PersonalBook} from "../../models/PersonalBook";
+import {AuthService} from "../auth.service";
+import {SignModalDirective} from "../../sign-modal.directive";
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +10,32 @@ import {PersonalBook} from "../../models/PersonalBook";
 export class PersonalBooksService {
 
   private url = 'http://localhost:8189/book-find/api/v1/library';
+  @ViewChild(SignModalDirective, {static: true}) signModal!: SignModalDirective;
+  public personalBook: PersonalBook = new PersonalBook(0, '', 0, '');
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
   }
 
-  addToLibrary(personalBook: PersonalBook) {
+  private request(personalBook: PersonalBook) {
     return this.http.post<any[]>(this.url, personalBook)
-      .pipe(delay(1500))
+      .pipe(/*delay(1500)*/)
+  }
+
+  addToLibrary(isbn: number) {
+    if (!this.authService.isAuthenticated()) {
+      this.signModal.showSignModal()
+      // this.infoPopup = true
+      // setTimeout(() => this.infoPopup = false, 1000);
+      //this.router.navigate(['/', 'login']).then(r => '/')
+    } else {
+      this.personalBook.status = "Прочитано"
+      this.personalBook.isbn = isbn
+      this.request(this.personalBook).subscribe((req) => {
+        console.log(req)
+
+        //this.router.navigate(['', '/']).then(r => '/')
+      }, error => console.log(error));
+    }
   }
 
 }

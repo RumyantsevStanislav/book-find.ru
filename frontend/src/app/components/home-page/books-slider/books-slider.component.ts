@@ -87,19 +87,6 @@ export class BooksSliderComponent implements OnInit {
   }
 
   addToLibrary(isbn: number) {
-    if (!this.authService.isAuthenticated()) {
-      this.signModal.showSignModal()
-      // this.infoPopup = true
-      // setTimeout(() => this.infoPopup = false, 1000);
-      //this.router.navigate(['/', 'login']).then(r => '/')
-    } else {
-      this.personalBook.status = "Прочитано"
-      this.personalBook.isbn = isbn
-      this.personalBooksService.addToLibrary(this.personalBook).subscribe((req) => {
-        console.log(req)
-
-        //this.router.navigate(['', '/']).then(r => '/')
-      }, error => console.log(error));
-    }
+    this.personalBooksService.addToLibrary(isbn)
   }
 }
