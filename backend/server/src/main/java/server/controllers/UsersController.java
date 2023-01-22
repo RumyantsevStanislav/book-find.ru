@@ -11,21 +11,24 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import server.configs.JwtTokenUtil;
+import server.configs.CustomUserDetails;
 import server.entities.PasswordResetToken;
 import server.entities.User;
 import server.entities.VerificationToken;
-import server.entities.dtos.*;
-import server.exceptions.AttributeNotValidException;
+import server.entities.dtos.ApiMessage;
+import server.entities.dtos.JwtResponse;
+import server.entities.dtos.PasswordDto;
+import server.entities.dtos.user.RegisteringUser;
+import server.entities.dtos.user.AuthUser;
+import server.entities.dtos.user.UserDto;
 import server.exceptions.ElementAlreadyExistsException;
 import server.exceptions.GenericResponse;
+import server.mappers.UserMapper;
 import server.services.UsersService;
 import server.utils.validation.Marker;
 import server.verification.OnRegistrationCompleteEvent;
@@ -34,6 +37,7 @@ import server.verification.OnResetPasswordEvent;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -41,14 +45,14 @@ import java.util.Locale;
 @RequestMapping("/api/v1/users")
 @Validated
 public class UsersController {
-    private final JwtTokenUtil jwtTokenUtil;
+    private final CustomUserDetails jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
     private final UsersService usersService;
     private final ApplicationEventPublisher eventPublisher;
     private final MessageSource messages;
 
     @Autowired
-    public UsersController(UsersService usersService, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, ApplicationEventPublisher eventPublisher, MessageSource messages) {
+    public UsersController(UsersService usersService, CustomUserDetails jwtTokenUtil, AuthenticationManager authenticationManager, ApplicationEventPublisher eventPublisher, MessageSource messages) {
         this.usersService = usersService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
@@ -67,9 +71,18 @@ public class UsersController {
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
+    @GetMapping(value = "/account", produces = "application/json")
+    public ResponseEntity<UserDto> getUser(Principal principal) {
+        // TODO: 21.01.2023 fix double invoke loadUsesByUsername
+        User user = usersService.getUserByPhoneOrEmail(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        UserDto userDto = UserMapper.USER_MAPPER.toDto(user);
+        return ResponseEntity.ok(userDto);
+    }
+
+
     @PostMapping("/register")
     @Validated({Marker.OnCreate.class})
-    public ResponseEntity<ApiMessage> register(@Valid @RequestBody SystemUser systemUser, /*BindingResult bindingResult,*/ HttpServletRequest request) {
+    public ResponseEntity<ApiMessage> register(@Valid @RequestBody RegisteringUser systemUser, /*BindingResult bindingResult,*/ HttpServletRequest request) {
         // TODO: 02.12.2022  if fields not valid - throws ConstraintViolationException.
         //  Without @Validated(Marker.) and @Validated on class is possible to use BindingResult
 
@@ -89,14 +102,14 @@ public class UsersController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/auth")
     @Validated({Marker.OnCreate.class})
-    public ResponseEntity<JwtResponse> createAuthToken(@Valid @RequestBody JwtRequest authRequest/*, BindingResult bindingResult*/) {
+    public ResponseEntity<JwtResponse> createAuthToken(@Valid @RequestBody AuthUser authRequest/*, BindingResult bindingResult*/) {
         //        if (bindingResult.hasErrors()) {
         //            throw new AttributeNotValidException("Ошибка валидации", bindingResult);
         //        }
         Authentication authentication = authenticate(authRequest.getPhoneOrEmail(), authRequest.getPassword());
         //} catch (BadCredentialsException badCredentialsException) {
         // TODO: 01.12.2022 fix double loadUserByUsername in this method
-        UserDetails userDetails = usersService.loadUserByUsername(authRequest.getPhoneOrEmail());
+        org.springframework.security.core.userdetails.UserDetails userDetails = usersService.loadUserByUsername(authRequest.getPhoneOrEmail());
         String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }

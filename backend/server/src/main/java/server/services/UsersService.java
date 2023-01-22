@@ -14,7 +14,7 @@ import server.entities.PasswordResetToken;
 import server.entities.Role;
 import server.entities.User;
 import server.entities.VerificationToken;
-import server.entities.dtos.SystemUser;
+import server.entities.dtos.user.RegisteringUser;
 import server.repositories.PasswordResetTokenRepository;
 import server.repositories.UsersRepository;
 import server.repositories.VerificationTokenRepository;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-// TODO: 17.11.2022  create interfaces fo services and controllers //см. Борисов Spring
+// TODO: 17.11.2022  create interfaces for services and controllers //см. Борисов Spring
 @Service
 public class UsersService implements UserDetailsService {
     private UsersRepository usersRepository;
@@ -88,7 +88,7 @@ public class UsersService implements UserDetailsService {
     }
 
     @Transactional //Чтобы одновременно не создать 2 одинаковых пользователя
-    public User save(SystemUser systemUser) {
+    public User save(RegisteringUser systemUser) {
         User user = new User();
         String phoneOrEmail = systemUser.getPhoneOrEmail();
         if (isEmail(phoneOrEmail)) {

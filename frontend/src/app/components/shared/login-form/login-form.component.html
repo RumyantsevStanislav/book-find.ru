@@ -1,6 +1,6 @@
 <div class="login-form-container">
   <form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
-    <div class="alert alert-danger" *ngIf="auth.error$ | async as error">
+    <div class="alert alert-danger" *ngIf="usersService.error$ | async as error">
       {{error}}
     </div>
     <div class="alert alert-info" *ngIf="message">

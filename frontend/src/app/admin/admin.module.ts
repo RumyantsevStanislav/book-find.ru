@@ -4,7 +4,7 @@ import {RouterModule} from "@angular/router";
 import {AdminComponent} from './shared/components/admin/admin.component';
 import {LoginFormComponent} from '../components/shared/login-form/login-form.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AuthService} from "../services/auth.service";
+import {UsersService} from "../services/users-service/users.service";
 import {SharedModule} from "../shared/shared.module";
 import {DashboardPageComponent} from './dashboard-page/dashboard-page.component';
 import {AddBookPageComponent} from './add-book-page/add-book-page.component';
@@ -36,7 +36,7 @@ import {AuthGuard} from "../services/auth.guard";
       }
     ])],
   exports: [RouterModule, LoginFormComponent],
-  providers: [AuthService, AuthGuard]
+  providers: [UsersService, AuthGuard]
 })
 export class AdminModule {
 

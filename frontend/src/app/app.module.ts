@@ -5,15 +5,14 @@ import {AppComponent} from './app.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BookPageComponent} from "./components/book-page/book-page.component";
 import {AppRoutingModule} from "./app-routing.module";
-import {BookService} from "./services/books-service/books.service";
+import {BookService} from "./services/books/books.service";
 import {NavigationComponent} from './components/shared/navigation/navigation.component';
 import {HomePageComponent} from './components/home-page/home-page.component';
 import {BookComponent} from "./shared/book/book.component";
 import {SharedModule} from "./shared/shared.module";
-import {AuthService} from "./services/auth.service";
+import {UsersService} from "./services/users-service/users.service";
 import {AuthGuard} from "./services/auth.guard";
 import {RegistrationFormComponent} from './components/shared/registration-form/registration-form.component';
-import {RegistrationService} from "./services/registration.service";
 import {TokenInterceptor} from "./services/interceptors/token.interceptor";
 import {ErrorInterceptor} from "./services/interceptors/error.interceptor";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
@@ -38,6 +37,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {BooksSliderComponent} from './components/home-page/books-slider/books-slider.component';
 import {SignModalDirective} from "./sign-modal.directive";
 import {ColoryDirective} from "./colory.directive";
+import {AccountPageComponent} from './components/account-page/account-page.component';
 
 
 @NgModule({
@@ -58,7 +58,8 @@ import {ColoryDirective} from "./colory.directive";
     SearchComponent,
     PersonalComponent,
     BooksSliderComponent,
-    ColoryDirective
+    ColoryDirective,
+    AccountPageComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +79,7 @@ import {ColoryDirective} from "./colory.directive";
     AdminModule,
     NgxPaginationModule
   ],
-  providers: [BookService, BookPageComponent, AuthService, AuthGuard, RegistrationService, {
+  providers: [BookService, BookPageComponent, UsersService, AuthGuard, {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,
     multi: true,

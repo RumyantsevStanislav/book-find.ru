@@ -1,4 +1,4 @@
-package server.entities.dtos;
+package server.entities.dtos.user;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class JwtRequest {
+public class AuthUser {
     @NotBlank(groups = Marker.OnCreate.class, message = "Поле 'Телефон или email' обязательно")
     @PhoneOrEmail(groups = Marker.OnCreate.class, message = "Некорректный телефон/email")
     private String phoneOrEmail;

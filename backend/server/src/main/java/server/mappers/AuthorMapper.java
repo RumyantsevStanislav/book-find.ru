@@ -11,7 +11,7 @@ import java.util.List;
 public interface AuthorMapper {
     AuthorMapper AUTHOR_MAPPER = Mappers.getMapper(AuthorMapper.class);
 
-    AuthorDtoImpl toDtoList(Author author);
+    AuthorDtoImpl toDto(Author author);
 
-    List<AuthorDtoImpl> toDto(List<Author> authors);
+    List<AuthorDtoImpl> toDtoList(List<Author> authors);
 }

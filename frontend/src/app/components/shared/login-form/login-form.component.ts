@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {AuthService} from "../../../services/auth.service";
+import {UsersService} from "../../../services/users-service/users.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {User} from "../../../models/User";
@@ -21,7 +21,7 @@ export class LoginFormComponent implements OnInit {
   message: string | undefined
   apiError: ApiError | undefined
 
-  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute) {
+  constructor(public usersService: UsersService, private router: Router, private route: ActivatedRoute) {
     this.form = new FormGroup({
       phoneOrEmail: new FormControl(null, [
         Validators.required,
@@ -40,7 +40,7 @@ export class LoginFormComponent implements OnInit {
         this.message = 'Введите данные'
       }
     })
-    this.auth.error$.next("Test")
+    this.usersService.error$.next("Test")
   }
 
   submit() {
@@ -53,7 +53,7 @@ export class LoginFormComponent implements OnInit {
       password: this.form.value.password,
     }
 
-    this.auth.login(user).subscribe({
+    this.usersService.login(user).subscribe({
       next: (req) => {
         this.form.reset()
         this.isSuccess.emit()

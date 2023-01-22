@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthService} from "../../../../services/auth.service";
+import {UsersService} from "../../../../services/users-service/users.service";
 import {SignModalDirective} from "../../../../sign-modal.directive";
 
 @Component({
@@ -14,7 +14,7 @@ export class PersonalComponent implements OnInit {
 
   @ViewChild(SignModalDirective, {static: true}) signModal!: SignModalDirective;
 
-  constructor(private router: Router, public auth: AuthService) {
+  constructor(private router: Router, public usersService: UsersService) {
   }
 
   ngOnInit(): void {
@@ -22,7 +22,7 @@ export class PersonalComponent implements OnInit {
 
   logout(event: Event) {
     event.preventDefault();
-    this.auth.logout();
+    this.usersService.logout();
     this.router.navigate(['/', 'login']).then(r => '/');
     this.router.navigate(['/', 'registration']).then(r => '/');
   }

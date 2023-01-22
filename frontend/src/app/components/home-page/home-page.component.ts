@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Book} from "../../models/Book";
 import {Router} from "@angular/router";
-import {BookService} from "../../services/books-service/books.service";
+import {BookService} from "../../services/books/books.service";
 import {PersonalBooksService} from "../../services/personal-books/personal-books.service";
 import {PersonalBook} from "../../models/PersonalBook";
 import {HttpHeaders, HttpParams} from "@angular/common/http";

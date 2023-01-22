@@ -13,9 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import server.configs.JwtTokenUtil;
+import server.configs.CustomUserDetails;
 import server.entities.User;
-import server.entities.dtos.SystemUser;
+import server.entities.dtos.user.RegisteringUser;
 import server.services.UsersService;
 import server.utils.TestUsers;
 
@@ -33,14 +33,14 @@ import static server.utils.Utils.mapper;
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("unsecured")
 public class UsersControllerTests {
-    SystemUser systemUser = TestUsers.getSystemUser();
+    RegisteringUser registeringUser = TestUsers.getRegisteringUser();
     User user = TestUsers.getNewUser();
-    String systemUserJson = mapper.writeValueAsString(systemUser);
+    String systemUserJson = mapper.writeValueAsString(registeringUser);
 
     @MockBean
     AuthenticationManager authenticationManager;
     @MockBean
-    private JwtTokenUtil jwtTokenUtil;
+    private CustomUserDetails customUserDetails;
     @MockBean
     private UsersService usersService;
     @Autowired
@@ -52,7 +52,7 @@ public class UsersControllerTests {
     @Test
     @DisplayName("Success register")
     public void successRegistrationTest() throws Exception {
-        given(usersService.save(systemUser)).willReturn(user);
+        given(usersService.save(registeringUser)).willReturn(user);
         mvc.perform(post("/api/v1/users/register").content(systemUserJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -63,7 +63,7 @@ public class UsersControllerTests {
     @Test
     @DisplayName("User already exist")
     public void failRegistrationTest() throws Exception {
-        Mockito.doReturn(Optional.of(user)).when(usersService).getUserByPhoneOrEmail(systemUser.getPhoneOrEmail());
+        Mockito.doReturn(Optional.of(user)).when(usersService).getUserByPhoneOrEmail(registeringUser.getPhoneOrEmail());
         mvc.perform(post("/api/v1/users/register").content(systemUserJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())

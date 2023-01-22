@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {SystemUser} from "../../../models/User";
 import {HttpErrorResponse, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {RegistrationService} from "../../../services/registration.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {phoneOrEmailValidator} from "../../PhoneOrEmailValidator";
 import {ConfirmedValidator} from "../../ConfirmedValidator";
 import {ApiError, ApiMessage} from "../../../models/Response";
 import {Page} from "../../../models/Page";
 import {Book} from "../../../models/Book";
+import {UsersService} from "../../../services/users-service/users.service";
 
 @Component({
   selector: 'app-registration',
@@ -24,7 +24,7 @@ export class RegistrationFormComponent implements OnInit {
   apiMessage: ApiMessage | undefined;
   apiError: ApiError | null | undefined;
 
-  constructor(private registrationService: RegistrationService, private router: Router) {
+  constructor(private usersService: UsersService, private router: Router) {
     this.form = new FormGroup({
       phoneOrEmail: new FormControl(null, [
         Validators.required,
@@ -62,15 +62,11 @@ export class RegistrationFormComponent implements OnInit {
     this.submitted = true
     const systemUser: SystemUser = {
       phoneOrEmail: this.form.value.phoneOrEmail,
-      phone: '',
-      email: '',
       password: this.form.value.passwords.password,
       matchingPassword: this.form.value.passwords.matchingPassword,
-      firstName: '',
-      lastName: '',
     }
     const headers = new HttpHeaders().set('Content-Type', 'application/json')
-    return this.registrationService.registration(systemUser, headers).subscribe({
+    return this.usersService.registration(systemUser, headers).subscribe({
       next: (req) => {
         this.apiMessage = req;
         console.log('Next ' + this.apiMessage.message)

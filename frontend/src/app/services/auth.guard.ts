@@ -7,21 +7,21 @@ import {
   UrlTree
 } from "@angular/router";
 import {Observable} from "rxjs";
-import {AuthService} from "./auth.service";
+import {UsersService} from "./users-service/users.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private auth: AuthService, private router: Router) {
+  constructor(private usersService: UsersService, private router: Router) {
   }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.auth.isAuthenticated()) {
+    if (this.usersService.isAuthenticated()) {
       return true
     } else {
-      this.auth.logout()
+      this.usersService.logout()
       this.router.navigate(['/admin', 'login'], {
         queryParams: {
           loginAgain: true

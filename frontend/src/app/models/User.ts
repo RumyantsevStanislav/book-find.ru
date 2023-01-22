@@ -3,13 +3,14 @@ export interface User {
   password: string
 }
 
-export interface SystemUser {
-  phoneOrEmail: string,
+export interface SystemUser extends User {
+  matchingPassword: string,
+}
+
+export interface RegisteredUser {
   phone?: string,
   email?: string,
-  password: string,
-  matchingPassword: string,
   firstName?: string,
   lastName?: string,
-  birthDay?: string
+  //birthDay?: string
 }

@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {delay} from "rxjs/operators";
 import {map} from 'rxjs/operators';
 import {Book, BookFull} from "../../models/Book";
-import {AuthService} from "../auth.service";
+import {UsersService} from "../users-service/users.service";
 import {Page} from "../../models/Page";
 
 @Injectable({
@@ -14,7 +14,7 @@ export class BookService {
 
   private url = 'http://localhost:8189/book-find/api/v1/books/';
 
-  constructor(private http: HttpClient, public auth: AuthService) {
+  constructor(private http: HttpClient, public usersService: UsersService) {
   }
 
   getBooks(headers: HttpHeaders, params?: HttpParams): Observable<Page<Book>> {

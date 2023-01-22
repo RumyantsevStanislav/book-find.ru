@@ -5,10 +5,10 @@ import {Page} from "../../../models/Page";
 import {Book} from "../../../models/Book";
 import {HttpHeaders, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {BookService} from "../../../services/books-service/books.service";
+import {BookService} from "../../../services/books/books.service";
 import {PersonalBooksService} from "../../../services/personal-books/personal-books.service";
 import {Filter} from "../../../models/Filter";
-import {AuthService} from "../../../services/auth.service";
+import {UsersService} from "../../../services/users-service/users.service";
 import {MatDialog} from "@angular/material/dialog";
 import {SignModalDirective} from "../../../sign-modal.directive";
 
@@ -40,7 +40,7 @@ export class BooksSliderComponent implements OnInit {
   constructor(private router: Router,
               private bookService: BookService,
               private personalBooksService: PersonalBooksService,
-              private authService: AuthService,
+              private usersService: UsersService,
               public dialog: MatDialog) {
   }
 

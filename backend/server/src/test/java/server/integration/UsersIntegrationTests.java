@@ -10,7 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.test.context.ActiveProfiles;
 import server.entities.User;
 import server.entities.dtos.ApiMessage;
-import server.entities.dtos.SystemUser;
+import server.entities.dtos.user.RegisteringUser;
 import server.repositories.UsersRepository;
 import server.utils.TestUsers;
 
@@ -29,8 +29,8 @@ public class UsersIntegrationTests {
     @Test
     public void successRegistrationTest() throws JsonProcessingException {
         int usersBeforeSave = usersRepository.findAll().size();
-        SystemUser systemUser = TestUsers.getSystemUser();
-        HttpEntity<SystemUser> request = new HttpEntity<>(systemUser);
+        RegisteringUser registeringUser = TestUsers.getRegisteringUser();
+        HttpEntity<RegisteringUser> request = new HttpEntity<>(registeringUser);
         String response = restTemplate.postForObject("/api/v1/users/register", request, String.class);
         Assertions.assertNotNull(response);
         ApiMessage apiMessage = mapper.readValue(response, ApiMessage.class);

@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import server.configs.PasswordEncoder;
 import server.entities.Role;
 import server.entities.User;
-import server.entities.dtos.SystemUser;
+import server.entities.dtos.user.RegisteringUser;
 import server.repositories.UsersRepository;
 import server.utils.TestUsers;
 
@@ -77,12 +77,12 @@ public class UsersServiceTests {
 
     @Test
     public void saveTest() {
-        SystemUser systemUser = TestUsers.getSystemUser();
+        RegisteringUser registeringUser = TestUsers.getRegisteringUser();
         Mockito.doReturn(TestUsers.getUser()).when(usersRepository).save(any(User.class));
         Mockito.doReturn(bCryptPasswordEncoder).when(passwordEncoder).getPasswordEncoder();
-        Mockito.doReturn(TestUsers.USER_PASSWORD_ENCODED).when(bCryptPasswordEncoder).encode(systemUser.getPassword());
+        Mockito.doReturn(TestUsers.USER_PASSWORD_ENCODED).when(bCryptPasswordEncoder).encode(registeringUser.getPassword());
         Mockito.doReturn(TestUsers.getRoleUser()).when(rolesService).getByPrivilege(any(Role.Privilege.class));
-        User savedUser = usersService.save(systemUser);
+        User savedUser = usersService.save(registeringUser);
         Assertions.assertEquals(savedUser.getPassword(), TestUsers.USER_PASSWORD_ENCODED);
     }
 }

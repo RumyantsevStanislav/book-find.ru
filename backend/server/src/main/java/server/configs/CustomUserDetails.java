@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -13,9 +12,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public record JwtTokenUtil(String secret) {
+public record CustomUserDetails(String secret) {
 
-    public JwtTokenUtil(@Value("${jwt.secret}") String secret) {
+    public CustomUserDetails(@Value("${jwt.secret}") String secret) {
         this.secret = secret;
     }
 
@@ -36,12 +35,12 @@ public record JwtTokenUtil(String secret) {
         return !isTokenExpired(token);
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public Boolean validateToken(String token, org.springframework.security.core.userdetails.UserDetails userDetails) {
         String username = getUsernameFromToken(token);
         return Objects.equals(username, userDetails.getUsername()) && !isTokenExpired(token);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(org.springframework.security.core.userdetails.UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         List<String> rolesList = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

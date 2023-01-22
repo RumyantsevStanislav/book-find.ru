@@ -1,7 +1,7 @@
 import {Injectable, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {PersonalBook} from "../../models/PersonalBook";
-import {AuthService} from "../auth.service";
+import {UsersService} from "../users-service/users.service";
 import {SignModalDirective} from "../../sign-modal.directive";
 
 @Injectable({
@@ -13,7 +13,7 @@ export class PersonalBooksService {
   @ViewChild(SignModalDirective, {static: true}) signModal!: SignModalDirective;
   public personalBook: PersonalBook = new PersonalBook(0, '', 0, '');
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private usersService: UsersService) {
   }
 
   private request(personalBook: PersonalBook) {
@@ -22,7 +22,7 @@ export class PersonalBooksService {
   }
 
   addToLibrary(isbn: number) {
-    if (!this.authService.isAuthenticated()) {
+    if (!this.usersService.isAuthenticated()) {
       this.signModal.showSignModal()
       // this.infoPopup = true
       // setTimeout(() => this.infoPopup = false, 1000);

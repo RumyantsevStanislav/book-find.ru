@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthService} from "../../../services/auth.service";
+import {UsersService} from "../../../services/users-service/users.service";
 
 @Component({
   selector: 'app-navigation',
@@ -11,7 +11,7 @@ export class NavigationComponent implements OnInit {
 
   isToggle = false;
 
-  constructor(private router: Router, public auth: AuthService) {
+  constructor(private router: Router, public usersService: UsersService) {
   }
 
   ngOnInit(): void {

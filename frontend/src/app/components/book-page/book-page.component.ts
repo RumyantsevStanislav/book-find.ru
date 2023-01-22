@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
-import {BookService} from "../../services/books-service/books.service";
+import {BookService} from "../../services/books/books.service";
 import {BookFull} from "../../models/Book";
 import {Observable, switchMap} from "rxjs";
 import {PersonalBooksService} from "../../services/personal-books/personal-books.service";
