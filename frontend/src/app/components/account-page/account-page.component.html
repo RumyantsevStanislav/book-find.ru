@@ -1,5 +1,83 @@
-<p>account-page works!</p>
-<p>{{user?.email}}</p>
-<p>{{user?.phone}}</p>
-<p>{{user?.firstName}}</p>
-<p>{{user?.lastName}}</p>
+<div class="account-container">
+  <form class="login-form" [formGroup]="phoneForm" (ngSubmit)="submitPhone()">
+    <div class="text-field text-field_floating-2">
+      <input class="text-field__input" id="phone" type="text"
+             [ngClass]="{'text-field__input_invalid': phoneForm.get('phone')?.touched && phoneForm.get('phone')?.invalid,
+               'text-field__input_valid': phoneForm.get('phone')?.touched && phoneForm.get('phone')?.valid}"
+             formControlName="phone"
+             placeholder="Телефон">
+      <label class="text-field__label" for="phone">Телефон</label>
+    </div>
+    <button class="sign-in-btn" type="submit"
+            [disabled]="!phoneForm.dirty || submitted || !phoneForm.valid">Изменить телефон
+    </button>
+  </form>
+
+  <form class="login-form" [formGroup]="emailForm" (ngSubmit)="submitEmail()">
+    <div class="text-field text-field_floating-2">
+      <input class="text-field__input" id="email" type="text"
+             [ngClass]="{'text-field__input_invalid': emailForm.get('email')?.touched && emailForm.get('email')?.invalid,
+               'text-field__input_valid': emailForm.get('email')?.touched && emailForm.get('email')?.valid}"
+             formControlName="email"
+             placeholder="email">
+      <label class="text-field__label" for="email">email</label>
+    </div>
+    <button class="sign-in-btn" type="submit"
+            [disabled]="!emailForm.dirty || submitted || !emailForm.valid">Изменить email
+    </button>
+  </form>
+
+  <form class="login-form" [formGroup]="personalForm" (ngSubmit)="submit()">
+    <div class="text-field text-field_floating-2">
+      <input class="text-field__input" id="firstName" type="text"
+             [ngClass]="{'text-field__input_invalid': personalForm.get('firstName')?.touched && personalForm.get('firstName')?.invalid,
+               'text-field__input_valid': personalForm.get('firstName')?.touched && personalForm.get('firstName')?.valid}"
+             formControlName="firstName"
+             placeholder="Имя">
+      <label class="text-field__label" for="firstName">Имя</label>
+    </div>
+    <div class="text-field text-field_floating-2">
+      <input class="text-field__input" id="lastName" type="text"
+             [ngClass]="{'text-field__input_invalid': personalForm.get('lastName')?.touched && personalForm.get('lastName')?.invalid,
+               'text-field__input_valid': personalForm.get('lastName')?.touched && personalForm.get('lastName')?.valid}"
+             formControlName="lastName"
+             placeholder="Фамилия">
+      <label class="text-field__label" for="lastName">Фамилия</label>
+    </div>
+    <button class="sign-in-btn" type="submit" [disabled]="!personalForm.dirty || submitted || !personalForm.valid">
+      Сохранить
+    </button>
+  </form>
+  <button *ngIf="!showChangePasswordForm" (click)="toggleShowChangePasswordForm()">Изменить пароль</button>
+  <form *ngIf="showChangePasswordForm" class="login-form" [formGroup]="passwordForm" (ngSubmit)="submitPassword()">
+    <div class="text-field text-field_floating-2">
+      <input class="text-field__input" id="oldPassword" type="text"
+             [ngClass]="{'text-field__input_invalid': passwordForm.get('oldPassword')?.touched && passwordForm.get('oldPassword')?.invalid,
+               'text-field__input_valid': passwordForm.get('oldPassword')?.touched && passwordForm.get('oldPassword')?.valid}"
+             formControlName="oldPassword"
+             placeholder="Старый пароль">
+      <label class="text-field__label" for="oldPassword">Старый пароль</label>
+    </div>
+    <div class="text-field text-field_floating-2">
+      <input class="text-field__input" id="newPassword" type="text"
+             [ngClass]="{'text-field__input_invalid': passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.invalid,
+               'text-field__input_valid': passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.valid}"
+             formControlName="newPassword"
+             placeholder="Новый пароль">
+      <label class="text-field__label" for="newPassword">Новый пароль</label>
+    </div>
+    <div class="text-field text-field_floating-2">
+      <input class="text-field__input" id="matchingPassword" type="text"
+             [ngClass]="{'text-field__input_invalid': passwordForm.get('matchingPassword')?.touched && passwordForm.get('matchingPassword')?.invalid,
+               'text-field__input_valid': passwordForm.get('matchingPassword')?.touched && passwordForm.get('matchingPassword')?.valid}"
+             formControlName="matchingPassword"
+             placeholder="Повторите пароль">
+      <label class="text-field__label" for="newPassword">Повторите пароль</label>
+    </div>
+    <button class="sign-in-btn" type="submit" [disabled]="!passwordForm.dirty || submitted || !passwordForm.valid">
+      Обновить пароль
+    </button>
+    <!--    <pre>{{passwordForm.get('newPassword')?.errors | json}}</pre>-->
+    <button (click)="toggleShowChangePasswordForm()">Отмена</button>
+  </form>
+</div>

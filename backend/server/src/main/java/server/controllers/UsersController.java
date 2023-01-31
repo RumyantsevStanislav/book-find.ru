@@ -23,8 +23,9 @@ import server.entities.VerificationToken;
 import server.entities.dtos.ApiMessage;
 import server.entities.dtos.JwtResponse;
 import server.entities.dtos.PasswordDto;
-import server.entities.dtos.user.RegisteringUser;
+import server.entities.dtos.user.AccountUser;
 import server.entities.dtos.user.AuthUser;
+import server.entities.dtos.user.RegisteringUser;
 import server.entities.dtos.user.UserDto;
 import server.exceptions.ElementAlreadyExistsException;
 import server.exceptions.GenericResponse;
@@ -79,6 +80,12 @@ public class UsersController {
         return ResponseEntity.ok(userDto);
     }
 
+    @PutMapping(value = "/update", produces = "application/json")
+    public ResponseEntity<ApiMessage> updateUser(@RequestBody AccountUser accountUser, Principal principal) {
+        User user = usersService.getUserByPhoneOrEmail(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        usersService.update(user, accountUser);
+        return new ResponseEntity<>(new ApiMessage("Профиль успешно обновлён!"), HttpStatus.OK);
+    }
 
     @PostMapping("/register")
     @Validated({Marker.OnCreate.class})

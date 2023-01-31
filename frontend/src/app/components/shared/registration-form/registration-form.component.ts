@@ -3,12 +3,13 @@ import {SystemUser} from "../../../models/User";
 import {HttpErrorResponse, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {phoneOrEmailValidator} from "../../PhoneOrEmailValidator";
-import {ConfirmedValidator} from "../../ConfirmedValidator";
+import {phoneOrEmailValidator} from "../../../validators/PhoneOrEmailValidator";
+import {ConfirmedValidator} from "../../../validators/ConfirmedValidator";
 import {ApiError, ApiMessage} from "../../../models/Response";
 import {Page} from "../../../models/Page";
 import {Book} from "../../../models/Book";
 import {UsersService} from "../../../services/users-service/users.service";
+import {regExpPatterns} from "../../../validators/RegExpPatterns";
 
 @Component({
   selector: 'app-registration',
@@ -20,7 +21,7 @@ export class RegistrationFormComponent implements OnInit {
   visiblePassword = 'password';
   form: FormGroup
   submitted = false
-  passwordPattern = new RegExp('^.*(?=.*\\d)(?=.*[a-zа-яё])(?=.*[A-ZА-ЯЁ]).*$')
+
   apiMessage: ApiMessage | undefined;
   apiError: ApiError | null | undefined;
 
@@ -35,7 +36,7 @@ export class RegistrationFormComponent implements OnInit {
             Validators.required,
             Validators.minLength(8),
             Validators.maxLength(20),
-            Validators.pattern(this.passwordPattern)
+            Validators.pattern(regExpPatterns.passwordPattern)
           ]),
           matchingPassword: new FormControl(null, [
             Validators.required
@@ -66,7 +67,7 @@ export class RegistrationFormComponent implements OnInit {
       matchingPassword: this.form.value.passwords.matchingPassword,
     }
     const headers = new HttpHeaders().set('Content-Type', 'application/json')
-    return this.usersService.registration(systemUser, headers).subscribe({
+    return this.usersService.registration(systemUser).subscribe({
       next: (req) => {
         this.apiMessage = req;
         console.log('Next ' + this.apiMessage.message)

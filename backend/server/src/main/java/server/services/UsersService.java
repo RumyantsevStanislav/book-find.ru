@@ -14,6 +14,7 @@ import server.entities.PasswordResetToken;
 import server.entities.Role;
 import server.entities.User;
 import server.entities.VerificationToken;
+import server.entities.dtos.user.AccountUser;
 import server.entities.dtos.user.RegisteringUser;
 import server.repositories.PasswordResetTokenRepository;
 import server.repositories.UsersRepository;
@@ -101,6 +102,14 @@ public class UsersService implements UserDetailsService {
         return usersRepository.save(user);
     }
 
+    public User update(User user, AccountUser accountUser) {
+        //        user.setPhone(accountUser.getPhone());
+        //        user.setEmail(accountUser.getEmail());
+        user.setFirstName(accountUser.getFirstName());
+        user.setLastName(accountUser.getLastName());
+        return usersRepository.save(user);
+    }
+
     public VerificationToken createVerificationToken(User user) {
         VerificationToken verificationToken = new VerificationToken(user);
         verificationTokenRepository.save(verificationToken);
@@ -150,7 +159,7 @@ public class UsersService implements UserDetailsService {
     }
 
     public boolean isValidOldPassword(User user, String oldPassword) {
-        return user.getPassword().equals(passwordEncoder.getPasswordEncoder().encode(oldPassword));
+        return passwordEncoder.getPasswordEncoder().matches(oldPassword, user.getPassword());
     }
 
 

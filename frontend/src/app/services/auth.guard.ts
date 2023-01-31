@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       return true
     } else {
       this.usersService.logout()
-      this.router.navigate(['/admin', 'login'], {
+      this.router.navigate(['/', 'login'], {
         queryParams: {
           loginAgain: true
         }

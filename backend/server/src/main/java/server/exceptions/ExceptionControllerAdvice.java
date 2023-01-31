@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -55,6 +56,13 @@ public class ExceptionControllerAdvice implements WebMvcConfigurer {
                 .map(ConstraintViolation::getMessageTemplate)
                 .collect(Collectors.toList()));
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({UsernameNotFoundException.class})
+    public ResponseEntity<ApiError> handleUsernameNotFoundExceptionException(final UsernameNotFoundException exception, final WebRequest request) {
+        log.info("Trying to make action for authorized user only.");
+        final ApiError apiError = new ApiError(exception.getLocalizedMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 
 

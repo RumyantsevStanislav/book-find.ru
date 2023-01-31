@@ -1,6 +1,7 @@
 package server.verification;
 
 import org.springframework.context.MessageSource;
+import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,13 +25,18 @@ public class ResetPasswordListener extends AbstractListener<OnResetPasswordEvent
         this.messages = messages;
         this.mailSender = mailSender;
     }
+    // TODO: 20.11.2022 use annotation 
+    //    @EventListener
+    //    public void onApplicationEvent(OnResetPasswordEvent event) {
+    //        this.sendResetPasswordToken(event);
+    //    }
 
     @Override
     public void onApplicationEvent(OnResetPasswordEvent event) {
         this.sendResetPasswordToken(event);
     }
 
-    // TODO: 17.11.2022 take out string expressions to properies
+    // TODO: 17.11.2022 take out string expressions to properties
     private void sendResetPasswordToken(OnResetPasswordEvent event) {
         //TODO cut throw Exception
         User user = service.getUserByEmail(event.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));

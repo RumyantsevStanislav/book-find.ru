@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AuthResponse} from "../../models/JWT";
 import {RegisteredUser, SystemUser, User} from "../../models/User";
 import {Observable, Subject, throwError} from "rxjs";
@@ -16,6 +16,8 @@ export class UsersService {
   private readonly authURL = environment.serverUrl + environment.authUrl;
   private readonly registerURL = environment.serverUrl + environment.registerUrl;
   private readonly accountURL = environment.serverUrl + environment.accountUrl;
+  private readonly updateUserURL = environment.serverUrl + environment.updateUserUrl;
+  private readonly updatePasswordURL = environment.serverUrl + environment.updatePasswordUrl;
 
   constructor(private http: HttpClient) {
   }
@@ -89,10 +91,9 @@ export class UsersService {
     }
   }
 
-  registration(systemUser: SystemUser, headers: HttpHeaders): Observable<ApiMessage> {
+  registration(systemUser: SystemUser): Observable<ApiMessage> {
     return this.http.post<ApiMessage>(this.registerURL, systemUser, {
       observe: "body",
-      headers: headers
     }).pipe(catchError(this.handleError.bind(this)));
   }
 
@@ -114,6 +115,20 @@ export class UsersService {
   getAccount(): Observable<RegisteredUser> {
     return this.http.get<RegisteredUser>(this.accountURL, {
       observe: "body",
+    }).pipe(catchError(this.handleError.bind(this)));
+  }
+
+  updateUser(registeredUser: RegisteredUser): Observable<ApiMessage> {
+    return this.http.put<ApiMessage>(this.updateUserURL, registeredUser, {
+      observe: "body",
+    }).pipe(catchError(this.handleError.bind(this)));
+  }
+
+  updatePassword(newPassword: string, oldPassword: string): Observable<ApiMessage> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+    return this.http.post<ApiMessage>(this.updatePasswordURL, {}, {
+      observe: "body",
+      params: new HttpParams().set("password", newPassword).set("oldpassword", oldPassword)
     }).pipe(catchError(this.handleError.bind(this)));
   }
 }

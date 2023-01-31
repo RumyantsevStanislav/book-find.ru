@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import server.repositories.BooksRepository;
 
 // TODO: 17.11.2022 research: classes = Book.class* Инициализирует только этот бин в контексте. Через new плохо, т.к. есть PostConstruct и т.д.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+//@ComponentScan(lazyInit = true) google it! Spring patterns for adults Borisov.
 public class BooksIntegrationTest {
     @Autowired
     BooksRepository booksRepository;

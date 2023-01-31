@@ -4,4 +4,6 @@ export interface Environment {
   authUrl: string,
   registerUrl: string,
   accountUrl: string,
+  updateUserUrl: string,
+  updatePasswordUrl: string
 }

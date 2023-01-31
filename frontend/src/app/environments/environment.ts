@@ -5,5 +5,7 @@ export const environment: Environment = {
   serverUrl: '',
   authUrl: '/users/auth',
   registerUrl: '/users/register',
-  accountUrl: '/users/account'
+  accountUrl: '/users/account',
+  updateUserUrl: '/users/update',
+  updatePasswordUrl: '/users/updatepassword',
 };

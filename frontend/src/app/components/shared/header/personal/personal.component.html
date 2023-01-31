@@ -1,6 +1,6 @@
 <div *signModal></div>
 <div class="personal-container">
-  <div class="personal-item" *ngIf="!auth.isAuthenticated()" routerLinkActive="active" clickOutside
+  <div class="personal-item" *ngIf="!usersService.isAuthenticated()" routerLinkActive="active" clickOutside
        (clickOutside)="clickOutside()" (click)="signModal.showSignModal()">
     <div class="personal-link">
       <svg xmlns="http://www.w3.org/2000/svg" class="person-icon" viewBox="0 0 16 16">
@@ -13,7 +13,7 @@
     </span>
   </div>
 
-  <div class="personal-item dropdown" *ngIf="auth.isAuthenticated()" routerLinkActive="active">
+  <div class="personal-item dropdown" *ngIf="usersService.isAuthenticated()" routerLinkActive="active">
     <div class="dropdown-toggle">
       <a class="nav-link">
         <svg xmlns="http://www.w3.org/2000/svg" class="person-icon" viewBox="0 0 16 16">

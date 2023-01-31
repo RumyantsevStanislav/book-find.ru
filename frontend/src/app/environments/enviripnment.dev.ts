@@ -5,5 +5,7 @@ export const environment: Environment = {
   serverUrl: 'http://localhost:8189/book-find/api/v1',
   authUrl: '/users/auth',
   registerUrl: '/users/register',
-  accountUrl: '/users/account'
+  accountUrl: '/users/account',
+  updateUserUrl: '/users/update',
+  updatePasswordUrl: '/users/updatePassword'
 };

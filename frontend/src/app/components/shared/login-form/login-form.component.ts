@@ -5,7 +5,7 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {User} from "../../../models/User";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ApiError} from "../../../models/Response";
-import {phoneOrEmailValidator} from "../../PhoneOrEmailValidator";
+import {phoneOrEmailValidator} from "../../../validators/PhoneOrEmailValidator";
 import {SignModalDirective} from "../../../sign-modal.directive";
 
 @Component({
