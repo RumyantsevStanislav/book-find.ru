@@ -1,0 +1,40 @@
+<div *signModal></div>
+<div class="books-slider-wrapper" *ngIf="!loading; else loadingBlock">
+  <!--  <div class="info-popup" *ngIf="infoPopup">Пожалуйста, зарегистрируйтесь!</div>-->
+  <div class="books-container" *ngIf="personalBooks !== undefined; else notFoundBlock">
+    <div class="slider-book-card" *ngFor="let personalBook of personalBooks">
+      {{personalBook.status}}
+      <img class="slider-book-card-img"
+           src="../../../assets/images/covers/{{personalBook.bookDtoImpl.cover.path}}.{{personalBook.bookDtoImpl.cover.extension}}">
+    </div>
+  </div>
+
+  <!--  <div class="books-container" *ngIf="personalBooks !== undefined && !personalBooks.empty; else notFoundBlock">-->
+  <!--    <div class="slider-book-card" *ngFor="let book of booksPage.content |-->
+  <!--        paginate: {-->
+  <!--        itemsPerPage: pageSize,-->
+  <!--        currentPage: page,-->
+  <!--        totalItems: count}">-->
+  <!--      <img class="slider-book-card-img" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"-->
+  <!--           alt="{{book.title}}">-->
+  <!--      <div class="slider-book-card-estimation">{{book.estimation | number:'1.1'}}</div>-->
+  <!--      <div class="slider-book-card-title" [routerLink]="['/book', book.isbn]">{{book.title}}</div>-->
+  <!--      &lt;!&ndash;            <p class="card-text"></p>&ndash;&gt;-->
+  <!--      &lt;!&ndash;            <span>{{book.isbn}}</span>&ndash;&gt;-->
+  <!--      &lt;!&ndash;            <div class="authors" *ngFor="let author of book.authors">&ndash;&gt;-->
+  <!--      &lt;!&ndash;              <small>{{author.role}}: {{author.name}}</small>&ndash;&gt;-->
+  <!--      &lt;!&ndash;            </div>&ndash;&gt;-->
+  <!--      <div class="card-footer">-->
+  <!--        <a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a>-->
+  <!--        &lt;!&ndash;            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>&ndash;&gt;-->
+  <!--      </div>-->
+  <!--      &lt;!&ndash;    [class.completed]="book.completed" - применяем класс если атрибут - true&ndash;&gt;-->
+  <!--    </div>-->
+  <!--  </div>-->
+</div>
+<ng-template #loadingBlock>
+  <p>Loading...</p>
+</ng-template>
+<ng-template #notFoundBlock>
+  <p>По Вашему запросу ничего не найдено</p>
+</ng-template>

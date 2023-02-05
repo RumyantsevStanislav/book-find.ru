@@ -5,5 +5,7 @@ export interface Environment {
   registerUrl: string,
   accountUrl: string,
   updateUserUrl: string,
-  updatePasswordUrl: string
+  updatePasswordUrl: string,
+  personalBooksUrl: string,
+  booksUrl: string
 }

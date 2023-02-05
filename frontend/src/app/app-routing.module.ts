@@ -6,6 +6,7 @@ import {RegistrationFormComponent} from "./components/shared/registration-form/r
 import {SignModalComponent} from "./components/shared/sign-modal/sign-modal.component";
 import {AccountPageComponent} from "./components/account-page/account-page.component";
 import {AuthGuard} from "./services/auth.guard";
+import {LibraryPageComponent} from "./components/library-page/library-page.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/', pathMatch: 'full'},
@@ -14,18 +15,13 @@ const routes: Routes = [
   {path: 'registration', component: RegistrationFormComponent},
   {path: 'book/:isbn', component: BookPageComponent},
   {
-    path: 'account', component: AccountPageComponent, canActivate: [AuthGuard], children: []
+    path: 'account', canActivate: [AuthGuard], children: [
+      //Если попадаем на ('') - не знаем куда идти, поэтому редиректим.
+      {path: '', redirectTo: '/account', pathMatch: 'full'},
+      {path: '', component: AccountPageComponent},
+      {path: 'library', component: LibraryPageComponent},
+    ]
   },
-  // {
-  //   path: '', component: AppComponent, children: [
-  //     //Если попадаем на главную('') - не знаем куда идти, поэтому редиректим.
-  //     {path: '', redirectTo: '/', pathMatch: 'full'},
-  //     {path: '', component: HomePageComponent},
-  //     {path: 'login', component: LoginFormComponent},
-  //     {path: 'registration', component: RegistrationFormComponent},
-  //     {path: 'book/:id', component: BookPageComponent}
-  //   ]
-  // },
   {path: 'admin', loadChildren: () => import ("./admin/admin.module").then(m => m.AdminModule)}
 ];
 

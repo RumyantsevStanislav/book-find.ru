@@ -1,3 +1,5 @@
+import {Book} from "./Book";
+
 export class PersonalBook {
   constructor(
     public isbn: number,
@@ -6,4 +8,8 @@ export class PersonalBook {
     public comment: string
   ) {
   }
+}
+
+export interface PersonalBookImpl extends PersonalBook {
+  bookDtoImpl: Book
 }

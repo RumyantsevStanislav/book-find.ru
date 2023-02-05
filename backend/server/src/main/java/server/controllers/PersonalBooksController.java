@@ -34,7 +34,7 @@ public class PersonalBooksController {
         this.booksService = booksService;
     }
 
-    @GetMapping(value = "/", produces = "application/json")
+    @GetMapping(value = "", produces = "application/json")
     public List<PersonalBookDto> getPersonalBooks(Principal principal) {
         String phoneOrEmail = principal.getName();
         List<PersonalBook> personalBooks = personalBooksService.getPersonalBooks(phoneOrEmail, phoneOrEmail);

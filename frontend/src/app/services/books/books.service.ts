@@ -6,25 +6,26 @@ import {map} from 'rxjs/operators';
 import {Book, BookFull} from "../../models/Book";
 import {UsersService} from "../users-service/users.service";
 import {Page} from "../../models/Page";
+import {environment} from "../../environments/enviripnment.dev";
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookService {
 
-  private url = 'http://localhost:8189/book-find/api/v1/books/';
+  private readonly booksURL = environment.serverUrl + environment.booksUrl;
 
   constructor(private http: HttpClient, public usersService: UsersService) {
   }
 
   getBooks(headers: HttpHeaders, params?: HttpParams): Observable<Page<Book>> {
-    return this.http.get<Page<Book>>(this.url, {headers: headers, params: params, observe: "body"})
+    return this.http.get<Page<Book>>(this.booksURL, {headers: headers, params: params, observe: "body"})
       .pipe(/*delay(1500)*/)
   }
 
   //todo is it a good way to get one book?
   getBookByIsbn(isbn: number): Observable<BookFull> {
-    return this.http.get<BookFull>(this.url + `${isbn}`)
+    return this.http.get<BookFull>(this.booksURL + `/${isbn}`)
       .pipe(map((bookFull: BookFull) => {
         return {
           ...bookFull,

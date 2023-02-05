@@ -87,6 +87,13 @@ export class BooksSliderComponent implements OnInit {
   }
 
   addToLibrary(isbn: number) {
-    this.personalBooksService.addToLibrary(isbn)
+    if (!this.usersService.isAuthenticated()) {
+      this.signModal.showSignModal()
+      // this.infoPopup = true
+      // setTimeout(() => this.infoPopup = false, 1000);
+      //this.router.navigate(['/', 'login']).then(r => '/')
+    } else {
+      this.personalBooksService.addToLibrary(isbn)
+    }
   }
 }

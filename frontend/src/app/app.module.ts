@@ -14,7 +14,6 @@ import {UsersService} from "./services/users-service/users.service";
 import {AuthGuard} from "./services/auth.guard";
 import {RegistrationFormComponent} from './components/shared/registration-form/registration-form.component';
 import {TokenInterceptor} from "./services/interceptors/token.interceptor";
-import {ErrorInterceptor} from "./services/interceptors/error.interceptor";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {MatInputModule} from "@angular/material/input";
 import {MatTableModule} from "@angular/material/table";
@@ -38,6 +37,7 @@ import {BooksSliderComponent} from './components/home-page/books-slider/books-sl
 import {SignModalDirective} from "./sign-modal.directive";
 import {ColoryDirective} from "./colory.directive";
 import {AccountPageComponent} from './components/account-page/account-page.component';
+import {LibraryPageComponent} from './components/library-page/library-page.component';
 
 
 @NgModule({
@@ -59,7 +59,8 @@ import {AccountPageComponent} from './components/account-page/account-page.compo
     PersonalComponent,
     BooksSliderComponent,
     ColoryDirective,
-    AccountPageComponent
+    AccountPageComponent,
+    LibraryPageComponent
   ],
   imports: [
     BrowserModule,

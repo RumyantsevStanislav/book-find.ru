@@ -8,4 +8,6 @@ export const environment: Environment = {
   accountUrl: '/users/account',
   updateUserUrl: '/users/update',
   updatePasswordUrl: '/users/updatepassword',
+  personalBooksUrl: '/library',
+  booksUrl: '/books'
 };
