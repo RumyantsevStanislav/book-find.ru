@@ -8,4 +8,5 @@ export interface Environment {
   updatePasswordUrl: string,
   personalBooksUrl: string,
   booksUrl: string
+  reviewsEndpoint: string
 }

@@ -20,13 +20,10 @@ import server.configs.CustomUserDetails;
 import server.entities.PasswordResetToken;
 import server.entities.User;
 import server.entities.VerificationToken;
-import server.entities.dtos.ApiMessage;
 import server.entities.dtos.JwtResponse;
 import server.entities.dtos.PasswordDto;
-import server.entities.dtos.user.AccountUser;
-import server.entities.dtos.user.AuthUser;
-import server.entities.dtos.user.RegisteringUser;
-import server.entities.dtos.user.UserDto;
+import server.entities.dtos.api.ApiMessage;
+import server.entities.dtos.user.*;
 import server.exceptions.ElementAlreadyExistsException;
 import server.exceptions.GenericResponse;
 import server.mappers.UserMapper;
@@ -78,6 +75,13 @@ public class UsersController {
         User user = usersService.getUserByPhoneOrEmail(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         UserDto userDto = UserMapper.USER_MAPPER.toDto(user);
         return ResponseEntity.ok(userDto);
+    }
+
+    @GetMapping(value = "/profile", produces = "application/json")
+    public ResponseEntity<ProfileDto> getUserProfile(Long id) {
+        User user = usersService.getProfileById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        ProfileDto profileDto = UserMapper.USER_MAPPER.toProfileDto(user);
+        return ResponseEntity.ok(profileDto);
     }
 
     @PutMapping(value = "/update", produces = "application/json")

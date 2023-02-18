@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import server.entities.*;
-import server.entities.dtos.ApiMessage;
+import server.entities.dtos.api.ApiMessage;
 import server.entities.dtos.BookDtoFull;
 import server.entities.dtos.BookDtoImpl;
 import server.exceptions.AttributeNotValidException;
@@ -22,6 +23,7 @@ import server.utils.BookFilter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +54,9 @@ public class BooksController {
 
     @GetMapping(value = "/{isbn}", produces = "application/json")
     @ApiOperation("Returns one book by isbn.")
-    public ResponseEntity<BookDtoFull> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull Long isbn) {
-        return new ResponseEntity<>(booksService.getByIsbn(isbn).orElseThrow(() -> new BookNotFoundException("Can't find book with isbn = " + isbn)), HttpStatus.OK);
+    public ResponseEntity<BookDtoFull> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull Long isbn, Principal principal) {
+        /// TODO: 18.02.2023 add personal book if user is authorized
+        return new ResponseEntity<>(booksService.getDtoFullByIsbn(isbn).orElseThrow(() -> new BookNotFoundException("Can't find book with isbn = " + isbn)), HttpStatus.OK);
     }
 
     @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
@@ -73,10 +76,13 @@ public class BooksController {
         checkPublisher(book);
         checkCategories(book);
         checkSeries(book);
+        for (Isbn isbn : book.getIsbns()) {
+            isbn.setBook(book);
+        }
         try {
             booksService.saveOrUpdate(book);
-        } catch (RuntimeException runtimeException) {
-            //do nothing
+        } catch (DataIntegrityViolationException exception) {
+            System.out.println("Posgres error");
         }
     }
 
@@ -118,6 +124,7 @@ public class BooksController {
         }
     }
 
+    //@Transactional(isolation = Isolation.SERIALIZABLE)
     private void checkAuthors(Book book) {
         Set<Author> currentAuthors = book.getAuthors();
         Set<Author> authors = new HashSet<>(currentAuthors);

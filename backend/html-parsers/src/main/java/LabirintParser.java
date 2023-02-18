@@ -7,8 +7,10 @@ import org.jsoup.select.Elements;
 import server.entities.*;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class LabirintParser {
 
@@ -28,7 +30,10 @@ public class LabirintParser {
         book.setPages(getPages(document));
         book.setYear(getYear(document));
         book.setEstimation(getEstimation(document));
-        book.setIsbn(getIsbn(document));
+        book.setEstimationsCount(getEstimationsCount(document));
+        Set<Isbn> isbnEntitySet = getIsbn(document);
+        book.setIsbn(isbnEntitySet.stream().findFirst().get().getIsbn());
+        book.setIsbns(isbnEntitySet);
         book.setStatus(Book.Status.ACTIVE);
         book.setPublisher(getPublisher(document));
         book.setSeries(getSeries(document));
@@ -82,10 +87,28 @@ public class LabirintParser {
         return estimation;
     }
 
-    private Long getIsbn(Document document) {
-        Long isbn = parseLong(onlyDigits(getElementText(document.selectFirst("div.isbn")).split(" ")[1]));
-        logger.info("Correct get labirintId: {}", isbn);
-        return isbn;
+    private Integer getEstimationsCount(Document document) {
+        Integer estimationCount = parseInt(onlyDigits(getElementText(document.getElementById("product-rating-marks-label"))));
+        logger.info("Correct get estimationCount: {}", estimationCount);
+        return estimationCount;
+    }
+
+
+    private Set<Isbn> getIsbn(Document document) {
+        Set<Isbn> isbnEntitySet = new HashSet<>();
+        Set<Long> isbns = Arrays.stream(getElementText(document.selectFirst("div.isbn"))
+                        .split(" "))
+                .map(this::onlyDigits)
+                .map(this::parseLong)
+                .filter((isbn) -> isbn != 0L)
+                .collect(Collectors.toSet());
+        for (Long isbn : isbns) {
+            Isbn isbnEntity = new Isbn();
+            isbnEntity.setIsbn(isbn);
+            isbnEntitySet.add(isbnEntity);
+        }
+        logger.info("Correct get isbns: {}", isbns);
+        return isbnEntitySet;
     }
 
 

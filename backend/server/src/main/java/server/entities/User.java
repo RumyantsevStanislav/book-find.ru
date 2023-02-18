@@ -11,7 +11,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -62,6 +64,11 @@ public class User extends DefaultEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ToString.Exclude
     private Collection<Role> roles;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    //@Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    @ToString.Exclude
+    private Set<Review> reviews = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

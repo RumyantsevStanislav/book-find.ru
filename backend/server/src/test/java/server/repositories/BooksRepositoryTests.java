@@ -32,7 +32,7 @@ public class BooksRepositoryTests {
 
     @Test
     public void bookRepositoryTest() {
-        Optional<BookDtoFull> bookDtoFull = booksRepository.findByIsbn(TestBooks.ISBN);
+        Optional<BookDtoFull> bookDtoFull = booksRepository.findDtoFullByIsbn(TestBooks.ISBN);
         Assertions.assertTrue(bookDtoFull.isPresent());
 
         List<Book> bookList = booksRepository.findByTitle(TestBooks.BOOK_TITLE);

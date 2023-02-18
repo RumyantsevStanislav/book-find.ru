@@ -9,7 +9,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.test.context.ActiveProfiles;
 import server.entities.User;
-import server.entities.dtos.ApiMessage;
+import server.entities.dtos.api.ApiMessage;
 import server.entities.dtos.user.RegisteringUser;
 import server.repositories.UsersRepository;
 import server.utils.TestUsers;

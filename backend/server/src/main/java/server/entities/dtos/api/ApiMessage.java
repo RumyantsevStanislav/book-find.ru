@@ -1,4 +1,4 @@
-package server.entities.dtos;
+package server.entities.dtos.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

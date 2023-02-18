@@ -54,13 +54,13 @@ public class BookControllerTest {
         Book book = TestBooks.getBook();
         ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
         BookDtoFull bookDtoFull = factory.createProjection(BookDtoFull.class, book);
-        given(bookService.getByIsbn(TestBooks.ISBN)).willReturn(Optional.of(bookDtoFull));
+        given(bookService.getDtoFullByIsbn(TestBooks.ISBN)).willReturn(Optional.of(bookDtoFull));
         mvc.perform(get("/api/v1/books/" + TestBooks.ISBN)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", is(TestBooks.BOOK_TITLE)));
 
-        given(bookService.getByIsbn(TestBooks.ISBN)).willReturn(Optional.empty());
+        given(bookService.getDtoFullByIsbn(TestBooks.ISBN)).willReturn(Optional.empty());
         Assertions.assertThrows(Exception.class,
                 () -> mvc.perform(get("/api/v1/books/" + TestBooks.ISBN)
                         .contentType(MediaType.APPLICATION_JSON)));

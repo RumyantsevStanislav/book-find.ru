@@ -1,6 +1,7 @@
 package server.services;
 
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +16,7 @@ import server.entities.Role;
 import server.entities.User;
 import server.entities.VerificationToken;
 import server.entities.dtos.user.AccountUser;
+import server.entities.dtos.user.ProfileDto;
 import server.entities.dtos.user.RegisteringUser;
 import server.repositories.PasswordResetTokenRepository;
 import server.repositories.UsersRepository;
@@ -27,36 +29,16 @@ import java.util.stream.Collectors;
 
 // TODO: 17.11.2022  create interfaces for services and controllers //см. Борисов Spring
 @Service
+@AllArgsConstructor
 public class UsersService implements UserDetailsService {
-    private UsersRepository usersRepository;
-    private RolesService rolesService;
-    private PasswordEncoder passwordEncoder;
-    private VerificationTokenRepository verificationTokenRepository;
-    private PasswordResetTokenRepository passwordResetTokenRepository;
+    private final UsersRepository usersRepository;
+    private final RolesService rolesService;
+    private final PasswordEncoder passwordEncoder;
+    private final VerificationTokenRepository verificationTokenRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    public void setUsersRepository(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
-
-    @Autowired
-    public void setRolesService(RolesService rolesService) {
-        this.rolesService = rolesService;
-    }
-
-    @Autowired
-    public void setVerificationTokenRepository(VerificationTokenRepository verificationTokenRepository) {
-        this.verificationTokenRepository = verificationTokenRepository;
-    }
-
-    @Autowired
-    public void setPasswordResetTokenRepository(PasswordResetTokenRepository passwordResetTokenRepository) {
-        this.passwordResetTokenRepository = passwordResetTokenRepository;
+    public Optional<User> getProfileById(Long id) {
+        return usersRepository.findById(id);
     }
 
     public Optional<User> getUserByPhoneOrEmail(String phoneOrEmail) {

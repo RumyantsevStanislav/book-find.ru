@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import server.entities.dtos.ApiError;
+import server.entities.dtos.api.ApiError;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;

@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -41,8 +42,22 @@ public class Book implements Serializable {
 
     private Float estimation;
 
+    @Column(name = "estimations_count")
+    private Integer estimationsCount;
+
     @NaturalId
+    // TODO: 06.02.2023 is it useful?
+    //@ISBN
     private Long isbn;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    private Set<Isbn> isbns = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
+    //@Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    @ToString.Exclude
+    private Set<Review> reviews = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private Status status;

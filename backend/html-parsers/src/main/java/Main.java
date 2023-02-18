@@ -7,16 +7,15 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
 import org.jsoup.nodes.Element;
 import server.entities.Book;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
     private static final String IMAGE_DESTINATION_FOLDER = "F:/BooksImages16";
@@ -24,30 +23,37 @@ public class Main {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger logger = LogManager.getLogger();
 
+    private static final PrintWriter writer;
+
+    static {
+        try {
+            writer = new PrintWriter("errors.txt", StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Main() throws IOException {
+    }
+
     public static void main(String[] args) {
-        saveImages();
+        //saveImages();
         saveBooks();
     }
 
     private static void saveBooks() {
-        for (int i = 1; i < 855000; i++) {
-            var url = "https://www.labirint.ru/books/" + i;
-            Connection connection = Jsoup.connect(url).userAgent("Chrome/81.0.4044.138");
-            try {
-                LabirintParser labirintParser = new LabirintParser(connection);
-                Book book = labirintParser.getBook();
-                final Content postResult = Request.Post("http://localhost:8189/book-find/api/v1/books")
-                        .bodyString(objectMapper.writeValueAsString(book), ContentType.APPLICATION_JSON)
-                        .execute().returnContent();
-                System.out.println(postResult.asString());
-            } catch (IOException ioException) {
-                logger.error("Unable to create LabirintParser");
-            }
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        for (int i = 1; i <= 20; i++) {
+            int finalI = i;
+            executorService.execute(() ->
+                    saveBook(finalI)
+            );
         }
+        executorService.shutdown();
     }
 
     private static void saveImages() {
-        for (int i = 1; i <= 855000; i++) {
+        for (int i = 195685; i <= 195685/*855000*/; i++) {
             String url = PATH + i;
             Connection connection = Jsoup.connect(url).userAgent("Chrome/81.0.4044.138");
             try {
@@ -83,6 +89,22 @@ public class Main {
             System.out.println("Image saved");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void saveBook(final int i) {
+        var url = "https://www.labirint.ru/books/" + i;
+        Connection connection = Jsoup.connect(url).userAgent("Chrome/81.0.4044.138");
+        try {
+            LabirintParser labirintParser = new LabirintParser(connection);
+            Book book = labirintParser.getBook();
+            final Content postResult = Request.Post("http://localhost:8189/book-find/api/v1/books")
+                    .bodyString(objectMapper.writeValueAsString(book), ContentType.APPLICATION_JSON)
+                    .execute().returnContent();
+            //System.out.println(postResult.asString());
+        } catch (Exception exception) {
+            logger.error("Unable to create LabirintParser {}", i);
+            writer.println(i);
         }
     }
 }

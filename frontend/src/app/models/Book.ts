@@ -12,7 +12,7 @@ export interface BookFull {
   genre?: Genre
   series?: Series
   cover: Cover
-// TODO demands
+  reviews?: Set<Review>
 }
 
 export interface Book {
@@ -49,4 +49,24 @@ export interface Genre {
 export interface Series {
   title: string
   description: string
+}
+
+export interface Review {
+  //todo add title and date
+  //title?: string
+  review: string
+  estimation: number
+  book: BookPk
+  profileDto?: ProfileDto
+  //date?: Date
+}
+
+export interface BookPk {
+  isbn: number
+}
+
+export interface ProfileDto {
+  id: number;
+  firstName: string
+  lastName: string
 }
