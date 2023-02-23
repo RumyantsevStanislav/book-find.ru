@@ -1,27 +1,26 @@
 @import "../../../../../mixins";
 
-//.nav-link:hover dropdown-menu {
-//  display: block;
-//}
 .personal-container {
-
+  height: 100%;
 }
 
 .personal-item {
   cursor: pointer;
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .personal-link {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .person-icon {
-  width: 3em;
-  height: 3em;
+  height: 50%;
+  aspect-ratio: 1 / 1;
 }
 
 .person-label {

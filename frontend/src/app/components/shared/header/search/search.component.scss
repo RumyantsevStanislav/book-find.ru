@@ -1,25 +1,28 @@
 @import "../../../../../vars";
 
 .search-container {
-
+  height: 50%;
 }
 
 .search-form {
-
+  height: 100%;
 }
 
 .search-items {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-items: stretch;
 }
 
 .input-area {
-  height: 3em;
+  height: 100%;
   padding-left: 1em;
-  width: 20em;
   border-radius: 5px 0 0 5px;
   flex-grow: 1;
+  @media (max-width: 501px) {
+    display: none;
+  }
 }
 
 .input-area::placeholder {
@@ -35,23 +38,30 @@
 
 .search-button {
   background-color: $brand-color;
-  width: 3em;
-  height: 3em;
+  height: 100%;
+  aspect-ratio: 1 / 1;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0 5px 5px 0;
+  @media (max-width: 501px) {
+    border-radius: 5px;
+  }
   transition: opacity 0.15s ease-in-out;
 
   .search-icon {
-    width: 50%;
     height: 50%;
+    width: auto;
   }
 }
 
 .search-button:hover {
   opacity: 0.5;
+}
+
+.search-button:active {
+
 }
 
 use {

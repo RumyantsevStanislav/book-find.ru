@@ -1,53 +1,37 @@
 .root-container {
+  min-height: 100%; //100vh?
   display: grid;
-  height: 100vh;
-  width: 100vw;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 0.2fr 0.1fr 1.2fr 0.5fr 0.5fr 0.1fr;
-  align-content: center;
+  //width: 100vw;
+  grid-template: minmax(100px, auto) minmax(70px, auto) 1fr minmax(70px, auto) / 1fr;
+  //align-content: center;
   //grid-template: 50px 1fr 1fr 100px / repeat(3, 1fr);
   //padding: 10px;
-
   //place-items:
-  justify-items: stretch;
+  //justify-items: stretch;
   //align-items: center; Y
-
   //place-content:
-  justify-content: stretch;
+  //justify-content: stretch;
   //align-content : center; Y
-
-  //grid-template-areas:
-  //"header header header header"
+  grid-template-areas:
+    "header"
+    "navbar"
+    "main"
+    "footer";
+  //"header"
   //"main main . sidebar"
   //"footer footer footer footer";
   //&__something {
-
   //}
 }
 
-@media (max-width: 1200px) {
-
-}
-
-@media (max-width: 992px) { //старый монитор 1024
-
-}
-
-@media (max-width: 767px) { //планшет
-
-}
-
-@media (max-width: 500px) { //планшет
-
-}
-
 app-header {
-  grid-column: span 12;
+  grid-area: header;
+
   //place-self: stretch stretch;
 }
 
 app-navigation {
-  grid-column: span 12;
+  grid-area: navbar;
 }
 
 //aside {
@@ -58,35 +42,35 @@ app-navigation {
 //}
 
 main {
-  grid-column: 1 / span 12;
+  grid-area: main;
   grid-row-start: 3;
 }
 
-#content-1 {
-  background: #6fffd2;
-  grid-column: 1 / span 12;
-}
-
-.content-2 {
-  background: #6fffd2;
-  grid-column: 1 / span 12;
-}
+//#content-1 {
+//  background: #6fffd2;
+//  grid-column: 1 / span 12;
+//}
+//
+//.content-2 {
+//  background: #6fffd2;
+//  grid-column: 1 / span 12;
+//}
 
 footer {
+  grid-area: footer;
   background: #73ffba;
-  grid-column: 1 / span 12;
 }
 
-@media only screen and (max-width: 550px) {
-  .container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 0.2fr 0.4fr 2.4fr 1fr 1fr 0.2fr;
-    grid-template-areas:
-      "header"
-      "nav"
-      "media";
-  }
-}
+//@media only screen and (max-width: 550px) {
+//  .container {
+//    grid-template-columns: 1fr;
+//    grid-template-rows: 0.2fr 0.4fr 2.4fr 1fr 1fr 0.2fr;
+//    grid-template-areas:
+//      "header"
+//      "nav"
+//      "media";
+//  }
+//}
 
 //[class^="box-"] {
 //  background-color: skyblue;

@@ -1,0 +1,67 @@
+/* You can add global styles to this file, and also import other style files */
+/*@import "vars";*/
+/*@import "mixins";*/
+:root {
+  --font-size: 12px
+}
+
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 100%;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.adaptive {
+  font-size: calc((100vw / 320) * var(--font-size));
+}
+
+/*wide screen*/
+@media (min-width: 1200px) {
+  .ws-h {
+    display: none
+  }
+}
+
+/*default screen*/
+@media (max-width: 992px) {
+  .ds-h {
+    display: none
+  }
+}
+
+/*tablet*/
+@media (max-width: 767px) {
+  .tb-h {
+    display: none
+  }
+}
+
+/*mobile*/
+@media (max-width: 500px) {
+  .mb-h {
+    display: none
+  }
+}
+
+/*//*/
+/*//.header {*/
+/*//  color: $blue;*/
+/*//  @include font(#222222)*/
+/*//}*/
+
+.dropdown {
+  cursor: pointer;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}

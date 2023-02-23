@@ -1,23 +1,24 @@
 @import "../../../../../vars";
 
 .logo-container {
+  font-size: 1.5em;
+
   &-link {
     text-decoration: none;
   }
 }
 
 .branding-name {
-  font-size: 2rem;
   font-weight: bold;
   color: white;
 }
 
 .img-container {
-  height: 25px;
+  height: 1em;
 
   img {
     width: auto;
-    height: 25px;
+    height: 1em;
   }
 }
 

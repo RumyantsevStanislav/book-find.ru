@@ -7,9 +7,9 @@
         <use xlink:href="../assets/images/icons/persons.svg#person"/>
       </svg>
     </div>
-    <span class="person-label">
-      <small>Вход/Регистрация</small>
-      <div>Мой аккаунт</div>
+    <span class="person-label mb-h">
+      <small *ngIf="!usersService.isAuthenticated()">Вход/Регистрация</small>
+      <div *ngIf="usersService.isAuthenticated()">Мой аккаунт</div>
     </span>
   </div>
 
