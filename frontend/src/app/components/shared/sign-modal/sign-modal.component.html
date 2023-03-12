@@ -1,32 +1,34 @@
-<div class="backdrop"></div>
-
-<div class="sign-modal-container">
-  <div class="sign-modal-header">
-    <h1>{{title}}</h1>
-    <div class="sign-modal-close" (click)="close.emit()">
-      <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x" viewBox="0 0 16 16">
-        <use xlink:href="../assets/images/icons/navigation.svg#x"/>
-      </svg>
+<div *ngIf="display$ | async as display">
+  <section [class.open]="display === 'open'"
+           (click)="closeModal()">
+    <div (click)="$event.stopPropagation()">
+      <!--      <div class="backdrop"></div>-->
+      <div class="sign-modal-container">
+        <div class="sign-modal-header">
+          <h1>{{title}}</h1>
+          <div class="sign-modal-close close" (click)="closeModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x" viewBox="0 0 16 16">
+              <use xlink:href="../assets/images/icons/navigation.svg#x"/>
+            </svg>
+          </div>
+        </div>
+        <div class="sign-modal-form" *signModal></div>
+        <!--        <div class="sign-modal-form" *ngIf="isSignIn && !isPasswordRecovering">-->
+        <!--          <app-login (isSuccess)="close.emit()"></app-login>-->
+        <!--        </div>-->
+        <div class="sign-modal-tools">
+          <!--          <div class="remember">-->
+          <!--            <input type="checkbox" id="remember-me">-->
+          <!--            <label for="remember-me">Запомнить меня</label>-->
+          <!--          </div>-->
+        </div>
+        <div class="sign-modal-toggle">
+          <button class="sign-modal-toggle-type" (click)="toggleSignType()">{{buttonText}}</button>
+          <button class="sign-modal-toggle-type" (click)="recoverPassword()" *ngIf="isSignIn && !isPasswordRecovering">
+            Восстановить пароль
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="sign-modal-form" *ngIf="isSignIn">
-    <app-login (isSuccess)="close.emit()"></app-login>
-  </div>
-
-  <div class="sign-modal-form" *ngIf="isSignUp">
-    <app-registration></app-registration>
-  </div>
-
-  <div class="sign-modal-tools">
-    <div class="remember">
-      <input type="checkbox" id="remember-me">
-      <label for="remember-me">Запомнить меня</label>
-    </div>
-    <a href="#">Забыли пароль?</a>
-  </div>
-
-  <button class="sign-modal-toggle-type" (click)="toggleSignType()">{{buttonText}}</button>
-
-
+  </section>
 </div>

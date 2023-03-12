@@ -17,7 +17,9 @@ public class AuthUser {
     private String phoneOrEmail;
 
     @NotBlank(groups = Marker.OnCreate.class, message = "Поле 'Пароль' обязательно")
-    @Pattern(groups = Marker.OnCreate.class, regexp = "^.*(?=.*\\d)(?=.*[a-zа-яё])(?=.*[A-ZА-ЯЁ]).*$",/*(?=.*[\Q!"#$%&'()*+,\-./:;<=>?@[]^_`{|}\E])*/
+    @Pattern(groups = Marker.OnCreate.class,
+            //regexp = "^.*(?=.*\\d)(?=.*[a-zа-яё])(?=.*[A-ZА-ЯЁ]).*$",/*(?=.*[\Q!"#$%&'()*+,\-./:;<=>?@[]^_`{|}\E])*/
+            regexp = "^.*(?=.*\\d)(?=.*[a-zа-яёA-ZА-ЯЁ]).*$",
             message = "Обязательно: заглавные буквы, строчные буквы, цифры.")
     @Size(groups = Marker.OnCreate.class, min = 8, message = "Длина пароля не менее 8 символов")
     @Size(groups = Marker.OnCreate.class, max = 20, message = "Длина пароля не более 20 символов")

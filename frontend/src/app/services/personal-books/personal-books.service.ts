@@ -2,8 +2,8 @@ import {Injectable, ViewChild} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {PersonalBook, PersonalBookImpl} from "../../models/PersonalBook";
 import {UsersService} from "../users-service/users.service";
-import {SignModalDirective} from "../../sign-modal.directive";
-import {environment} from "../../environments/enviripnment.dev";
+import {SignModalDirective} from "../../directives/sign-modal/sign-modal.directive";
+import {environment} from "../../environments/environment.dev";
 import {catchError} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
 

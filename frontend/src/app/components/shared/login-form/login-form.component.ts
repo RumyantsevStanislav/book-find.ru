@@ -1,25 +1,37 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UsersService} from "../../../services/users-service/users.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {User} from "../../../models/User";
 import {HttpErrorResponse} from "@angular/common/http";
-import {ApiError} from "../../../models/Response";
 import {phoneOrEmailValidator} from "../../../validators/PhoneOrEmailValidator";
-import {SignModalDirective} from "../../../sign-modal.directive";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.scss']
+  //TODO figure out css styles
+  styleUrls: ['./login-form.component.scss', '../sign-modal/sign-modal.component.scss']
 })
+/**
+ * Компонент формы авторизации.
+ */
 export class LoginFormComponent implements OnInit {
-//TODO figure out css styles
+  /**
+   * Объект формы.
+   */
   form: FormGroup
+  /**
+   * Флаг доступности кнопки submit на форме.
+   */
   submitted = false
+  /**
+   * Флаг успешного завершения аутентификации.
+   */
   @Output() isSuccess = new EventEmitter<void>()
+  /**
+   * Сообщение для пользователя.
+   */
   message: string | undefined
-  apiError: ApiError | undefined
 
   constructor(public usersService: UsersService, private router: Router, private route: ActivatedRoute) {
     this.form = new FormGroup({
@@ -29,21 +41,23 @@ export class LoginFormComponent implements OnInit {
       ]),
       password: new FormControl(null, [
         Validators.required,
-        Validators.minLength(8)
       ])
     })
   }
 
   ngOnInit() {
+    //TODO figure out
     this.route.queryParams.subscribe((params: Params) => {
       if (params['loginAgain']) {
         this.message = 'Введите данные'
       }
     })
-    this.usersService.error$.next("Test")
   }
 
-  submit() {
+  /**
+   * Запрос на аутентификацию.
+   */
+  login() {
     if (this.form.invalid) {
       return
     }
@@ -52,29 +66,20 @@ export class LoginFormComponent implements OnInit {
       phoneOrEmail: this.form.value.phoneOrEmail,
       password: this.form.value.password,
     }
-
     this.usersService.login(user).subscribe({
-      next: (req) => {
+      next: (response) => {
         this.form.reset()
         this.isSuccess.emit()
         this.router.navigate(['', '/']).then(r => '/')
         this.submitted = false
       },
       error: (response: HttpErrorResponse) => {
-        let apiError: ApiError
-        this.apiError = response.error
-        if (this.apiError != undefined) {
-          this.message = this.apiError.messages[0]
-        }
+        this.usersService.error$.next(response.error.messages[0])
         this.form.get('password')?.reset()
         this.submitted = false
 
       },
       complete: () => {
-        console.log('Complete')
-        // this.router.navigate(['', '/']).then(r => '/')
-        this.submitted = false
-
       }
     });
   }

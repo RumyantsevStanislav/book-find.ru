@@ -30,10 +30,11 @@ export class HomePageComponent implements OnInit {
   loading = false;
   public filterParams: HttpParams = new HttpParams();
 
-  constructor(private router: Router, private bookService: BookService, private personalBooksService: PersonalBooksService) {
+  constructor(private router: Router, private bookService: BookService) {
   }
 
   ngOnInit(): void {
+    //document.body.
     let filterBest = new class implements Filter {
       singleParams: Map<singleParamName, string> = new Map<singleParamName, string>()
         .set(singleParamName.MIN_ESTIMATION, String(5))

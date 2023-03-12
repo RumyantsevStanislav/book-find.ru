@@ -24,8 +24,8 @@ import {NgbAlertModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgMaterialModule} from './ng-material/ng-material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SignModalComponent} from './components/shared/sign-modal/sign-modal.component';
-import {RefDirective} from "./ref.directive";
-import {ClickOutsideDirective} from "./clickOutside.directive";
+import {RefDirective} from "./trash/ref.directive";
+import {ClickOutsideDirective} from "./trash/clickOutside.directive";
 import {HeaderComponent} from './components/shared/header/header.component';
 import {SidebarComponent} from './components/shared/header/sidebar/sidebar.component';
 import {LogoComponent} from './components/shared/header/logo/logo.component';
@@ -34,11 +34,14 @@ import {PersonalComponent} from './components/shared/header/personal/personal.co
 import {AdminModule} from "./admin/admin.module";
 import {NgxPaginationModule} from 'ngx-pagination';
 import {BooksSliderComponent} from './components/home-page/books-slider/books-slider.component';
-import {SignModalDirective} from "./sign-modal.directive";
-import {ColoryDirective} from "./colory.directive";
+import {SignModalDirective} from "./directives/sign-modal/sign-modal.directive";
+import {ColoryDirective} from "./trash/colory.directive";
 import {AccountPageComponent} from './components/account-page/account-page.component';
 import {LibraryPageComponent} from './components/library-page/library-page.component';
-
+import {AlertComponent} from "./components/shared/alert/alert.component";
+import {
+  PasswordRecoveringFormComponent
+} from './components/shared/password-recovering-form/password-recovering-form.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +63,9 @@ import {LibraryPageComponent} from './components/library-page/library-page.compo
     BooksSliderComponent,
     ColoryDirective,
     AccountPageComponent,
-    LibraryPageComponent
+    LibraryPageComponent,
+    AlertComponent,
+    PasswordRecoveringFormComponent
   ],
   imports: [
     BrowserModule,

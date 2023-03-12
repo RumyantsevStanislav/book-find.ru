@@ -1,9 +1,9 @@
 import {Injectable, ViewChild} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {SignModalDirective} from "../../sign-modal.directive";
-import {environment} from "../../environments/enviripnment.dev";
+import {SignModalDirective} from "../../directives/sign-modal/sign-modal.directive";
+import {environment} from "../../environments/environment.dev";
 import {catchError} from "rxjs/operators";
-import {Observable, throwError} from "rxjs";
+import {throwError} from "rxjs";
 import {Review} from "../../models/Book";
 
 @Injectable({
@@ -11,7 +11,7 @@ import {Review} from "../../models/Book";
 })
 export class ReviewsService {
 
-  private readonly reviewsURL = environment.serverUrl + environment.reviewsEndpoint;
+  private readonly reviewsURL = environment.serverUrl + environment.reviewsUrl;
   submitted: boolean | undefined
 
   @ViewChild(SignModalDirective, {static: true}) signModal!: SignModalDirective;

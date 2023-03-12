@@ -6,7 +6,7 @@ import {map} from 'rxjs/operators';
 import {Book, BookFull} from "../../models/Book";
 import {UsersService} from "../users-service/users.service";
 import {Page} from "../../models/Page";
-import {environment} from "../../environments/enviripnment.dev";
+import {environment} from "../../environments/environment.dev";
 
 @Injectable({
   providedIn: 'root',

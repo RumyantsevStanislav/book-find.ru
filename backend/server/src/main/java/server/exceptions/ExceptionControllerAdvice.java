@@ -43,8 +43,8 @@ public class ExceptionControllerAdvice implements WebMvcConfigurer {
 
     @ExceptionHandler({BadCredentialsException.class})
     public ResponseEntity<ApiError> handleBadCredentialsException(final BadCredentialsException exception, final WebRequest request) {
-        log.info("Trying to authorize with invalid username or password.");
-        final ApiError apiError = new ApiError(exception.getLocalizedMessage());
+        log.info("Trying to authorize with invalid username or password. {}", exception.getLocalizedMessage());
+        final ApiError apiError = new ApiError("Неверный логин или пароль!");
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 

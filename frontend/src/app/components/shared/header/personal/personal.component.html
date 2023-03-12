@@ -1,7 +1,6 @@
-<div *signModal></div>
 <div class="personal-container">
   <div class="personal-item" *ngIf="!usersService.isAuthenticated()" routerLinkActive="active" clickOutside
-       (clickOutside)="clickOutside()" (click)="signModal.showSignModal()">
+       (clickOutside)="clickOutside()" (click)="openDialog()">
     <div class="personal-link">
       <svg xmlns="http://www.w3.org/2000/svg" class="person-icon" viewBox="0 0 16 16">
         <use xlink:href="../assets/images/icons/persons.svg#person"/>
@@ -30,12 +29,3 @@
     </div>
   </div>
 </div>
-
-
-<!--      <div  routerLinkActive="active">-->
-<!--        <a [routerLink]="['/admin', 'create']">Добавить</a>-->
-<!--      </div>-->
-
-<!--<div class="nav-item" *ngIf="!auth.isAuthenticated()" routerLinkActive="active">-->
-<!--  <a class="nav-link" [routerLink]="['/', 'registration']">Регистрация</a>-->
-<!--</div>-->

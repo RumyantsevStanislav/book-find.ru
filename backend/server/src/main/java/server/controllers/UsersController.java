@@ -1,6 +1,6 @@
 package server.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -39,36 +39,52 @@ import java.security.Principal;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * Контроллер для взаимодействия с сущностью пользователя {@link User}.
+ */
 @RestController
 @RequestMapping("/api/v1/users")
 @Validated
+@AllArgsConstructor
 public class UsersController {
+    /**
+     * Бин для работы с JWT.
+     */
     private final CustomUserDetails jwtTokenUtil;
+    /**
+     *
+     */
     private final AuthenticationManager authenticationManager;
+    /**
+     * Сервис, предоставляющий методы для для взаимодействия с сущностью пользователя {@link User}.
+     */
     private final UsersService usersService;
+    /**
+     *
+     */
     private final ApplicationEventPublisher eventPublisher;
+    /**
+     *
+     */
     private final MessageSource messages;
-
-    @Autowired
-    public UsersController(UsersService usersService, CustomUserDetails jwtTokenUtil, AuthenticationManager authenticationManager, ApplicationEventPublisher eventPublisher, MessageSource messages) {
-        this.usersService = usersService;
-        this.jwtTokenUtil = jwtTokenUtil;
-        this.authenticationManager = authenticationManager;
-        this.eventPublisher = eventPublisher;
-        this.messages = messages;
-    }
 
     /**
      * Cutting spaces in form fields on controller level.
      *
      * @param dataBinder
      */
-    @InitBinder //
+    @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
+    /**
+     * Getting self account information.
+     *
+     * @param principal
+     * @return
+     */
     @GetMapping(value = "/account", produces = "application/json")
     public ResponseEntity<UserDto> getUser(Principal principal) {
         // TODO: 21.01.2023 fix double invoke loadUsesByUsername
@@ -77,13 +93,13 @@ public class UsersController {
         return ResponseEntity.ok(userDto);
     }
 
-    @GetMapping(value = "/profile", produces = "application/json")
-    public ResponseEntity<ProfileDto> getUserProfile(Long id) {
-        User user = usersService.getProfileById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        ProfileDto profileDto = UserMapper.USER_MAPPER.toProfileDto(user);
-        return ResponseEntity.ok(profileDto);
-    }
-
+    /**
+     * Updating self account information.
+     *
+     * @param accountUser
+     * @param principal
+     * @return
+     */
     @PutMapping(value = "/update", produces = "application/json")
     public ResponseEntity<ApiMessage> updateUser(@RequestBody AccountUser accountUser, Principal principal) {
         User user = usersService.getUserByPhoneOrEmail(principal.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -91,6 +107,26 @@ public class UsersController {
         return new ResponseEntity<>(new ApiMessage("Профиль успешно обновлён!"), HttpStatus.OK);
     }
 
+    /**
+     * Getting stranger account information.
+     *
+     * @param id stranger account id.
+     * @return
+     */
+    @GetMapping(value = "/profile", produces = "application/json")
+    public ResponseEntity<ProfileDto> getUserProfile(Long id) {
+        User user = usersService.getProfileById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        ProfileDto profileDto = UserMapper.USER_MAPPER.toProfileDto(user);
+        return ResponseEntity.ok(profileDto);
+    }
+
+    /**
+     * Registering a new user.
+     *
+     * @param systemUser
+     * @param request
+     * @return
+     */
     @PostMapping("/register")
     @Validated({Marker.OnCreate.class})
     public ResponseEntity<ApiMessage> register(@Valid @RequestBody RegisteringUser systemUser, /*BindingResult bindingResult,*/ HttpServletRequest request) {
@@ -109,10 +145,16 @@ public class UsersController {
         return new ResponseEntity<>(new ApiMessage("Вы успешно зарегистрированы!"), HttpStatus.CREATED);
     }
 
+    /**
+     * Authentication an existing user.
+     *
+     * @param authRequest
+     * @return
+     */
     // TODO: 17.11.2022 fix cross origin 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/auth")
-    @Validated({Marker.OnCreate.class})
+    @Validated({Marker.OnRead.class})
     public ResponseEntity<JwtResponse> createAuthToken(@Valid @RequestBody AuthUser authRequest/*, BindingResult bindingResult*/) {
         //        if (bindingResult.hasErrors()) {
         //            throw new AttributeNotValidException("Ошибка валидации", bindingResult);
@@ -125,6 +167,13 @@ public class UsersController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    /**
+     * Confirmation of registration.
+     *
+     * @param request
+     * @param token
+     * @return
+     */
     @GetMapping("/registrationConfirm")
     public ResponseEntity<ApiMessage> confirmRegistration(WebRequest request, @RequestParam("token") String token) {
         Locale locale = request.getLocale();
@@ -145,6 +194,13 @@ public class UsersController {
         return new ResponseEntity<>(new ApiMessage(messageValue), HttpStatus.ACCEPTED);
     }
 
+    /**
+     * Resending registration token.
+     *
+     * @param request
+     * @param existingToken
+     * @return
+     */
     // TODO: 17.11.2022 GET with token is a bad idea 
     @GetMapping("/resendRegistrationToken")
     // TODO: 17.11.2022 choose unify response and use it 
@@ -154,11 +210,19 @@ public class UsersController {
         return new GenericResponse(messages.getMessage("message.resendToken", null, request.getLocale()));
     }
 
+    /**
+     * Resetting password.
+     *
+     * @param request
+     * @param phoneOrEmail
+     * @return
+     */
     @PostMapping("/resetPassword")
-    public GenericResponse resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
+    public ResponseEntity<ApiMessage> resetPassword(HttpServletRequest request, @RequestParam("phoneOrEmail") String phoneOrEmail) {
         String appUrl = request.getContextPath();
-        eventPublisher.publishEvent(new OnResetPasswordEvent(userEmail, request.getLocale(), appUrl));
-        return new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale()));
+        eventPublisher.publishEvent(new OnResetPasswordEvent(phoneOrEmail, request.getLocale(), appUrl));
+        //return new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale()));
+        return ResponseEntity.ok(new ApiMessage((messages.getMessage("message.resetPasswordEmail", null, request.getLocale()))));
     }
 
     // TODO: 17.11.2022 GET with token is a bad idea

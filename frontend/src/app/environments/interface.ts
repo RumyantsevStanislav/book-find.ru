@@ -1,12 +1,13 @@
 export interface Environment {
-  production: boolean,
-  serverUrl: string,
-  authUrl: string,
-  registerUrl: string,
-  accountUrl: string,
-  updateUserUrl: string,
-  updatePasswordUrl: string,
-  personalBooksUrl: string,
+  production: boolean
+  serverUrl: string
+  authUrl: string
+  registerUrl: string
+  accountUrl: string
+  updateUserUrl: string
+  updatePasswordUrl: string
+  personalBooksUrl: string
   booksUrl: string
-  reviewsEndpoint: string
+  reviewsUrl: string
+  resetPasswordUrl: string
 }

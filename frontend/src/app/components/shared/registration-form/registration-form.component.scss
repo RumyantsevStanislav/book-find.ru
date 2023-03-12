@@ -1,19 +1,19 @@
-input {
-  &.ng-invalid.ng-touched.ng-dirty {
-    border: 1px solid red;
-  }
-
-  &.ng-valid.ng-touched {
-    border: 1px solid green;
-  }
-}
-
-[formGroupName="passwords"] {
-  &.ng-invalid.ng-touched.ng-dirty {
-    border: 1px solid red;
-  }
-
-  &.ng-valid.ng-touched {
-    border: 1px solid green;
-  }
-}
+//input {
+//  &.ng-invalid.ng-touched.ng-dirty {
+//    border: 1px solid red;
+//  }
+//
+//  &.ng-valid.ng-touched {
+//    border: 1px solid green;
+//  }
+//}
+//
+//[formGroupName="passwords"] {
+//  &.ng-invalid.ng-touched.ng-dirty {
+//    border: 1px solid red;
+//  }
+//
+//  &.ng-valid.ng-touched {
+//    border: 1px solid green;
+//  }
+//}

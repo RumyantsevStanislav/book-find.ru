@@ -10,7 +10,7 @@ import {PersonalBooksService} from "../../../services/personal-books/personal-bo
 import {Filter} from "../../../models/Filter";
 import {UsersService} from "../../../services/users-service/users.service";
 import {MatDialog} from "@angular/material/dialog";
-import {SignModalDirective} from "../../../sign-modal.directive";
+import {SignModalDirective} from "../../../directives/sign-modal/sign-modal.directive";
 
 @Component({
   selector: 'app-books-slider',
@@ -88,7 +88,7 @@ export class BooksSliderComponent implements OnInit {
 
   addToLibrary(isbn: number) {
     if (!this.usersService.isAuthenticated()) {
-      this.signModal.showSignModal()
+      //this.signModal.showSignModal()
       // this.infoPopup = true
       // setTimeout(() => this.infoPopup = false, 1000);
       //this.router.navigate(['/', 'login']).then(r => '/')

@@ -1,31 +1,49 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {SystemUser} from "../../../models/User";
-import {HttpErrorResponse, HttpHeaders, HttpResponse} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {HttpErrorResponse} from "@angular/common/http";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {phoneOrEmailValidator} from "../../../validators/PhoneOrEmailValidator";
 import {ConfirmedValidator} from "../../../validators/ConfirmedValidator";
 import {ApiError, ApiMessage} from "../../../models/Response";
-import {Page} from "../../../models/Page";
-import {Book} from "../../../models/Book";
 import {UsersService} from "../../../services/users-service/users.service";
 import {regExpPatterns} from "../../../validators/RegExpPatterns";
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration-form.component.html',
-  styleUrls: ['./registration-form.component.scss']
+  styleUrls: ['./registration-form.component.scss', '../sign-modal/sign-modal.component.scss']
 })
-export class RegistrationFormComponent implements OnInit {
-
+export class RegistrationFormComponent {
+  /**
+   * Видимость вводимого пароля.
+   */
   visiblePassword = 'password';
+  /**
+   * Объект формы.
+   */
   form: FormGroup
+  /**
+   * Флаг доступности кнопки submit на форме.
+   */
   submitted = false
-
+  /**
+   * Флаг успешного завершения аутентификации.
+   */
+  @Output() isSuccess = new EventEmitter<void>()
+  /**
+   * Сообщение для пользователя.
+   */
+  message: string | undefined
+  /**
+   * Объект, возвращаемый при ошибке на запрос.
+   */
+  apiError: ApiError | undefined
+  /**
+   * Объект, возвращаемый при успешной регистрации.
+   */
   apiMessage: ApiMessage | undefined;
-  apiError: ApiError | null | undefined;
 
-  constructor(private usersService: UsersService, private router: Router) {
+  constructor(public usersService: UsersService) {
     this.form = new FormGroup({
       phoneOrEmail: new FormControl(null, [
         Validators.required,
@@ -46,9 +64,9 @@ export class RegistrationFormComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
-  }
-
+  /**
+   * Изменение видимости вводимого пароля.
+   */
   changeVisiblePassword() {
     if (this.visiblePassword == 'password')
       this.visiblePassword = 'text';
@@ -56,6 +74,9 @@ export class RegistrationFormComponent implements OnInit {
       this.visiblePassword = 'password';
   }
 
+  /**
+   * Запрос на регистрацию пользователя.
+   */
   registration() {
     if (this.form.invalid) {
       return
@@ -66,22 +87,20 @@ export class RegistrationFormComponent implements OnInit {
       password: this.form.value.passwords.password,
       matchingPassword: this.form.value.passwords.matchingPassword,
     }
-    const headers = new HttpHeaders().set('Content-Type', 'application/json')
     return this.usersService.registration(systemUser).subscribe({
-      next: (req) => {
-        this.apiMessage = req;
-        console.log('Next ' + this.apiMessage.message)
+      next: (response) => {
+        this.apiMessage = response;
         this.submitted = false
       },
-      error: (req: HttpErrorResponse) => {
-        //this.apiError = req.;
-        console.log('Error ' + req)
+      error: (response: HttpErrorResponse) => {
+        this.apiError = response.error
+        if (this.apiError != undefined) {
+          this.usersService.error$.next(this.apiError.messages[0])
+        }
+        this.form.get('phoneOrEmail')?.reset()
         this.submitted = false
       },
       complete: () => {
-        console.log('Complete')
-        // this.router.navigate(['', '/']).then(r => '/')
-        this.submitted = false
       }
     });
   }
