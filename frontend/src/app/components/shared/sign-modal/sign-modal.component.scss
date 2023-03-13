@@ -38,7 +38,6 @@ section {
     z-index: 100;
     overflow: auto;
     scrollbar-gutter: stable;
-    //box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
   }
 
   button.close {
@@ -55,16 +54,6 @@ section {
 
     padding: 16px;
   }
-
-  //.backdrop {
-  //  position: fixed;
-  //  top: 0;
-  //  bottom: 0;
-  //  right: 0;
-  //  left: 0;
-  //  background: rgba(0, 0, 0, .3);
-  //  z-index: 100;
-  //}
 
   .sign-modal-container {
     width: 100%;
@@ -94,22 +83,6 @@ section {
     }
   }
 
-  .sign-modal-tools {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-
-    input {
-      width: 1.5em;
-      height: 1.5em;
-      margin-right: 1em;
-    }
-
-    label {
-    }
-  }
-
   .remember {
     display: flex;
     align-items: center;
@@ -120,12 +93,6 @@ section {
   .sign-modal-close:hover use {
     fill: red;
   }
-
-  //.sign-modal-toggle {
-  //  display: flex;
-  //  justify-content: space-around;
-  //  align-items: center;
-  //}
 
   .sign-modal-toggle-type {
     cursor: pointer;

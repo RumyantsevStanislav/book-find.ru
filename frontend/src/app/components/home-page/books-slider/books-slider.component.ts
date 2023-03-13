@@ -10,7 +10,6 @@ import {PersonalBooksService} from "../../../services/personal-books/personal-bo
 import {Filter} from "../../../models/Filter";
 import {UsersService} from "../../../services/users-service/users.service";
 import {MatDialog} from "@angular/material/dialog";
-import {SignModalDirective} from "../../../directives/sign-modal/sign-modal.directive";
 
 @Component({
   selector: 'app-books-slider',
@@ -20,7 +19,6 @@ import {SignModalDirective} from "../../../directives/sign-modal/sign-modal.dire
 export class BooksSliderComponent implements OnInit {
 
   @Input() filter: Filter | undefined
-  @ViewChild(SignModalDirective, {static: true}) signModal!: SignModalDirective;
 
   infoPopup = false
 

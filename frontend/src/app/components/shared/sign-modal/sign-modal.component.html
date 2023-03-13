@@ -2,7 +2,6 @@
   <section [class.open]="display === 'open'"
            (click)="closeModal()">
     <div (click)="$event.stopPropagation()">
-      <!--      <div class="backdrop"></div>-->
       <div class="sign-modal-container">
         <div class="sign-modal-header">
           <h1>{{title}}</h1>
@@ -13,15 +12,6 @@
           </div>
         </div>
         <div class="sign-modal-form" *signModal></div>
-        <!--        <div class="sign-modal-form" *ngIf="isSignIn && !isPasswordRecovering">-->
-        <!--          <app-login (isSuccess)="close.emit()"></app-login>-->
-        <!--        </div>-->
-        <div class="sign-modal-tools">
-          <!--          <div class="remember">-->
-          <!--            <input type="checkbox" id="remember-me">-->
-          <!--            <label for="remember-me">Запомнить меня</label>-->
-          <!--          </div>-->
-        </div>
         <div class="sign-modal-toggle">
           <button class="sign-modal-toggle-type" (click)="toggleSignType()">{{buttonText}}</button>
           <button class="sign-modal-toggle-type" (click)="recoverPassword()" *ngIf="isSignIn && !isPasswordRecovering">
