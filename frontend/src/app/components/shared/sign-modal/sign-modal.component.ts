@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalService} from "../../../services/modal/modal.service";
 import {Observable} from "rxjs";
 import {SignModalDirective} from "../../../directives/sign-modal/sign-modal.directive";
@@ -6,6 +6,9 @@ import {RegistrationFormComponent} from "../registration-form/registration-form.
 import {PasswordRecoveringFormComponent} from "../password-recovering-form/password-recovering-form.component";
 import {ComponentType} from "@angular/cdk/portal";
 import {LoginFormComponent} from "../login-form/login-form.component";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {UsersService} from "../../../services/users-service/users.service";
+import {AlertService} from "../../../services/alert/alert.service";
 
 
 @Component({
@@ -15,9 +18,9 @@ import {LoginFormComponent} from "../login-form/login-form.component";
 })
 export class SignModalComponent implements OnInit {
 
-  @Input() title = ''
-  @Output() close = new EventEmitter<void>()
-
+  //@Input() title =''
+  //@Output() close = new EventEmitter<void>()
+  title: string | undefined
   isSignIn = true;
   isSignUp = false;
   isPasswordRecovering = false;
@@ -27,19 +30,63 @@ export class SignModalComponent implements OnInit {
   signUpTitle = "Регистрация"
   signInTitle = "Вход"
   passwordRecoveringTitle = "Восстановление пароля"
+  token: string | undefined
 
   @ViewChild(SignModalDirective, {static: false}) signModal!: SignModalDirective;
 
 
   display$: Observable<'open' | 'close'> | undefined;
 
-  constructor(private modalService: ModalService) {
+  constructor(private modalService: ModalService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private usersService: UsersService,
+              private alertService: AlertService) {
   }
 
   ngOnInit(): void {
     this.display$ = this.modalService.watch();
-    this.title = this.signInTitle
-    this.buttonText = this.signUpButtonText
+    //this.router.events.subscribe((url: any) => console.log(url));
+    // this.router.events.pipe(
+    //   filter(event => event instanceof NavigationEnd)
+    // ).subscribe(event => {
+    //   console.log(event);
+    // });
+    this.router.events.subscribe(
+      (event: any) => {
+        if (event instanceof NavigationEnd) {
+          if (event.url.split("?")[0] == "/changePassword") {
+            this.activatedRoute.queryParams.subscribe(params => {
+              this.token = params['token']
+              if (!!this.token) {
+                this.usersService.changePassword(this.token).subscribe({
+                  next: (req) => {
+
+                  },
+                  error: (messages: string) => {
+                    this.alertService.danger(messages)
+                    this.closeModal()
+                  },
+                  complete: () => {
+                  }
+                })
+              } else {
+                this.alertService.danger("Неправильная ссылка для изменения пароля.")
+                this.closeModal()
+              }
+            })
+            this.title = "Изменение пароля"
+            this.isPasswordRecovering = false
+            this.isSignIn = !this.isSignIn
+            this.isSignUp = !this.isSignUp
+            this.buttonText = this.isSignIn ? this.signUpButtonText : this.signInButtonText
+          } else {
+            this.title = this.signInTitle
+            this.buttonText = this.signUpButtonText
+          }
+        }
+      }
+    )
   }
 
   //TODO when mousedown on modal and mouseup outside - modal closed
@@ -72,7 +119,9 @@ export class SignModalComponent implements OnInit {
     this.signModal.showSignModal(PasswordRecoveringFormComponent)
   }
 
-  public clickOutsideSignModal() {
-    this.close.emit();
-  }
+  // public clickOutsideSignModal() {
+  //   this.close.emit();
+  // }
 }
+
+export type modalType = 'signIn' | 'signUp' | 'passwordRecovering' | 'passwordChanging'

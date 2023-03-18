@@ -9,18 +9,17 @@
 
 <!--<ng-template appRef></ng-template>-->
 <!--<ng-template adHost #c="exportAdHost"></ng-template>-->
-<app-sign-modal></app-sign-modal>
 <!--    <button mat-raised-button color="primary" (click)="openDialog()">Open dialog</button>-->
-
+<app-sign-modal></app-sign-modal>
 <app-alert></app-alert>
 <div class="root-container">
   <app-header></app-header>
   <!--  <app-navigation></app-navigation>-->
-  <!--  <main>-->
-  <!--    &lt;!&ndash;    Только уникальный контент. Не виден браузерами без main фиг. display:block; фиг.&ndash;&gt;-->
-  <!--    <router-outlet></router-outlet>-->
-  <!--  </main>-->
-  <!--  <aside>-->
+  <main>
+    <!--    Только уникальный контент. Не виден браузерами без main фиг. display:block; фиг.-->
+    <router-outlet></router-outlet>
+  </main>
+  <!--    <aside>-->
   <!--    Photo-->
   <!--    &lt;!&ndash;    <nav>&ndash;&gt;-->
   <!--    Sidebar-->

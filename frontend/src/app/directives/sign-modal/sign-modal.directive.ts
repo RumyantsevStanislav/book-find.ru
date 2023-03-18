@@ -1,6 +1,7 @@
 import {ComponentRef, Directive, OnInit, TemplateRef, ViewContainerRef} from "@angular/core";
 import {ComponentType} from "@angular/cdk/portal";
 import {LoginFormComponent} from "../../components/shared/login-form/login-form.component";
+import {ChangePasswordComponent} from "../../components/shared/change-password/change-password.component";
 
 
 @Directive({
@@ -8,10 +9,12 @@ import {LoginFormComponent} from "../../components/shared/login-form/login-form.
   exportAs: 'exportSignModal' //doesn't work with structural directives?
 })
 export class SignModalDirective implements OnInit {
-  constructor(private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) {
-  }
 
   signModalComponent: ComponentRef<any> | undefined
+
+  constructor(private templateRef: TemplateRef<any>,
+              private viewContainerRef: ViewContainerRef) {
+  }
 
   /**
    * Для добавления свойств элемента
@@ -24,7 +27,11 @@ export class SignModalDirective implements OnInit {
   //@HostListener
 
   ngOnInit(): void {
-    this.signModalComponent = this.viewContainerRef.createComponent(LoginFormComponent);
+    if (window.location.pathname === "/changePassword") {
+      this.signModalComponent = this.viewContainerRef.createComponent(ChangePasswordComponent);
+    } else {
+      this.signModalComponent = this.viewContainerRef.createComponent(LoginFormComponent);
+    }
     //const signModalComponent = this.viewContainerRef.createEmbeddedView(this.templateRef);
     // signModalComponent.instance.title = 'Войти'
     // signModalComponent.instance.close.subscribe(() => {

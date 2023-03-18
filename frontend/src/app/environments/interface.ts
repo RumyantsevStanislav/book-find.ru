@@ -10,4 +10,5 @@ export interface Environment {
   booksUrl: string
   reviewsUrl: string
   resetPasswordUrl: string
+  changePasswordUrl: string
 }

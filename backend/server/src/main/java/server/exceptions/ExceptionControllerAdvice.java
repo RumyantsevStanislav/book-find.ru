@@ -6,12 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.www.NonceExpiredException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import server.entities.dtos.api.ApiError;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
@@ -58,12 +60,25 @@ public class ExceptionControllerAdvice implements WebMvcConfigurer {
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({EntityNotFoundException.class})
+    public ResponseEntity<ApiError> handleEntityNotFoundException(final EntityNotFoundException exception, final WebRequest request) {
+        log.info("Trying to get non-existent entity.");
+        final ApiError apiError = new ApiError(exception.getLocalizedMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler({NonceExpiredException.class})
+    public ResponseEntity<ApiError> handleNonceExpiredException(final NonceExpiredException exception, final WebRequest request) {
+        log.info("Trying to use expired token.");
+        final ApiError apiError = new ApiError(exception.getLocalizedMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler({UsernameNotFoundException.class})
     public ResponseEntity<ApiError> handleUsernameNotFoundExceptionException(final UsernameNotFoundException exception, final WebRequest request) {
         log.info("Trying to make action for authorized user only.");
         final ApiError apiError = new ApiError(exception.getLocalizedMessage());
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
-
-
 }

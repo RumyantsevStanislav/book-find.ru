@@ -44,7 +44,7 @@ public class ResetPasswordListener extends AbstractListener<OnResetPasswordEvent
         String subject = "Reset Password";
         String confirmationUrl = event.getAppUrl() + "/changePassword?token=" + passwordResetToken.getToken();
         String message = messages.getMessage("message.resetPassword", null, event.getLocale());
-        String body = message + "\r\n" + "http://localhost:8080" + confirmationUrl;
+        String body = message + "\r\n" + "http://localhost:4200" + confirmationUrl;
         SimpleMailMessage email = constructEmail(subject, body, user);
         mailSender.send(email);
     }

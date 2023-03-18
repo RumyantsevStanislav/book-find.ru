@@ -42,6 +42,7 @@ import {AlertComponent} from "./components/shared/alert/alert.component";
 import {
   PasswordRecoveringFormComponent
 } from './components/shared/password-recovering-form/password-recovering-form.component';
+import {ChangePasswordComponent} from './components/shared/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {
     AccountPageComponent,
     LibraryPageComponent,
     AlertComponent,
-    PasswordRecoveringFormComponent
+    PasswordRecoveringFormComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -22,6 +22,7 @@ import server.repositories.PasswordResetTokenRepository;
 import server.repositories.UsersRepository;
 import server.repositories.VerificationTokenRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -128,7 +129,8 @@ public class UsersService implements UserDetailsService {
     }
 
     public PasswordResetToken getPasswordResetToken(String token) {
-        return passwordResetTokenRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Токен не найден!"));
+        return passwordResetTokenRepository.findByToken(token)
+                .orElseThrow(() -> new EntityNotFoundException("Неверная ссылка на восстановление пароля!"));
     }
 
     public User getUserByPasswordResetToken(String token) {

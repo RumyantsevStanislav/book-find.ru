@@ -1,13 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {Book} from "../../models/Book";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {BookService} from "../../services/books/books.service";
-import {PersonalBooksService} from "../../services/personal-books/personal-books.service";
 import {PersonalBook} from "../../models/PersonalBook";
 import {HttpHeaders, HttpParams} from "@angular/common/http";
 import {Page} from "../../models/Page";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Filter, singleParamName} from "../../models/Filter";
+import {ModalService} from "../../services/modal/modal.service";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-home',
@@ -30,10 +31,25 @@ export class HomePageComponent implements OnInit {
   loading = false;
   public filterParams: HttpParams = new HttpParams();
 
-  constructor(private router: Router, private bookService: BookService) {
+  //url: string | undefined
+
+  constructor(private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private bookService: BookService,
+              private modalService: ModalService) {
+    // this.activatedRoute.url.subscribe(url => {
+    //   console.log(url[0]?.path)
+    //   this.url = url[0]?.path
+    // })
   }
 
   ngOnInit(): void {
+    //console.log(this.router.url)
+    let currentUrl = this.router.parseUrl(this.router.url).root.children['primary']?.segments.map(it => it.path).join('/')
+    //console.log(currentUrl)
+    if (currentUrl === "changePassword") {
+      this.modalService.open();
+    }
     //document.body.
     let filterBest = new class implements Filter {
       singleParams: Map<singleParamName, string> = new Map<singleParamName, string>()

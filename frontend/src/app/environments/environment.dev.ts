@@ -11,5 +11,6 @@ export const environment: Environment = {
   personalBooksUrl: '/library',
   booksUrl: '/books',
   reviewsUrl: '/reviews',
-  resetPasswordUrl: '/users/resetPassword'
+  resetPasswordUrl: '/users/resetPassword',
+  changePasswordUrl: '/users/changePassword'
 };

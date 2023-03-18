@@ -43,6 +43,11 @@ export class UsersService {
    * @private
    */
   private readonly resetPasswordURL = environment.serverUrl + environment.resetPasswordUrl;
+  /**
+   *
+   * @private
+   */
+  private readonly changePasswordURL = environment.serverUrl + environment.changePasswordUrl;
 
   constructor(private http: HttpClient) {
   }
@@ -117,6 +122,16 @@ export class UsersService {
   }
 
   /**
+   * Проверка токена перед заполнением формы изменения пароля {@link ChangePasswordComponent}.
+   */
+  changePassword(token: string): Observable<ApiMessage> {
+    return this.http.get<ApiMessage>(this.changePasswordURL, {
+      observe: "body",
+      params: new HttpParams().set("token", token)
+    }).pipe(catchError(this.handleError.bind(this)));
+  }
+
+  /**
    * Получение данных о пользователе.
    */
   getAccount(): Observable<RegisteredUser> {
@@ -158,7 +173,7 @@ export class UsersService {
   private setToken(response: AuthResponse | null) {
     if (response) {
       console.log(response)
-      const expDate = new Date(new Date().getTime() + +response.expiresIn * 1000 + 3600000)
+      const expDate = new Date(new Date().getTime() + +response.expiresIn * 1000 + 3_600_000)
       localStorage.setItem('token', response.token)
       localStorage.setItem('token-exp', expDate.toString())
     } else {
@@ -169,35 +184,19 @@ export class UsersService {
   /**
    * Обработка ошибок.
    *
-   * @param error
    * @private
+   * @param httpErrorResponse
    */
-  private handleError(error: HttpErrorResponse) {
+  private handleError(httpErrorResponse: HttpErrorResponse) {
     let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
+    if (httpErrorResponse.error instanceof ErrorEvent) {
       // client-side error
-      errorMessage = `Error: ${error.error.message}`;
+      errorMessage = `Error: ${httpErrorResponse.error.message}`;
     } else {
       // server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      this.error$.next('error.message')
-      // const {message} = error.error.error //it is from firebase
-      // switch (message) {
-      //   case 'EMAIL_NOT_FOUND':
-      //     this.error$.next('email не найден')
-      //     break
-      //   case 'INVALID_EMAIL':
-      //     this.error$.next('Неверный email')
-      //     break
-      //   case 'INVALID_PASSWORD':
-      //     this.error$.next('Неверный пароль')
-      //     break
-      // }
+      errorMessage = httpErrorResponse.error.messages
+      this.error$.next(httpErrorResponse.error.messages)
     }
-    //console.log('Handle ' + errorMessage);
-    //   return throwError(() => {
-    //     return error;
-    //   });
     return throwError(() => {
       return errorMessage;
     });

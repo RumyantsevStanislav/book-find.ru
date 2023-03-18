@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.www.NonceExpiredException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -237,7 +238,7 @@ public class UsersController {
         Calendar cal = Calendar.getInstance();
         if ((passwordResetToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             String messageValue = messages.getMessage("auth.message.expired", null, locale);
-            return new ResponseEntity<>(new ApiMessage(messageValue), HttpStatus.UNAUTHORIZED);
+            throw new NonceExpiredException(messageValue);
         }
         // TODO: 17.11.2022 is it a good practice to send language to frontend?
         //String result = validatePasswordResetToken(token); //jwtTokenUtil?
