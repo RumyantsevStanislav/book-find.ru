@@ -5,6 +5,7 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {User} from "../../../models/User";
 import {HttpErrorResponse} from "@angular/common/http";
 import {phoneOrEmailValidator} from "../../../validators/PhoneOrEmailValidator";
+import {ModalService} from "../../../services/modal/modal.service";
 
 @Component({
   selector: 'app-login',
@@ -33,7 +34,10 @@ export class LoginFormComponent implements OnInit {
    */
   message: string | undefined
 
-  constructor(public usersService: UsersService, private router: Router, private route: ActivatedRoute) {
+  constructor(public usersService: UsersService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private modalService: ModalService) {
     this.form = new FormGroup({
       phoneOrEmail: new FormControl(null, [
         Validators.required,
@@ -69,7 +73,8 @@ export class LoginFormComponent implements OnInit {
     this.usersService.login(user).subscribe({
       next: (response) => {
         this.form.reset()
-        this.isSuccess.emit()
+        //this.isSuccess.emit()
+        this.modalService.close()
         this.router.navigate(['', '/']).then(r => '/')
         this.submitted = false
       },

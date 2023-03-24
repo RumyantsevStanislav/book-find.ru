@@ -7,25 +7,27 @@
       </svg>
     </div>
     <span class="person-label mb-h">
-      <small *ngIf="!usersService.isAuthenticated()">Вход/Регистрация</small>
-      <div *ngIf="usersService.isAuthenticated()">Мой аккаунт</div>
+      <small>Вход/Регистрация</small>
     </span>
   </div>
 
-  <div class="personal-item dropdown" *ngIf="usersService.isAuthenticated()" routerLinkActive="active">
-    <div class="dropdown-toggle">
-      <a class="nav-link">
-        <svg xmlns="http://www.w3.org/2000/svg" class="person-icon" viewBox="0 0 16 16">
-          <use xlink:href="../assets/images/icons/persons.svg#person-fill"/>
-        </svg>
-      </a>
-      <div class="dropdown-menu">
-        <ul>
-          <li><a class="nav-link" href="#" [routerLink]="['/account']">Профиль</a></li>
-          <li><a class="nav-link" href="#" [routerLink]="['/account', 'library']">Моя библиотека</a></li>
-          <li><a class="nav-link" href="#" (click)="logout($event)">Выйти</a></li>
-        </ul>
-      </div>
+  <div class="personal-item dropdown" *ngIf="usersService.isAuthenticated()"
+       (click)="toggleDisplay()"
+       routerLinkActive="active">
+    <div class="personal-link">
+      <svg xmlns="http://www.w3.org/2000/svg" class="person-icon" viewBox="0 0 16 16">
+        <use xlink:href="../assets/images/icons/persons.svg#person-fill"/>
+      </svg>
+    </div>
+    <span class="person-label mb-h">
+      <small>Мой аккаунт</small>
+    </span>
+    <div class="dropdown-menu" [ngStyle]="{display: isVisible ? 'block' : ''}">
+      <ul>
+        <li><a class="nav-link" href="#" [routerLink]="['/account']">Профиль</a></li>
+        <li><a class="nav-link" href="#" [routerLink]="['/account', 'library']">Моя библиотека</a></li>
+        <li><a class="nav-link" href="#" (click)="logout($event)">Выйти</a></li>
+      </ul>
     </div>
   </div>
 </div>

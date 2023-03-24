@@ -7,8 +7,6 @@ import {PasswordRecoveringFormComponent} from "../password-recovering-form/passw
 import {ComponentType} from "@angular/cdk/portal";
 import {LoginFormComponent} from "../login-form/login-form.component";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {UsersService} from "../../../services/users-service/users.service";
-import {AlertService} from "../../../services/alert/alert.service";
 
 
 @Component({
@@ -30,7 +28,6 @@ export class SignModalComponent implements OnInit {
   signUpTitle = "Регистрация"
   signInTitle = "Вход"
   passwordRecoveringTitle = "Восстановление пароля"
-  token: string | undefined
 
   @ViewChild(SignModalDirective, {static: false}) signModal!: SignModalDirective;
 
@@ -39,9 +36,7 @@ export class SignModalComponent implements OnInit {
 
   constructor(private modalService: ModalService,
               private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private usersService: UsersService,
-              private alertService: AlertService) {
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -56,33 +51,20 @@ export class SignModalComponent implements OnInit {
       (event: any) => {
         if (event instanceof NavigationEnd) {
           if (event.url.split("?")[0] == "/changePassword") {
-            this.activatedRoute.queryParams.subscribe(params => {
-              this.token = params['token']
-              if (!!this.token) {
-                this.usersService.changePassword(this.token).subscribe({
-                  next: (req) => {
-
-                  },
-                  error: (messages: string) => {
-                    this.alertService.danger(messages)
-                    this.closeModal()
-                  },
-                  complete: () => {
-                  }
-                })
-              } else {
-                this.alertService.danger("Неправильная ссылка для изменения пароля.")
-                this.closeModal()
-              }
-            })
             this.title = "Изменение пароля"
             this.isPasswordRecovering = false
             this.isSignIn = !this.isSignIn
             this.isSignUp = !this.isSignUp
             this.buttonText = this.isSignIn ? this.signUpButtonText : this.signInButtonText
           } else {
-            this.title = this.signInTitle
-            this.buttonText = this.signUpButtonText
+            if (this.display$ != undefined) {
+              this.display$.subscribe(() => {
+                this.isSignIn = true
+                this.isSignUp = false
+                this.buttonText = this.isSignIn ? this.signUpButtonText : this.signInButtonText
+                this.title = this.isSignIn ? this.signInTitle : this.signUpTitle
+              })
+            }
           }
         }
       }
@@ -92,10 +74,6 @@ export class SignModalComponent implements OnInit {
   //TODO when mousedown on modal and mouseup outside - modal closed
   closeModal() {
     this.modalService.close();
-    this.isSignIn = true
-    this.isSignUp = false
-    this.buttonText = this.isSignIn ? this.signUpButtonText : this.signInButtonText
-    this.title = this.isSignIn ? this.signInTitle : this.signUpTitle
     this.signModal.showSignModal(LoginFormComponent)
   }
 
@@ -123,5 +101,3 @@ export class SignModalComponent implements OnInit {
   //   this.close.emit();
   // }
 }
-
-export type modalType = 'signIn' | 'signUp' | 'passwordRecovering' | 'passwordChanging'

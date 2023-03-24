@@ -2,6 +2,8 @@ server:
   port: 8189
   servlet:
     context-path: /book-find
+#  error:
+#    include-stacktrace: never
 spring:
   #  main:
   #    lazy-initialization: true see BooksIntegration Test: @ComponentScan(lazyInit = true)

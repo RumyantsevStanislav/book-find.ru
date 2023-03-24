@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AuthResponse} from "../../models/JWT";
-import {RegisteredUser, SystemUser, User} from "../../models/User";
+import {PasswordDto, RegisteredUser, SystemUser, User} from "../../models/User";
 import {Observable, Subject, throwError} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
 import {ApiMessage} from "../../models/Response";
@@ -48,6 +48,12 @@ export class UsersService {
    * @private
    */
   private readonly changePasswordURL = environment.serverUrl + environment.changePasswordUrl;
+
+  /**
+   *
+   * @private
+   */
+  private readonly savePasswordURL = environment.serverUrl + environment.savePasswordUrl;
 
   constructor(private http: HttpClient) {
   }
@@ -128,6 +134,15 @@ export class UsersService {
     return this.http.get<ApiMessage>(this.changePasswordURL, {
       observe: "body",
       params: new HttpParams().set("token", token)
+    }).pipe(catchError(this.handleError.bind(this)));
+  }
+
+  /**
+   * Проверка токена перед заполнением формы изменения пароля {@link ChangePasswordComponent}.
+   */
+  savePassword(passwordDto: PasswordDto): Observable<ApiMessage> {
+    return this.http.post<ApiMessage>(this.savePasswordURL, passwordDto, {
+      observe: "body",
     }).pipe(catchError(this.handleError.bind(this)));
   }
 

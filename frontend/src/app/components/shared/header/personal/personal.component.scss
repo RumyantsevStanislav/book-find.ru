@@ -41,11 +41,7 @@ use {
   }
 }
 
-.dropdown-toggle {
-  position: relative;
-}
-
 .dropdown-menu {
   @include dropdown-menu();
-  right: 0;
+  top: 60px;
 }

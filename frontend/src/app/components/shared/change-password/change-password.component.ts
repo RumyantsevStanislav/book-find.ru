@@ -1,12 +1,14 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {ApiError, ApiMessage} from "../../../models/Response";
 import {UsersService} from "../../../services/users-service/users.service";
 import {regExpPatterns} from "../../../validators/RegExpPatterns";
 import {ConfirmedValidator} from "../../../validators/ConfirmedValidator";
-import {SystemUser} from "../../../models/User";
+import {PasswordDto} from "../../../models/User";
 import {HttpErrorResponse} from "@angular/common/http";
+import {AlertService} from "../../../services/alert/alert.service";
+import {ModalService} from "../../../services/modal/modal.service";
+import {SignModalDirective} from "../../../directives/sign-modal/sign-modal.directive";
 
 @Component({
   selector: 'app-change-password',
@@ -37,16 +39,12 @@ export class ChangePasswordComponent implements OnInit {
    * Сообщение для пользователя.
    */
   message: string | undefined
-  /**
-   * Объект, возвращаемый при ошибке на запрос.
-   */
-  apiError: ApiError | undefined
-  /**
-   * Объект, возвращаемый при успешной регистрации.
-   */
-  apiMessage: ApiMessage | undefined;
 
-  constructor(public usersService: UsersService, private route: ActivatedRoute) {
+  constructor(public usersService: UsersService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private alertService: AlertService,
+              private modalService: ModalService) {
     this.form = new FormGroup({
       passwords: new FormGroup({
           password: new FormControl(null, [
@@ -85,31 +83,32 @@ export class ChangePasswordComponent implements OnInit {
    * Запрос на регистрацию пользователя.
    */
   changePassword() {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.token === undefined) {
       return
     }
     this.submitted = true
-    // const passwordDto: PasswordDto = {
-    //   token: this.token,
-    //   password: this.form.value.passwords.password,
-    //   matchingPassword: this.form.value.passwords.matchingPassword,
-    // }
-    // return this.usersService.updatePassword(passwordDto).subscribe({
-    //   next: (response) => {
-    //     this.apiMessage = response;
-    //     this.submitted = false
-    //   },
-    //   error: (response: HttpErrorResponse) => {
-    //     this.apiError = response.error
-    //     if (this.apiError != undefined) {
-    //       this.usersService.error$.next(this.apiError.messages[0])
-    //     }
-    //     this.form.get('phoneOrEmail')?.reset()
-    //     this.submitted = false
-    //   },
-    //   complete: () => {
-    //   }
-    // });
+    const passwordDto: PasswordDto = {
+      token: this.token,
+      password: this.form.value.passwords.password,
+      matchingPassword: this.form.value.passwords.matchingPassword,
+    }
+    console.log(passwordDto)
+    return this.usersService.savePassword(passwordDto).subscribe({
+      next: (response) => {
+        this.submitted = false
+        this.router.navigate(['', '/']).then(r => '/')
+        this.modalService.close()
+        this.alertService.success(response.message)
+        this.isSuccess.emit()
+      },
+      error: (response: HttpErrorResponse) => {
+        this.usersService.error$.next(response.error.messages[0])
+        this.form.get('passwords')?.reset()
+        this.submitted = false
+      },
+      complete: () => {
+      }
+    });
   }
 
 }

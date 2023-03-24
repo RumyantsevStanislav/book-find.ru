@@ -4,13 +4,19 @@ export interface User {
 }
 
 export interface SystemUser extends User {
-  matchingPassword: string,
+  matchingPassword: string
 }
 
 export interface RegisteredUser {
-  phone?: string,
-  email?: string,
-  firstName?: string,
-  lastName?: string,
+  phone?: string
+  email?: string
+  firstName?: string
+  lastName?: string
   //birthDay?: string
+}
+
+export interface PasswordDto {
+  token: string
+  password: string
+  matchingPassword: string
 }

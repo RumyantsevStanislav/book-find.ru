@@ -22,7 +22,6 @@ import server.entities.PasswordResetToken;
 import server.entities.User;
 import server.entities.VerificationToken;
 import server.entities.dtos.JwtResponse;
-import server.entities.dtos.PasswordDto;
 import server.entities.dtos.api.ApiMessage;
 import server.entities.dtos.user.*;
 import server.exceptions.ElementAlreadyExistsException;
@@ -223,6 +222,7 @@ public class UsersController {
         String appUrl = request.getContextPath();
         eventPublisher.publishEvent(new OnResetPasswordEvent(phoneOrEmail, request.getLocale(), appUrl));
         //return new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale()));
+        // TODO: 19.03.2023 handle difference between phone and email
         return ResponseEntity.ok(new ApiMessage((messages.getMessage("message.resetPasswordEmail", null, request.getLocale()))));
     }
 
@@ -253,17 +253,17 @@ public class UsersController {
     }
 
     @PostMapping("/savePassword")
-    public GenericResponse savePassword(final Locale locale, @Valid PasswordDto passwordDto) {
+    public ApiMessage savePassword(final Locale locale, @Valid @RequestBody PasswordDto passwordDto) {
         String result = validatePasswordResetToken(passwordDto.getToken());
         if (result != null) {
-            return new GenericResponse(messages.getMessage("auth.message." + result, null, locale));
+            return new ApiMessage(messages.getMessage("auth.message." + result, null, locale));
         }
         User user = usersService.getUserByPasswordResetToken(passwordDto.getToken());
         if (user != null) {
-            usersService.changeUserPassword(user, passwordDto.getNewPassword());
-            return new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale));
+            usersService.changeUserPassword(user, passwordDto.getPassword());
+            return new ApiMessage(messages.getMessage("message.resetPasswordSuc", null, locale));
         } else {
-            return new GenericResponse(messages.getMessage("auth.message.invalid", null, locale));
+            return new ApiMessage(messages.getMessage("auth.message.invalid", null, locale));
         }
     }
 
@@ -286,12 +286,11 @@ public class UsersController {
 
     // TODO: 17.11.2022 use it instead of duplicated code above
     public String validatePasswordResetToken(String token) {
-        //        final PasswordResetToken passwordResetToken = passwordTokenRepository.findByToken(token);
-        //
-        //        return !isTokenFound(passToken) ? "invalidToken"
-        //                : isTokenExpired(passToken) ? "expired"
-        //                : null;
-        return "";
+        final PasswordResetToken passwordResetToken = usersService.getPasswordResetToken(token);
+
+        return !isTokenFound(passwordResetToken) ? "invalidToken"
+                : isTokenExpired(passwordResetToken) ? "expired"
+                : null;
     }
 
     // TODO: 17.11.2022 use or remove

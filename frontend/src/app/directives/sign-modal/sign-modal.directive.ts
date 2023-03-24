@@ -29,6 +29,9 @@ export class SignModalDirective implements OnInit {
   ngOnInit(): void {
     if (window.location.pathname === "/changePassword") {
       this.signModalComponent = this.viewContainerRef.createComponent(ChangePasswordComponent);
+      this.signModalComponent.instance.isSuccess.subscribe(() => {
+        this.showSignModal(LoginFormComponent)
+      })
     } else {
       this.signModalComponent = this.viewContainerRef.createComponent(LoginFormComponent);
     }

@@ -22,6 +22,7 @@ public class GenericResponse {
         this.error = error;
     }
 
+    // TODO: 19.03.2023 figure out with FieldError and ObjectError
     public GenericResponse(List<FieldError> fieldErrors, List<ObjectError> globalErrors) {
         super();
         ObjectMapper mapper = new ObjectMapper();

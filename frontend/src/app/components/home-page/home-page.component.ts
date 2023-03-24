@@ -8,7 +8,8 @@ import {Page} from "../../models/Page";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Filter, singleParamName} from "../../models/Filter";
 import {ModalService} from "../../services/modal/modal.service";
-import {Location} from "@angular/common";
+import {UsersService} from "../../services/users-service/users.service";
+import {AlertService} from "../../services/alert/alert.service";
 
 @Component({
   selector: 'app-home',
@@ -36,7 +37,9 @@ export class HomePageComponent implements OnInit {
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private bookService: BookService,
-              private modalService: ModalService) {
+              private modalService: ModalService,
+              private usersService: UsersService,
+              private alertService: AlertService) {
     // this.activatedRoute.url.subscribe(url => {
     //   console.log(url[0]?.path)
     //   this.url = url[0]?.path
@@ -48,7 +51,23 @@ export class HomePageComponent implements OnInit {
     let currentUrl = this.router.parseUrl(this.router.url).root.children['primary']?.segments.map(it => it.path).join('/')
     //console.log(currentUrl)
     if (currentUrl === "changePassword") {
-      this.modalService.open();
+      this.activatedRoute.queryParams.subscribe(params => {
+        let token = params['token']
+        if (!!token) {
+          this.usersService.changePassword(token).subscribe({
+            next: (req) => {
+              this.modalService.open();
+            },
+            error: (messages: string) => {
+              this.alertService.danger(messages)
+            },
+            complete: () => {
+            }
+          })
+        } else {
+          this.alertService.danger("Неправильная ссылка для изменения пароля.")
+        }
+      })
     }
     //document.body.
     let filterBest = new class implements Filter {

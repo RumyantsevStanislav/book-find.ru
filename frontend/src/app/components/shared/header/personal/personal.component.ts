@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {UsersService} from "../../../../services/users-service/users.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -11,15 +11,11 @@ import {ModalService} from "../../../../services/modal/modal.service";
 })
 export class PersonalComponent implements OnInit {
 
-  isToggle = false;
+  isVisible: boolean = false
 
   constructor(private router: Router, public usersService: UsersService,
               public dialog: MatDialog, private modalService: ModalService) {
   }
-
-  // @ViewChild('modal', { read: ViewContainerRef })
-  // entry!: ViewContainerRef;
-  // sub!: Subscription;
 
   ngOnInit(): void {
   }
@@ -27,16 +23,12 @@ export class PersonalComponent implements OnInit {
   logout(event: Event) {
     event.preventDefault();
     this.usersService.logout();
-    this.router.navigate(['/', 'login']).then(r => '/');
-    this.router.navigate(['/', 'registration']).then(r => '/');
-  }
-
-  toggle() {
-    this.isToggle = !this.isToggle
+    //this.router.navigate(['/', 'login']).then(r => '/');
+    //this.router.navigate(['/', 'registration']).then(r => '/');
   }
 
   clickOutside() {
-    this.isToggle = false;
+
   }
 
   openDialog() {
@@ -46,6 +38,10 @@ export class PersonalComponent implements OnInit {
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log(`Dialog result: ${result}`);
     // });
+  }
+
+  toggleDisplay() {
+    this.isVisible = !this.isVisible
   }
 
 }

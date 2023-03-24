@@ -52,6 +52,57 @@ html, body {
   }
 }
 
+/* smartphones, touchscreens */
+@media (hover: none) and (pointer: coarse) {
+  /* ... */
+}
+
+/* stylus-based screens */
+@media (hover: none) and (pointer: fine) {
+  /* ... */
+}
+
+/* Nintendo Wii controller, Microsoft Kinect */
+@media (hover: hover) and (pointer: coarse) {
+  /* ... */
+}
+
+/* mouse, touch pad */
+@media (hover: hover) and (pointer: fine) {
+  /* ... */
+}
+
+/* at least one input mechanism of the device includes a pointing device of limited accuracy. */
+@media (any-pointer: coarse) {
+  /* ... */
+}
+
+/* at least one input mechanism of the device includes an accurate pointing device. */
+@media (any-pointer: fine) {
+  /* ... */
+}
+
+/* the device does not include any pointing device. */
+@media (any-pointer: none) {
+  /* ... */
+}
+
+/* one or more available input mechanism(s) can hover over elements with ease */
+@media (any-hover: hover) {
+  /* ... */
+}
+
+/* one or more available input mechanism(s) can hover, but not with ease (for example simulating the hovering when performing a long touch) */
+@media (any-hover: on-demand) {
+  /* ... */
+}
+
+/* one or more available input mechanism(s) cannot hover or there are no pointing input mechanisms */
+@media (any-hover: none) {
+  /* ... */
+}
+
+
 /*//*/
 /*//.header {*/
 /*//  color: $blue;*/
@@ -60,8 +111,12 @@ html, body {
 
 .dropdown {
   cursor: pointer;
+  position: relative;
 }
 
-.dropdown:hover .dropdown-menu {
-  display: block;
+@media (hover: hover) {
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
 }
+

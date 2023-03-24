@@ -11,4 +11,5 @@ export interface Environment {
   reviewsUrl: string
   resetPasswordUrl: string
   changePasswordUrl: string
+  savePasswordUrl: string
 }
