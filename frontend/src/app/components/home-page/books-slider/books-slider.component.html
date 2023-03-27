@@ -2,10 +2,15 @@
   <!--  <div class="info-popup" *ngIf="infoPopup">Пожалуйста, зарегистрируйтесь!</div>-->
   <div class="books-slider-header">
     <h2>{{filter?.header}}</h2>
-    <h3>{{filter?.showAll}}</h3>
+    <a href="#"><h3>{{filter?.showAll}}</h3></a>
   </div>
-  <div class="books-container" *ngIf="booksPage !== undefined && !booksPage.empty; else notFoundBlock">
-    <div class="slider-book-card" *ngFor="let book of booksPage.content |
+  <swiper-container fmSwiper [config]="config" init="false" class="books-container"
+                    style="border: 1px solid black"
+                    slides-per-view="3"
+                    navigation="true"
+                    space-between="30"
+                    *ngIf="booksPage !== undefined && !booksPage.empty; else notFoundBlock">
+    <swiper-slide class="slider-book-card" *ngFor="let book of booksPage.content |
         paginate: {
         itemsPerPage: pageSize,
         currentPage: page,
@@ -24,8 +29,8 @@
         <!--            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>-->
       </div>
       <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
-    </div>
-  </div>
+    </swiper-slide>
+  </swiper-container>
 </div>
 <ng-template #loadingBlock>
   <p>Loading...</p>

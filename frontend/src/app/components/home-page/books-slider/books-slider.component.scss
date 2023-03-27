@@ -8,16 +8,17 @@
 }
 
 .books-container {
-  display: flex;
+  width: 90vw;
   align-items: center;
   flex-wrap: wrap;
 }
 
 .slider-book-card {
-  width: 200px;
+  //width: 200px;
   height: 400px;
-  text-align: center;
+  //text-align: center;
   position: relative;
+  border: 1px solid black;
 
   &-title {
     font-size: 1.25rem;

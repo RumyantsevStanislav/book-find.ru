@@ -1,3 +1,5 @@
+@import "vars";
+
 @mixin font($color) {
   color: $color;
   font-weight: 400;
@@ -16,6 +18,14 @@
   }
   li {
     list-style: none;
+
+    :hover {
+      background-color: darkgray;
+    }
+
+    :active {
+      background-color: $brand-color;
+    }
   }
 }
 

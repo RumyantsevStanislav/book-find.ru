@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -43,6 +43,9 @@ import {
   PasswordRecoveringFormComponent
 } from './components/shared/password-recovering-form/password-recovering-form.component';
 import {ChangePasswordComponent} from './components/shared/change-password/change-password.component';
+import { SwiperDirective } from './directives/swiper/swiper.directive';
+//Check breakpoints screen size
+//import {LayoutModule} from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -67,7 +70,8 @@ import {ChangePasswordComponent} from './components/shared/change-password/chang
     LibraryPageComponent,
     AlertComponent,
     PasswordRecoveringFormComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    SwiperDirective
   ],
   imports: [
     BrowserModule,
@@ -85,7 +89,8 @@ import {ChangePasswordComponent} from './components/shared/change-password/chang
     NgMaterialModule,
     BrowserAnimationsModule,
     AdminModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    //LayoutModule
   ],
   providers: [BookService, BookPageComponent, UsersService, AuthGuard, {
     provide: HTTP_INTERCEPTORS,
@@ -93,7 +98,8 @@ import {ChangePasswordComponent} from './components/shared/change-password/chang
     multi: true,
   }],
   entryComponents: [SignModalComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
 }

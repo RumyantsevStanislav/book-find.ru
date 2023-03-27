@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {PersonalBook} from "../../../models/PersonalBook";
 import {Page} from "../../../models/Page";
@@ -10,13 +10,19 @@ import {PersonalBooksService} from "../../../services/personal-books/personal-bo
 import {Filter} from "../../../models/Filter";
 import {UsersService} from "../../../services/users-service/users.service";
 import {MatDialog} from "@angular/material/dialog";
+import {register} from 'swiper/element/bundle';
+import {A11y, Mousewheel, Navigation, Pagination, SwiperOptions} from "swiper";
+
+register();
 
 @Component({
   selector: 'app-books-slider',
   templateUrl: './books-slider.component.html',
-  styleUrls: ['./books-slider.component.scss']
+  styleUrls: ['./books-slider.component.scss'],
+  //TODO figure out
+  //ViewEncapsulation.None
 })
-export class BooksSliderComponent implements OnInit {
+export class BooksSliderComponent implements OnInit, AfterViewInit {
 
   @Input() filter: Filter | undefined
 
@@ -35,6 +41,27 @@ export class BooksSliderComponent implements OnInit {
   loading = false;
   public filterParams: HttpParams = new HttpParams();
 
+  public config: SwiperOptions = {
+    modules: [Navigation, Pagination, A11y, Mousewheel],
+    //autoHeight: true,
+    navigation: false,
+    pagination: {clickable: true, dynamicBullets: true},
+    slidesPerView: 5,
+    //centeredSlides: true,
+    breakpoints: {
+      400: {
+        //slidesPerView: "auto",
+        slidesPerView: 2,
+        spaceBetween: 10,
+        //centeredSlides: false
+      },
+      1000: {
+        slidesPerView: 4,
+        spaceBetween: 20,
+      }
+    }
+  }
+
   constructor(private router: Router,
               private bookService: BookService,
               private personalBooksService: PersonalBooksService,
@@ -44,6 +71,9 @@ export class BooksSliderComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBooks(this.filter)
+  }
+
+  ngAfterViewInit() {
   }
 
   search(): void {
