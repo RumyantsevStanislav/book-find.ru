@@ -52,6 +52,7 @@ public class Book implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    @ToString.Exclude
     private Set<Isbn> isbns = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")

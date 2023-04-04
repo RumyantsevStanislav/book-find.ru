@@ -22,7 +22,7 @@
         <!--      <p>{{book.publisher?.description}}</p>-->
         <p>Серия: {{book.series?.title}}</p>
         <!--      <p>{{book.series?.description}}</p>-->
-        <a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a>
+        <a href="#" (click)="addToLibrary(book.isbn, status.WILL_READ)">Добавить в библиотеку</a>
       </div>
     </div>
     <div class="book-card-description">
@@ -88,3 +88,5 @@
 <ng-template #loading>
   <p class="text-center">Загружаю описание книги...</p>
 </ng-template>
+
+<!--            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>-->

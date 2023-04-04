@@ -7,6 +7,7 @@ import {PersonalBooksService} from "../../services/personal-books/personal-books
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UsersService} from "../../services/users-service/users.service";
 import {ReviewsService} from "../../services/reviews/reviews.service";
+import {Status} from "../../models/PersonalBook";
 
 @Component({
   selector: 'book-card',
@@ -18,6 +19,7 @@ export class BookPageComponent implements OnInit {
   bookFull$: Observable<BookFull> | undefined;
   isShowReviewForm = false;
   buttonText = "Написать рецензию"
+  status = Status;
   // @ts-ignore
   form: FormGroup;
 
@@ -46,8 +48,8 @@ export class BookPageComponent implements OnInit {
     );
   }
 
-  addToLibrary(isbn: number) {
-    this.personalBooksService.addToLibrary(isbn);
+  addToLibrary(isbn: number, status: Status) {
+    this.personalBooksService.addToLibrary(isbn, status);
   }
 
   toggleReviewForm() {

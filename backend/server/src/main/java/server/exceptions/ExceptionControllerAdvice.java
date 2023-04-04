@@ -4,6 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.NonceExpiredException;
@@ -78,6 +79,13 @@ public class ExceptionControllerAdvice implements WebMvcConfigurer {
     @ExceptionHandler({UsernameNotFoundException.class})
     public ResponseEntity<ApiError> handleUsernameNotFoundExceptionException(final UsernameNotFoundException exception, final WebRequest request) {
         log.info("Trying to make action for authorized user only.");
+        final ApiError apiError = new ApiError(exception.getLocalizedMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({AuthenticationCredentialsNotFoundException.class})
+    public ResponseEntity<ApiError> handleAuthenticationCredentialsNotFoundException(final AuthenticationCredentialsNotFoundException exception, final WebRequest request) {
+        log.info("Trying to make action for authorized user only without Principal.");
         final ApiError apiError = new ApiError(exception.getLocalizedMessage());
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }

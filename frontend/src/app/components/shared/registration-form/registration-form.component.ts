@@ -4,9 +4,10 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {phoneOrEmailValidator} from "../../../validators/PhoneOrEmailValidator";
 import {ConfirmedValidator} from "../../../validators/ConfirmedValidator";
-import {ApiError, ApiMessage} from "../../../models/Response";
 import {UsersService} from "../../../services/users-service/users.service";
 import {regExpPatterns} from "../../../validators/RegExpPatterns";
+import {ModalService} from "../../../services/modal/modal.service";
+import {AlertService} from "../../../services/alert/alert.service";
 
 @Component({
   selector: 'app-registration',
@@ -34,16 +35,8 @@ export class RegistrationFormComponent {
    * Сообщение для пользователя.
    */
   message: string | undefined
-  /**
-   * Объект, возвращаемый при ошибке на запрос.
-   */
-  apiError: ApiError | undefined
-  /**
-   * Объект, возвращаемый при успешной регистрации.
-   */
-  apiMessage: ApiMessage | undefined;
 
-  constructor(public usersService: UsersService) {
+  constructor(public usersService: UsersService, private modalService: ModalService, private alertService: AlertService) {
     this.form = new FormGroup({
       phoneOrEmail: new FormControl(null, [
         Validators.required,
@@ -89,14 +82,12 @@ export class RegistrationFormComponent {
     }
     return this.usersService.registration(systemUser).subscribe({
       next: (response) => {
-        this.apiMessage = response;
         this.submitted = false
+        this.modalService.close()
+        this.alertService.success(response.message)
       },
       error: (response: HttpErrorResponse) => {
-        this.apiError = response.error
-        if (this.apiError != undefined) {
-          this.usersService.error$.next(this.apiError.messages[0])
-        }
+        this.usersService.error$.next(response.error.messages[0])
         this.form.get('phoneOrEmail')?.reset()
         this.submitted = false
       },

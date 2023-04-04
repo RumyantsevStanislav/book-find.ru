@@ -1,0 +1,23 @@
+@import "../../../../../../mixins";
+
+.card-footer {
+  //opacity: .99;
+  align-self: flex-end;
+  cursor: pointer;
+  min-height: 2.5rem;
+
+  .person-icon {
+    height: 1.25rem;
+    aspect-ratio: 1 / 1;
+  }
+
+  :hover use {
+    fill: red;
+  }
+}
+
+.dropdown-menu {
+  @include dropdown-menu();
+  bottom: calc(40px - 1.25rem);
+  right: 1.25rem;
+}

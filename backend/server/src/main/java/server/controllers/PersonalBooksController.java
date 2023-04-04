@@ -3,6 +3,8 @@ package server.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import server.entities.PersonalBook;
 import server.entities.User;
@@ -14,7 +16,6 @@ import server.services.UsersService;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 // TODO: 17.11.2022 remove on production
@@ -44,12 +45,17 @@ public class PersonalBooksController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> addPersonalBook(Principal principal, @RequestBody PersonalBook personalBook) {
-        Optional<User> user = usersService.getUserByPhoneOrEmail(principal.getName());
-        user.ifPresent(u -> {
-            personalBook.setPhone(u.getPhone());
-            personalBook.setEmail(u.getEmail());
-        });
-        return personalBooksService.saveOrUpdate(personalBook);
+    // TODO: 04.04.2023 return PersonalBookDto 
+    public ResponseEntity<PersonalBook> addPersonalBook(Principal principal, @RequestBody PersonalBook personalBook) {
+        if (principal == null) {
+            throw new AuthenticationCredentialsNotFoundException("Для совершения этого дейставия необходимо авторизоваться.");
+        }
+        // TODO: 03.04.2023 maybe put throwing exception into service
+        User user = usersService.getUserByPhoneOrEmail(principal.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не существует"));
+        personalBook.setPhone(user.getPhone());
+        personalBook.setEmail(user.getEmail());
+        personalBooksService.saveOrUpdate(personalBook);
+        return ResponseEntity.ok(personalBook);
     }
 }

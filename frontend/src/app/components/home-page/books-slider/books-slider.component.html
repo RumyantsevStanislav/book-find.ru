@@ -5,31 +5,24 @@
     <a href="#"><h3>{{filter?.showAll}}</h3></a>
   </div>
   <swiper-container fmSwiper [config]="config" init="false" class="books-container"
-                    style="border: 1px solid black"
-                    slides-per-view="3"
-                    navigation="true"
-                    space-between="30"
                     *ngIf="booksPage !== undefined && !booksPage.empty; else notFoundBlock">
-    <swiper-slide class="slider-book-card" *ngFor="let book of booksPage.content |
-        paginate: {
-        itemsPerPage: pageSize,
-        currentPage: page,
-        totalItems: count}">
-      <img class="slider-book-card-img" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
-           alt="{{book.title}}">
-      <div class="slider-book-card-estimation">{{book.estimation | number:'1.1'}}</div>
-      <div class="slider-book-card-title" [routerLink]="['/book', book.isbn]">{{book.title}}</div>
-      <!--            <p class="card-text"></p>-->
-      <!--            <span>{{book.isbn}}</span>-->
-      <!--            <div class="authors" *ngFor="let author of book.authors">-->
-      <!--              <small>{{author.role}}: {{author.name}}</small>-->
-      <!--            </div>-->
-      <div class="card-footer">
-        <a href="#" (click)="addToLibrary(book.isbn)">Добавить в библиотеку</a>
-        <!--            <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>-->
+    <swiper-slide class="slider-book-card" *ngFor="let book of booksPage.content">
+      <div class="cover">
+        <img class="slider-book-card-img"
+             ngSrc="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
+             onerror="this.src ='../../../assets/images/covers/768776.jpg'"
+             alt="{{book.title}}"
+             width="220" height="320">
+        <div class="estimation">{{book.estimation | number:'1.1'}}</div>
       </div>
+      <div class="slider-book-card-title" [routerLink]="['/book', book.isbn]">{{book.title}}</div>
+
+      <app-book-actions class="card-footer" [book]="book"></app-book-actions>
       <!--    [class.completed]="book.completed" - применяем класс если атрибут - true-->
     </swiper-slide>
+    <!--    <div class="swiper-button-prev"></div>-->
+    <!--    <div class="swiper-button-next"></div>-->
+
   </swiper-container>
 </div>
 <ng-template #loadingBlock>

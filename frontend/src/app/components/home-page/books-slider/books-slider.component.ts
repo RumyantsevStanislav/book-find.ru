@@ -1,15 +1,10 @@
-import {AfterViewInit, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
-import {PersonalBook} from "../../../models/PersonalBook";
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {Page} from "../../../models/Page";
 import {Book} from "../../../models/Book";
 import {HttpHeaders, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {BookService} from "../../../services/books/books.service";
-import {PersonalBooksService} from "../../../services/personal-books/personal-books.service";
 import {Filter} from "../../../models/Filter";
-import {UsersService} from "../../../services/users-service/users.service";
-import {MatDialog} from "@angular/material/dialog";
 import {register} from 'swiper/element/bundle';
 import {A11y, Mousewheel, Navigation, Pagination, SwiperOptions} from "swiper";
 
@@ -25,48 +20,57 @@ register();
 export class BooksSliderComponent implements OnInit, AfterViewInit {
 
   @Input() filter: Filter | undefined
-
-  infoPopup = false
-
-  searchForm: FormGroup = new FormGroup({size: new FormControl('')});
-  page = 1;
-  count = 0;
-  pageSize = 5;
-  pageSizes = [3, 6, 9];
-
-  sizes = [{id: "1", value: 1}, {id: "2", value: 2}, {id: "3", value: 3}, {id: "4", value: 4}, {id: "5", value: 5}]
-
-  public personalBook: PersonalBook = new PersonalBook(0, '', 0, '');
   booksPage: Page<Book> | undefined;
   loading = false;
-  public filterParams: HttpParams = new HttpParams();
 
   public config: SwiperOptions = {
     modules: [Navigation, Pagination, A11y, Mousewheel],
     //autoHeight: true,
-    navigation: false,
-    pagination: {clickable: true, dynamicBullets: true},
-    slidesPerView: 5,
+    navigation: true,
+    //pagination: {clickable: true, dynamicBullets: true},
     //centeredSlides: true,
     breakpoints: {
-      400: {
-        //slidesPerView: "auto",
+      0: {
+        slidesPerView: 1,
+        spaceBetween: 5,
+      },
+      281: {
         slidesPerView: 2,
-        spaceBetween: 10,
+      },
+      480: {
+        //slidesPerView: "auto",
+        slidesPerView: 3,
         //centeredSlides: false
       },
-      1000: {
+      840: {
         slidesPerView: 4,
+      },
+      1024: {
+        slidesPerView: 5,
+        spaceBetween: 10,
+      },
+      1280: {
+        slidesPerView: 6,
         spaceBetween: 20,
       }
+      // '@0.75': {
+      //   slidesPerView: 2,
+      //   spaceBetween: 20,
+      // },
+      // '@1.00': {
+      //   slidesPerView: 3,
+      //   spaceBetween: 40,
+      // },
+      // '@1.50': {
+      //   slidesPerView: 4,
+      //   spaceBetween: 50,
+      // },
+
     }
   }
 
   constructor(private router: Router,
-              private bookService: BookService,
-              private personalBooksService: PersonalBooksService,
-              private usersService: UsersService,
-              public dialog: MatDialog) {
+              private bookService: BookService) {
   }
 
   ngOnInit(): void {
@@ -74,15 +78,6 @@ export class BooksSliderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-  }
-
-  search(): void {
-    console.log(this.searchForm)
-    const formData = {...this.searchForm.value}
-    console.log(formData);
-    // @ts-ignore
-    let params = new HttpParams().set("min_price", 0).set("s", this.searchForm.get("size")?.value);
-    this.getBooks(this.filter)
   }
 
   /**
@@ -103,7 +98,7 @@ export class BooksSliderComponent implements OnInit, AfterViewInit {
         }
       )
     }
-    params = params.set("s", 5)
+    params = params.set("s", 10)
     this.bookService.getBooks(headers, params).subscribe(booksPage => {
       console.log('Response', booksPage)
       this.booksPage = booksPage;
@@ -112,16 +107,5 @@ export class BooksSliderComponent implements OnInit, AfterViewInit {
       //   console.log('Response', value);
       // });
     })
-  }
-
-  addToLibrary(isbn: number) {
-    if (!this.usersService.isAuthenticated()) {
-      //this.signModal.showSignModal()
-      // this.infoPopup = true
-      // setTimeout(() => this.infoPopup = false, 1000);
-      //this.router.navigate(['/', 'login']).then(r => '/')
-    } else {
-      this.personalBooksService.addToLibrary(isbn)
-    }
   }
 }

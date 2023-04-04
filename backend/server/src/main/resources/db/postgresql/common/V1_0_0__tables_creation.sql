@@ -72,7 +72,7 @@ create table books
     labirint_id       integer,
     title             varchar(255),
     description       varchar(5000),
-    price             integer,
+    price             integer CHECK (price >= 0),
     pages             integer,
     year              integer,
     estimation        numeric(3, 1),
@@ -181,11 +181,17 @@ create table personal_books
     comment    varchar(255),
     created_at timestamp default current_timestamp not null,
     updated_at timestamp default current_timestamp not null,
-    unique (isbn, phone, email),
+    unique (isbn, phone, email), -- for postgres 15+ instead of UNIQUE INDEXES /*UNIQUE NULLS NOT DISTINCT*/
     foreign key (isbn) references books (isbn),
     foreign key (phone) references users (phone),
     foreign key (email) references users (email)
 );
+CREATE UNIQUE INDEX pb_unique_all ON personal_books (isbn, phone, email)
+    WHERE phone IS NOT NULL AND email IS NOT NULL;
+CREATE UNIQUE INDEX pb_unique_email ON personal_books (isbn, email)
+    WHERE phone IS NULL;
+CREATE UNIQUE INDEX pb_unique_phone ON personal_books (isbn, phone)
+    WHERE email IS NULL;
 
 drop table if exists verification_tokens cascade;
 create table verification_tokens

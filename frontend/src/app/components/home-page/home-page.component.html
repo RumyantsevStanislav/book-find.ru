@@ -1,11 +1,2 @@
-<form [formGroup]="searchForm" (ngSubmit)="search()" class="child shadowBorder p-4">
-  <div class="form-group">
-    <label>Элементов на странице</label>
-    <select formControlName="size">
-      <option *ngFor="let size of sizes" [ngValue]="size.id">{{size.value}}</option>
-    </select>
-  </div>
-  <button class="btn" type="submit">Искать</button>
-</form>
 <app-books-slider *ngFor="let filter of filters" [filter]=filter></app-books-slider>
 

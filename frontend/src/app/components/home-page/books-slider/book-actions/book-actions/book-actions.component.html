@@ -1,0 +1,14 @@
+<div class="card-footer dropdown" *ngIf="book !== undefined">
+  <div class="person-icon" (click)="toggleDisplay()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      <use xlink:href="../assets/images/icons/books.svg#book"/>
+    </svg>
+  </div>
+  <div class="dropdown-menu" [ngStyle]="{display: isVisible ? 'block' : ''}">
+    <ul>
+      <li><a class="nav-link" href="#" (click)="addToLibrary(book.isbn, status.WILL_READ)">Буду читать</a></li>
+      <li><a class="nav-link" href="#" (click)="addToLibrary(book.isbn, status.READING)">Читаю сейчас</a></li>
+      <li><a class="nav-link" href="#" (click)="addToLibrary(book.isbn, status.HAVE_READ)">Прочитано</a></li>
+    </ul>
+  </div>
+</div>

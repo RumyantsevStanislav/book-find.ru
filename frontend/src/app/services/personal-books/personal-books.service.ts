@@ -1,8 +1,6 @@
-import {Injectable, ViewChild} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {PersonalBook, PersonalBookImpl} from "../../models/PersonalBook";
-import {UsersService} from "../users-service/users.service";
-import {SignModalDirective} from "../../directives/sign-modal/sign-modal.directive";
+import {PersonalBook, PersonalBookImpl, Status} from "../../models/PersonalBook";
 import {environment} from "../../environments/environment.dev";
 import {catchError} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
@@ -15,13 +13,11 @@ export class PersonalBooksService {
   private readonly personalBooksURL = environment.serverUrl + environment.personalBooksUrl;
   submitted: boolean | undefined
 
-  @ViewChild(SignModalDirective, {static: true}) signModal!: SignModalDirective;
-
-  constructor(private http: HttpClient, private usersService: UsersService) {
+  constructor(private http: HttpClient) {
   }
 
-  private postRequest(personalBook: PersonalBook) {
-    return this.http.post<any[]>(this.personalBooksURL, personalBook)
+  private postRequest(personalBook: PersonalBook): Observable<PersonalBook> {
+    return this.http.post<PersonalBook>(this.personalBooksURL, personalBook)
       .pipe(catchError(this.handleError.bind(this)));
   }
 
@@ -30,6 +26,7 @@ export class PersonalBooksService {
       .pipe(catchError(this.handleError.bind(this)));
   }
 
+//TODO put common logic into interceptor: alerts, modal, client-side error, return ApiError.
   private handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
@@ -45,20 +42,17 @@ export class PersonalBooksService {
     });
   }
 
-  addToLibrary(isbn: number) {
-    const personalBook: PersonalBook = new PersonalBook(isbn, "Прочитано", 0, '')
+  addToLibrary(isbn: number, status: Status) {
+    const personalBook: PersonalBook = new PersonalBook(isbn, status.valueOf())
     this.postRequest(personalBook).subscribe({
-      next: (req) => {
-        console.log("SUCCESS")
+      next: (res) => {
+        //TODO emit status, estimation, comment and update book card.
       },
-      error: (req: HttpErrorResponse) => {
-        //this.apiError = req.;
-        console.log('Error ' + req)
+      error: (res: HttpErrorResponse) => {
+
         this.submitted = false
       },
       complete: () => {
-        console.log('Complete')
-        // this.router.navigate(['', '/']).then(r => '/')
         this.submitted = false
       }
     });

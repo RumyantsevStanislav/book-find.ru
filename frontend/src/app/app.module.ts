@@ -43,7 +43,10 @@ import {
   PasswordRecoveringFormComponent
 } from './components/shared/password-recovering-form/password-recovering-form.component';
 import {ChangePasswordComponent} from './components/shared/change-password/change-password.component';
-import { SwiperDirective } from './directives/swiper/swiper.directive';
+import {SwiperDirective} from './directives/swiper/swiper.directive';
+import {NgOptimizedImage} from "@angular/common";
+import {SearchPageComponent} from './components/search-page/search-page/search-page.component';
+import { BookActionsComponent } from './components/home-page/books-slider/book-actions/book-actions/book-actions.component';
 //Check breakpoints screen size
 //import {LayoutModule} from '@angular/cdk/layout';
 
@@ -71,7 +74,9 @@ import { SwiperDirective } from './directives/swiper/swiper.directive';
     AlertComponent,
     PasswordRecoveringFormComponent,
     ChangePasswordComponent,
-    SwiperDirective
+    SwiperDirective,
+    SearchPageComponent,
+    BookActionsComponent
   ],
   imports: [
     BrowserModule,
@@ -90,6 +95,7 @@ import { SwiperDirective } from './directives/swiper/swiper.directive';
     BrowserAnimationsModule,
     AdminModule,
     NgxPaginationModule,
+    NgOptimizedImage,
     //LayoutModule
   ],
   providers: [BookService, BookPageComponent, UsersService, AuthGuard, {
