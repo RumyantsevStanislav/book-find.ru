@@ -28,7 +28,6 @@ export class BookActionsComponent implements OnInit {
     if (!this.usersService.isAuthenticated()) {
       this.modalService.open()
       // setTimeout(() => this.infoPopup = false, 1000);
-      //this.router.navigate(['/', 'login']).then(r => '/')
     } else {
       this.personalBooksService.addToLibrary(isbn, status)
     }

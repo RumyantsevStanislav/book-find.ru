@@ -1,0 +1,48 @@
+<form [formGroup]="reviewForm" (ngSubmit)="saveReview()" *ngIf="isShowReviewForm">
+  <h1>Создание нового поста</h1>
+
+  <div
+    class="form-control"
+    [ngClass]="{invalid: reviewForm.get('title')?.touched && reviewForm.get('title')?.invalid}"
+  >
+    <label for="title">Название поста:</label>
+    <input id="title" type="text" formControlName="title">
+    <div
+      *ngIf="reviewForm?.get('title')?.touched && reviewForm?.get('title')?.invalid"
+      class="validation"
+    >
+      <small *ngIf="reviewForm?.get('title')?.errors?.required">
+        Введите название поста
+      </small>
+    </div>
+  </div>
+
+  <div class="form-control">
+    <label for="text">Контент поста:</label>
+    <input id="text" formControlName="text" type="textarea">
+  </div>
+
+  <div
+    class="form-control"
+    [ngClass]="{invalid: reviewForm.get('author')?.touched && reviewForm.get('author')?.invalid}"
+  >
+    <label for="author">Автор поста:</label>
+    <input id="author" type="text" formControlName="author">
+    <div
+      *ngIf="reviewForm?.get('author')?.touched && reviewForm?.get('author')?.invalid"
+      class="validation"
+    >
+      <small *ngIf="reviewForm?.get('author')?.errors?.required">
+        Введите автора поста
+      </small>
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    class="btn btn-block btn-dark"
+    [disabled]="reviewForm.invalid"
+  >Создать пост
+  </button>
+</form>
+<button class="toggle-review-form" (click)="toggleReviewForm()">{{buttonText}}</button>

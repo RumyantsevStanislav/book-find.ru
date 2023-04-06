@@ -1,25 +1,20 @@
-export interface BookFull {
-  title: string
+export interface BookFull extends Book {
   description?: string
   price?: number
   pages?: number
   year?: number
-  estimation?: number
-  isbn: number
   categories?: Set<Category>
-  authors?: Set<Author>
   publisher?: Publisher
   genre?: Genre
   series?: Series
-  cover: Cover
   reviews?: Set<Review>
 }
 
 export interface Book {
   title: string
-  estimation: number
+  estimation?: number
   isbn: number
-  authors: Set<Author>
+  authors?: Set<Author>
   cover: Cover
 }
 

@@ -47,6 +47,7 @@ import {SwiperDirective} from './directives/swiper/swiper.directive';
 import {NgOptimizedImage} from "@angular/common";
 import {SearchPageComponent} from './components/search-page/search-page/search-page.component';
 import { BookActionsComponent } from './components/home-page/books-slider/book-actions/book-actions/book-actions.component';
+import { AddReviewComponent } from './components/book-page/add-review/add-review/add-review.component';
 //Check breakpoints screen size
 //import {LayoutModule} from '@angular/cdk/layout';
 
@@ -76,7 +77,8 @@ import { BookActionsComponent } from './components/home-page/books-slider/book-a
     ChangePasswordComponent,
     SwiperDirective,
     SearchPageComponent,
-    BookActionsComponent
+    BookActionsComponent,
+    AddReviewComponent
   ],
   imports: [
     BrowserModule,

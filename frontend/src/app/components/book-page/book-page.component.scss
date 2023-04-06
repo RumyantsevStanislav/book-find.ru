@@ -3,11 +3,12 @@
 
   &-spec {
     display: flex;
-    justify-content: space-between;
-    align-items: stretch;
+    justify-content: space-around;
 
     &-left {
       display: flex;
+      flex-grow: 1;
+      background-color: whitesmoke;
     }
   }
 
@@ -16,10 +17,15 @@
   }
 
   &-info {
+    display: flex;
+    flex-direction: column;
 
+    .actions {
+      align-self: flex-end;
+    }
   }
 
   &-description {
-    max-width: 50%;
+    max-width: 40%;
   }
 }

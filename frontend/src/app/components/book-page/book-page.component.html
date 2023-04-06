@@ -22,7 +22,7 @@
         <!--      <p>{{book.publisher?.description}}</p>-->
         <p>Серия: {{book.series?.title}}</p>
         <!--      <p>{{book.series?.description}}</p>-->
-        <a href="#" (click)="addToLibrary(book.isbn, status.WILL_READ)">Добавить в библиотеку</a>
+        <app-book-actions class="actions" [book]="book"></app-book-actions>
       </div>
     </div>
     <div class="book-card-description">
@@ -30,60 +30,12 @@
       <p>{{book.description}}</p>
     </div>
   </div>
+  <app-add-review [book]="book"></app-add-review>
   <div class="review" *ngFor="let review of book.reviews">
     <p>
       {{review.review}}
     </p>
   </div>
-
-  <form [formGroup]="form" (ngSubmit)="saveReview(book.isbn)" *ngIf="isShowReviewForm">
-    <h1>Создание нового поста</h1>
-
-    <div
-      class="form-control"
-      [ngClass]="{invalid: form.get('title')?.touched && form.get('title')?.invalid}"
-    >
-      <label for="title">Название поста:</label>
-      <input id="title" type="text" formControlName="title">
-      <div
-        *ngIf="form?.get('title')?.touched && form?.get('title')?.invalid"
-        class="validation"
-      >
-        <small *ngIf="form?.get('title')?.errors?.required">
-          Введите название поста
-        </small>
-      </div>
-    </div>
-
-    <div class="form-control">
-      <label for="text">Контент поста:</label>
-      <input id="text" formControlName="text" type="textarea">
-    </div>
-
-    <div
-      class="form-control"
-      [ngClass]="{invalid: form.get('author')?.touched && form.get('author')?.invalid}"
-    >
-      <label for="author">Автор поста:</label>
-      <input id="author" type="text" formControlName="author">
-      <div
-        *ngIf="form?.get('author')?.touched && form?.get('author')?.invalid"
-        class="validation"
-      >
-        <small *ngIf="form?.get('author')?.errors?.required">
-          Введите автора поста
-        </small>
-      </div>
-    </div>
-
-    <button
-      type="submit"
-      class="btn btn-block btn-dark"
-      [disabled]="form.invalid"
-    >Создать пост
-    </button>
-  </form>
-  <button class="toggle-review-form" (click)="toggleReviewForm()">{{buttonText}}</button>
 </div>
 <ng-template #loading>
   <p class="text-center">Загружаю описание книги...</p>

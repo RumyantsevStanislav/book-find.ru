@@ -6,9 +6,9 @@
   </div>
   <div class="dropdown-menu" [ngStyle]="{display: isVisible ? 'block' : ''}">
     <ul>
-      <li><a class="nav-link" href="#" (click)="addToLibrary(book.isbn, status.WILL_READ)">Буду читать</a></li>
-      <li><a class="nav-link" href="#" (click)="addToLibrary(book.isbn, status.READING)">Читаю сейчас</a></li>
-      <li><a class="nav-link" href="#" (click)="addToLibrary(book.isbn, status.HAVE_READ)">Прочитано</a></li>
+      <li><a class="nav-link" (click)="addToLibrary(book.isbn, status.WILL_READ)">Буду читать</a></li>
+      <li><a class="nav-link" (click)="addToLibrary(book.isbn, status.READING)">Читаю сейчас</a></li>
+      <li><a class="nav-link" (click)="addToLibrary(book.isbn, status.HAVE_READ)">Прочитано</a></li>
     </ul>
   </div>
 </div>
