@@ -21,4 +21,6 @@ public interface BookDtoFull extends BookDto {
     SeriesDto getSeries();
 
     Set<BookReviewsDto> getReviews();
+
+    //Set<SinglePersonalBookDto> getPersonalBooks();
 }

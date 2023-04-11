@@ -12,7 +12,7 @@ import java.util.List;
 public interface PersonalBookMapper {
     PersonalBookMapper PERSONAL_BOOK_MAPPER = Mappers.getMapper(PersonalBookMapper.class);
 
-    @Mapping(source = "personalBook.book", target = "bookDtoImpl")
+    @Mapping(source = "book", target = "bookDtoImpl")
     PersonalBookDto toDto(PersonalBook personalBook);
 
     //@Mapping(source = "user.id", target = "userId")

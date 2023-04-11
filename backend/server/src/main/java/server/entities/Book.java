@@ -100,10 +100,10 @@ public class Book implements Serializable {
 
     // TODO: 17.11.2022 is it really need?
 
-    //    @OneToMany(mappedBy = "book")
-    //    @Getter(AccessLevel.NONE)
-    //    @ToString.Exclude
-    //    private Set<PersonalBook> personalBooks = new HashSet<>();
+    @OneToMany(mappedBy = "book")
+    @Getter(AccessLevel.NONE)
+    @ToString.Exclude
+    private Set<PersonalBook> personalBooks = new HashSet<>();
 
     @CreationTimestamp
     @Column(name = "created_at")

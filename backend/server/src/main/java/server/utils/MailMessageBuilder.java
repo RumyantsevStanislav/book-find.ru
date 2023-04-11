@@ -73,7 +73,7 @@ public class MailMessageBuilder {
             bookList.append("      <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">\n");
             bookList.append("        <div class=\"col p-4 d-flex flex-column position-static\">\n");
             //bookList.append(String.format("          <strong class=\"d-inline-block mb-2 text-primary\">%s</strong>%n", book.getGenres().get(0).getName()));
-            bookList.append(String.format("          <h3 class=\"mb-0\">%s</h3>%n", book.getTitle()));
+            bookList.append(String.format("          <h3 class=\"mb-0\">%s</h3>%n", book.title()));
             //bookList.append(String.format("          <p class=\"card-text mb-auto\">%s</p>\n", book.getDescription()));
             //bookList.append(String.format("          <a href=\"%s\" class=\"stretched-link\">Перейти на страницу книги</a>\n", SITE_URL + "/books/" + book.getId()));
             bookList.append("        </div>\n");

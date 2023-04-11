@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import server.entities.Book;
+import server.entities.dtos.BookDto;
 import server.entities.dtos.BookDtoFull;
 import server.entities.dtos.BookDtoImpl;
 import server.mappers.BookMapper;
@@ -52,5 +53,10 @@ public class BooksService {
         //// TODO: 24.12.2022 cast to Page<BookDto_2> (because it is not the same as BookDto)
         Page<Book> bookPage = booksRepository.findAll(spec, PageRequest.of(page, size));
         return bookPage.map(BookMapper.BOOK_MAPPER::toDto);
+    }
+
+    public Page<BookDto> getPageDtoWithPersonalBook(Specification<Book> spec, int page, int size, String phone, String email) {
+        Page<BookDto> bookPage = booksRepository.findAllWithPersonalBook(phone, email, PageRequest.of(page, size));
+        return bookPage;
     }
 }

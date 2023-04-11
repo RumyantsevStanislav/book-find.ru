@@ -3,24 +3,26 @@ package server.controllers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import server.entities.*;
-import server.entities.dtos.api.ApiMessage;
 import server.entities.dtos.BookDtoFull;
 import server.entities.dtos.BookDtoImpl;
+import server.entities.dtos.api.ApiMessage;
 import server.exceptions.AttributeNotValidException;
 import server.exceptions.BookNotFoundException;
 import server.exceptions.ElementAlreadyExistsException;
 import server.services.*;
 import server.utils.BookFilter;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.security.Principal;
@@ -33,6 +35,7 @@ import java.util.Set;
 @CrossOrigin("*")
 @RequestMapping("/api/v1/books")
 @Api("Set of endpoints for CRUD operations for Books")
+@AllArgsConstructor
 public class BooksController {
 
     private final BooksService booksService;
@@ -41,22 +44,13 @@ public class BooksController {
     private final PublishersService publishersService;
     private final CategoriesService categoriesService;
     private final SeriesService seriesService;
-
-    @Autowired
-    public BooksController(BooksService booksService, AuthorsService authorsService, GenresService genresService, PublishersService publishersService, CategoriesService categoriesService, SeriesService seriesService) {
-        this.booksService = booksService;
-        this.authorsService = authorsService;
-        this.genresService = genresService;
-        this.publishersService = publishersService;
-        this.categoriesService = categoriesService;
-        this.seriesService = seriesService;
-    }
+    private final UsersService usersService;
 
     @GetMapping(value = "/{isbn}", produces = "application/json")
     @ApiOperation("Returns one book by isbn.")
     public ResponseEntity<BookDtoFull> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull Long isbn, Principal principal) {
         /// TODO: 18.02.2023 add personal book if user is authorized
-        return new ResponseEntity<>(booksService.getDtoFullByIsbn(isbn).orElseThrow(() -> new BookNotFoundException("Can't find book with isbn = " + isbn)), HttpStatus.OK);
+        return new ResponseEntity<>(booksService.getDtoFullByIsbn(isbn).orElseThrow(() -> new EntityNotFoundException("Can't find book with isbn = " + isbn)), HttpStatus.OK);
     }
 
     @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
@@ -102,15 +96,20 @@ public class BooksController {
     @GetMapping(value = "", produces = "application/json")
     public Page<BookDtoImpl> showAll(@RequestParam Map<String, String> requestParams,
                                      @RequestParam(name = "categories", required = false) List<Long> categoriesIds,
-                                     @RequestParam(name = "s") int size) {
+                                     @RequestParam(name = "s") int size,
+                                     Principal principal) {
         List<Category> categoriesFilter = null;
         if (categoriesIds != null) {
             categoriesFilter = categoriesService.getCategoriesByIds(categoriesIds);
         }
         int pageNumber = Integer.parseInt(requestParams.getOrDefault("p", "0"));
         BookFilter bookFilter = new BookFilter(requestParams, categoriesFilter);
-        //model.addAttribute("books", books);
-        //model.addAttribute("filterDef", bookFilter.getFilterDefinition().toString());
+        User user;
+        if (principal != null) {
+            user = usersService.getUserByPhoneOrEmail(principal.getName())
+                    .orElseThrow(() -> new UsernameNotFoundException("Пользователь не существует"));
+            //return booksService.getPageDtoWithPersonalBook(bookFilter.getSpec(), pageNumber, size, user.getPhone(), user.getEmail());
+        }
         return booksService.getPageDto(bookFilter.getSpec(), pageNumber, size);
     }
 

@@ -1,6 +1,5 @@
 package server.mappers;
 
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -13,8 +12,8 @@ import java.util.List;
 public interface BookMapper {
     BookMapper BOOK_MAPPER = Mappers.getMapper(BookMapper.class);
 
-    @Mapping(source = "book.authors", target = "authorDtoSet")
-    @Mapping(source = "book.cover", target = "coverDtoImpl")
+    @Mapping(source = "authors", target = "authors")
+    @Mapping(source = "cover", target = "cover")
     BookDtoImpl toDto(Book book);
     // TODO: 17.11.2022  figure out
 
