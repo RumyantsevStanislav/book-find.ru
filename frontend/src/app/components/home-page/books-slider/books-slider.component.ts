@@ -86,21 +86,7 @@ export class BooksSliderComponent implements OnInit, AfterViewInit {
    */
   getBooks(filter?: Filter): void {
     this.loading = true;
-    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
-    let params = new HttpParams();
-    if (filter && filter.singleParams) {
-      filter.singleParams.forEach((value, key) => params = params.set(key, value)
-      )
-    }
-    if (filter && filter.multiParams) {
-      filter.multiParams.forEach((values, key) => {
-          values.forEach(value => params = params.append(key, value))
-        }
-      )
-    }
-    params = params.set("s", 10)
-    this.bookService.getBooks(headers, params).subscribe(booksPage => {
-      console.log('Response', booksPage)
+    this.bookService.getBooks(filter).subscribe(booksPage => {
       this.booksPage = booksPage;
       this.loading = false;
       // this.router.events.subscribe(value => {

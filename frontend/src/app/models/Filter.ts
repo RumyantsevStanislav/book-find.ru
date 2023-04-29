@@ -11,10 +11,12 @@ export interface Filter {
 export enum singleParamName {
   TILE = "title",
   PAGE_SIZE = "s",
+  PAGE_NUMBER = "p",
   MIN_ESTIMATION = "min_estimation",
   MAX_ESTIMATION = "max_estimation",
   MIN_RELEASE_DATE = "min_year",
   MAX_RELEASE_DATE = "max_year",
+  SEARCH = "search",
 }
 
 export enum multiParamName {

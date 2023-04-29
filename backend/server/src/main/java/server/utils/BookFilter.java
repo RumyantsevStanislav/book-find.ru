@@ -29,7 +29,7 @@ public class BookFilter {
             filterDefinition.append("&max_price=").append(maxPrice);
         }
         if (map.containsKey("title") && !map.get("title").isEmpty()) {
-            // TODO: 24.12.2022 think about min lengths of title 
+            // TODO: 24.12.2022 think about min lengths of title
             String title = map.get("title");
             spec = spec.and(BookSpecifications.titleLike(title));
             filterDefinition.append("&title=").append(title);
@@ -64,6 +64,13 @@ public class BookFilter {
                 }
             }
             spec = spec.and(specCategories);
+        }
+        if (map.containsKey("search") && !map.get("search").isEmpty()) {
+            String searchText = map.get("search");
+            spec = spec
+                    .or(BookSpecifications.titleLike(searchText))
+                    .or(BookSpecifications.authorNameLike(searchText));
+            filterDefinition.append("&search=").append(searchText);
         }
     }
 }

@@ -7,6 +7,7 @@ import {Book, BookFull} from "../../models/Book";
 import {UsersService} from "../users-service/users.service";
 import {Page} from "../../models/Page";
 import {environment} from "../../environments/environment.dev";
+import {Filter} from "../../models/Filter";
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,19 @@ export class BookService {
   constructor(private http: HttpClient, public usersService: UsersService) {
   }
 
-  getBooks(headers: HttpHeaders, params?: HttpParams): Observable<Page<Book>> {
+  getBooks(filter?: Filter): Observable<Page<Book>> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+    let params = new HttpParams();
+    if (filter?.singleParams) {
+      filter.singleParams.forEach((value, key) => params = params.set(key, value)
+      )
+    }
+    if (filter?.multiParams) {
+      filter.multiParams.forEach((values, key) => {
+          values.forEach(value => params = params.append(key, value))
+        }
+      )
+    }
     return this.http.get<Page<Book>>(this.booksURL, {headers: headers, params: params, observe: "body"})
       .pipe(/*delay(1500)*/)
   }

@@ -1,8 +1,13 @@
 <div class="search-container">
-  <form class="search-form" role="search">
+  <form class="search-form" role="search" [formGroup]="form" (ngSubmit)="submit()">
     <div class="search-items">
-      <input class="input-area" type="search" placeholder="Введите запрос" aria-label="Search">
-      <button class="search-button" type="submit">
+      <input class="input-area"
+             type="search"
+             placeholder="Введите запрос"
+             aria-label="Search"
+             formControlName="queryText"
+             (keyup.enter)="submit()">
+      <button class="search-button" type="submit" [disabled]="form.invalid || submitted">
         <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" viewBox="0 0 16 16">
           <use xlink:href="../assets/images/icons/magnifiers.svg#magnifier"/>
         </svg>

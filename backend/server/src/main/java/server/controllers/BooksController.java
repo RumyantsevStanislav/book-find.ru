@@ -104,9 +104,8 @@ public class BooksController {
         }
         int pageNumber = Integer.parseInt(requestParams.getOrDefault("p", "0"));
         BookFilter bookFilter = new BookFilter(requestParams, categoriesFilter);
-        User user;
         if (principal != null) {
-            user = usersService.getUserByPhoneOrEmail(principal.getName())
+            User user = usersService.getUserByPhoneOrEmail(principal.getName())
                     .orElseThrow(() -> new UsernameNotFoundException("Пользователь не существует"));
             //return booksService.getPageDtoWithPersonalBook(bookFilter.getSpec(), pageNumber, size, user.getPhone(), user.getEmail());
         }

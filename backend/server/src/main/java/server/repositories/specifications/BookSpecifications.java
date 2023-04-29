@@ -1,8 +1,11 @@
 package server.repositories.specifications;
 
 import org.springframework.data.jpa.domain.Specification;
+import server.entities.Author;
 import server.entities.Book;
 import server.entities.Category;
+
+import javax.persistence.criteria.Join;
 
 // TODO: 24.12.2022 optimize methods -> root.get("parameter")
 public class BookSpecifications {
@@ -16,7 +19,15 @@ public class BookSpecifications {
 
     // TODO: 24.12.2022 figure out with criteriaQuery
     public static Specification<Book> titleLike(String title) {
-        return (Specification<Book>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.upper(root.get("title")), String.format("%%%s%%", title).toUpperCase());
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.upper(root.get("title")), String.format("%%%s%%", title).toUpperCase());
+    }
+
+    public static Specification<Book> authorNameLike(String authorName) {
+        return (root, criteriaQuery, criteriaBuilder) -> {
+            Join<Author, Book> booksAuthor = root.join("authors");
+            criteriaQuery.distinct(true);
+            return criteriaBuilder.like(criteriaBuilder.upper(booksAuthor.get("name")), String.format("%%%s%%", authorName).toUpperCase());
+        };
     }
 
     public static Specification<Book> estimationGreaterOrEqualsThen(int minEstimation) {

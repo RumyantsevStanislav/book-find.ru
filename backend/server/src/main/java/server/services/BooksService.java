@@ -50,7 +50,9 @@ public class BooksService {
     }
 
     public Page<BookDtoImpl> getPageDto(Specification<Book> spec, int page, int size) {
-        //// TODO: 24.12.2022 cast to Page<BookDto_2> (because it is not the same as BookDto)
+        //        booksRepository.searchSimilar()
+        //        QueryBuilder query = QueryBuilders.
+        // TODO: 24.12.2022 cast to Page<BookDto_2> (because it is not the same as BookDto)
         Page<Book> bookPage = booksRepository.findAll(spec, PageRequest.of(page, size));
         return bookPage.map(BookMapper.BOOK_MAPPER::toDto);
     }
@@ -59,4 +61,10 @@ public class BooksService {
         Page<BookDto> bookPage = booksRepository.findAllWithPersonalBook(phone, email, PageRequest.of(page, size));
         return bookPage;
     }
+
+    //    public Page<BookDtoImpl> getSearchPageDto(String searchText, int page, int size) {
+    //        //// TODO: 24.12.2022 cast to Page<BookDto_2> (because it is not the same as BookDto)
+    //        Page<Book> bookPage = booksRepository.findAll(searchText, PageRequest.of(page, size));
+    //        return bookPage.map(BookMapper.BOOK_MAPPER::toDto);
+    //    }
 }

@@ -24,6 +24,13 @@ html, body {
   font-size: calc((100vw / 320) * var(--font-size));
 }
 
+/*@media (min-width: 1200px) {*/
+/*  .root-container {*/
+/*    max-width: 1140px;*/
+/*    border: 1px solid black;*/
+/*  }*/
+/*}*/
+
 /*wide screen*/
 @media (min-width: 1200px) {
   .ws-h {

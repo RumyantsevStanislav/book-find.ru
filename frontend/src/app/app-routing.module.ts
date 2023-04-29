@@ -5,11 +5,13 @@ import {HomePageComponent} from "./components/home-page/home-page.component";
 import {AccountPageComponent} from "./components/account-page/account-page.component";
 import {AuthGuard} from "./services/auth.guard";
 import {LibraryPageComponent} from "./components/library-page/library-page.component";
+import {SearchPageComponent} from "./components/search-page/search-page.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/', pathMatch: 'full'},
   {path: '', component: HomePageComponent},
   {path: 'book/:isbn', component: BookPageComponent},
+  {path: 'search', component: SearchPageComponent},
   {path: 'changePassword', component: HomePageComponent},
   {
     path: 'account', canActivate: [AuthGuard], children: [
