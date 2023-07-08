@@ -1,0 +1,61 @@
+server:
+  port: 8188
+  servlet:
+    context-path: /test
+logging:
+  level:
+    ru.bookfind.parsers.labirint.services.RestClient: DEBUG
+    #ru.bookfind.parsers.labirint.services: DEBUG
+app:
+  kafka:
+    producer:
+      topic: BOOKS #<PRODUCER_TOPIC_NAME>
+    consumer:
+      topic: <CONSUMER_TOPIC_NAME_1, CONSUMER_TOPIC_NAME_2, CONSUMER_TOPIC_NAME_3>
+#SPRING PROPERTIES
+spring:
+  kafka:
+    bootstrap-servers: 192.168.1.12:9094 #localhost:9200,localhost:9300,localhost:9400
+    properties:
+      #Server host name verification is disabled by setting ssl.endpoint.identification.algorithm to an empty string
+      ssl.endpoint.identification.algorithm:
+    ssl:
+      protocol: PLAINTEXT #SSL
+#      trust-store-location: classpath:/app/store/truststore.jks
+#      trust-store-password: <TRUST_STORE_PASSWORD>
+#      key-store-location: classpath:/app/store/keystore.jks
+#      key-store-password: <KEY_STORE_PASSWORD>
+#      key-password: <KEY_PASSWORD>
+    producer:
+      retries: 0
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: ru.bookfind.parsers.labirint.kafka.BookSerializer #org.apache.kafka.common.serialization.StringSerializer
+  cloud:
+    openfeign:
+      client:
+        config:
+# https://codingnconcepts:com/spring-boot/configure-feign-rest-client/
+          books:
+            url: http://localhost:8189/book-find/api/v1/books
+#            connectTimeout: 5000
+#            readTimeout: 5000
+            loggerLevel: BASIC
+#            errorDecoder: com.example.SimpleErrorDecoder
+#            retryer: com.example.SimpleRetryer
+#            requestInterceptors:
+#              - com.example.FooRequestInterceptor
+#              - com.example.BarRequestInterceptor
+#            dismiss404: false
+#            encoder: com.example.SimpleEncoder
+#            decoder: com.example.SimpleDecoder
+#            contract: com.example.SimpleContract
+      httpclient:
+        enabled: true
+      okhttp:
+        enabled: false
+#    consumer:
+#      group-id: <CONSUMER_GROUP_ID>
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.LongSerializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

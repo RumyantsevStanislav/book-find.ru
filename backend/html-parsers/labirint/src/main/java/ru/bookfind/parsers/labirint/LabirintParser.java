@@ -1,5 +1,6 @@
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+package ru.bookfind.parsers.labirint;
+
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,13 +12,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+@Slf4j
 public class LabirintParser {
-
-    private static final Logger logger = LogManager.getLogger();
     private final Document document;
 
-    LabirintParser(Connection connection) throws IOException {
+    public LabirintParser(Connection connection) throws IOException {
         this.document = connection.execute().parse();
     }
 
@@ -46,13 +45,13 @@ public class LabirintParser {
 
     private Long getLabirintId(Document document) {
         Long labirintId = parseLong(onlyDigits(getElementText(document.selectFirst("div.articul"))));
-        logger.info("Correct get labirintId: {}", labirintId);
+        log.info("Correct get labirintId: {}", labirintId);
         return labirintId;
     }
 
     private String getTitle(Document document) {
         String title = getElementText(document.selectFirst("div#product-title > h1"));
-        logger.info("Correct get title: {}", title);
+        log.info("Correct get title: {}", title);
         return title;
     }
 
@@ -70,26 +69,26 @@ public class LabirintParser {
             author.setRole(authorRole);
             authorsList.add(author);
         }
-        logger.info("Correct get authors list {}", authorsList);
+        log.info("Correct get authors list {}", authorsList);
         return authorsList;
     }
 
     private String getDescription(Document document) {
         Element fullAnnotation = document.getElementById("product-about");
         String description = fullAnnotation == null ? "" : getElementText(fullAnnotation.selectFirst("p"));
-        logger.info("Correct get description: {}", description);
+        log.info("Correct get description: {}", description);
         return description;
     }
 
     private Float getEstimation(Document document) {
         Float estimation = parseFloat(getElementText(document.getElementById("rate")));
-        logger.info("Correct get estimation: {}", estimation);
+        log.info("Correct get estimation: {}", estimation);
         return estimation;
     }
 
     private Integer getEstimationsCount(Document document) {
         Integer estimationCount = parseInt(onlyDigits(getElementText(document.getElementById("product-rating-marks-label"))));
-        logger.info("Correct get estimationCount: {}", estimationCount);
+        log.info("Correct get estimationCount: {}", estimationCount);
         return estimationCount;
     }
 
@@ -107,21 +106,21 @@ public class LabirintParser {
             isbnEntity.setIsbn(isbn);
             isbnEntitySet.add(isbnEntity);
         }
-        logger.info("Correct get isbns: {}", isbns);
+        log.info("Correct get isbns: {}", isbns);
         return isbnEntitySet;
     }
 
 
     private Integer getPages(Document document) {
         Integer pages = parseInt(getElementAttribute(document.selectFirst("div.pages2 > span"), "data-pages"));
-        logger.info("Correct get pages: {}", pages);
+        log.info("Correct get pages: {}", pages);
         return pages;
     }
 
     private Integer getYear(Document document) {
         Element yearElement = document.selectFirst("div.publisher");
         Integer year = parseInt(onlyDigits(getElementText(yearElement)));
-        logger.info("Correct get year {}", year);
+        log.info("Correct get year {}", year);
         return year;
     }
 
@@ -132,7 +131,7 @@ public class LabirintParser {
         Long seriesId = parseLong(onlyDigits(getElementAttribute(seriesElement, "href")));
         series.setTitle(title);
         series.setLabirintId(seriesId);
-        logger.info("Correct get series {}", series);
+        log.info("Correct get series {}", series);
         return series;
     }
 
@@ -143,7 +142,7 @@ public class LabirintParser {
         String publisherTitle = getElementText(publisherElement);
         publisher.setLabirintId(publisherId);
         publisher.setTitle(publisherTitle);
-        logger.info("Correct get publisher {}", publisher);
+        log.info("Correct get publisher {}", publisher);
         return publisher;
     }
 
@@ -158,7 +157,7 @@ public class LabirintParser {
             category.setTitle(categoryTitle);
             categoryList.add(category);
         }
-        logger.info("Correct get category list {}", categoryList);
+        log.info("Correct get category list {}", categoryList);
         return categoryList;
     }
 
@@ -166,7 +165,7 @@ public class LabirintParser {
         String path = getElementText(document.getElementById("thermometer-books"));
         Genre genre = new Genre();
         genre.setPath(path);
-        logger.info("Correct get genre {}", genre);
+        log.info("Correct get genre {}", genre);
         return genre;
     }
 
@@ -174,7 +173,7 @@ public class LabirintParser {
         try {
             return Long.parseLong(element);
         } catch (NumberFormatException numberFormatException) {
-            logger.warn("Fail to parseLong element: {}", element);
+            log.warn("Fail to parseLong element: {}", element);
             return 0L;
         }
     }
@@ -183,7 +182,7 @@ public class LabirintParser {
         try {
             return Integer.parseInt(element);
         } catch (NumberFormatException numberFormatException) {
-            logger.warn("Fail to parseInt element: {}", element);
+            log.warn("Fail to parseInt element: {}", element);
             return 0;
         }
     }
@@ -192,7 +191,7 @@ public class LabirintParser {
         try {
             return Float.parseFloat(element);
         } catch (NumberFormatException numberFormatException) {
-            logger.warn("Fail to parseFloat element: {}", element);
+            log.warn("Fail to parseFloat element: {}", element);
             return 0F;
         }
     }
