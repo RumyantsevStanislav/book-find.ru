@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import ru.bookfind.parsers.labirint.services.RestClient;
-import server.entities.Book;
 import wiremock.org.apache.commons.io.IOUtils;
 
 import java.io.IOException;

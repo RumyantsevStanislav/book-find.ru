@@ -3,7 +3,7 @@ package ru.bookfind.parsers.labirint.kafka;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Serializer;
-import server.entities.Book;
+import ru.bookfind.parsers.labirint.dtos.Book;
 
 import java.util.Map;
 

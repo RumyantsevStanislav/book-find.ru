@@ -14,8 +14,8 @@ import ru.bookfind.parsers.labirint.services.ParserService;
 public class Application {
 
     public static void main(String[] args) throws InterruptedException {
-        SpringApplication.run(Application.class, args)
-                .getBean(ParserService.class).save();
+        SpringApplication.run(Application.class, args);
+                //.getBean(ParserService.class).save();
     }
 
 }

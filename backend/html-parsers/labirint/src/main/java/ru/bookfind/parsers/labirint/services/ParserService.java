@@ -6,13 +6,12 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.bookfind.parsers.labirint.LabirintParser;
+import ru.bookfind.parsers.labirint.dtos.Book;
 import ru.bookfind.parsers.labirint.kafka.KafkaProducerService;
-import server.entities.Book;
 
 import java.io.*;
 import java.net.URL;
@@ -36,19 +35,18 @@ public class ParserService {
 
     //@Scheduled(cron = "0 0 1 ? * SAT-SUN")
     //@Scheduled(fixedDelay = 5, timeUnit = TimeUnit.HOURS)
-    public void save() {
-        //saveImages();
-        saveBooks();
+    public void save(int from, int to) {
+        saveImages(from, to);
+        saveBooks(from, to);
     }
 
-    private void saveBooks() {
-
+    public void saveBooks(int from, int to) {
         try (
                 FileWriter fileWriter = new FileWriter(FILENAME, true);
                 PrintWriter printWriter = new PrintWriter(fileWriter)
         ) {
             ExecutorService executorService = Executors.newFixedThreadPool(1);
-            for (int i = 10; i <= 10; i++) {
+            for (int i = from; i <= to; i++) {
 //                int finalI = i;
                 log.info("start = {}", System.nanoTime());
                 saveBook(i, printWriter);
@@ -65,8 +63,8 @@ public class ParserService {
         }
     }
 
-    private void saveImages() {
-        for (int i = 195685; i <= 195685/*855000*/; i++) {
+    private void saveImages(int from, int to) {
+        for (int i = from; i <= to/*855000*/; i++) {
             String url = PATH + i;
             Connection connection = Jsoup.connect(url).userAgent("Chrome/81.0.4044.138");
             try {
@@ -116,6 +114,7 @@ public class ParserService {
             printWriter.println(i + " " + response.getStatusCode().is2xxSuccessful());
         } catch (IOException exception) {
             log.error("Unable to create LabirintParser {}", i);
+            printWriter.println(i + " " + Boolean.FALSE);
         }
     }
 }

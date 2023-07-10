@@ -1,6 +1,6 @@
 package ru.bookfind.parsers.labirint.kafka;
 
-import server.entities.Book;
+import ru.bookfind.parsers.labirint.dtos.Book;
 
 public interface KafkaProducerService {
     void send(Book book);

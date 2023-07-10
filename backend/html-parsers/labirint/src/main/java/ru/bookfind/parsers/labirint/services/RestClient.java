@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.bookfind.parsers.labirint.configs.FeignClientConfig;
-import server.entities.Book;
+import ru.bookfind.parsers.labirint.dtos.Book;
 
 @FeignClient(value = "books"/*, configuration = FeignClientConfig.class*/)
 public interface RestClient {

@@ -7,7 +7,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
-import server.entities.Book;
+import ru.bookfind.parsers.labirint.dtos.Book;
 
 @Service
 @Slf4j

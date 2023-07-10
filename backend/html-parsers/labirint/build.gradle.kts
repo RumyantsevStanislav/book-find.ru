@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.1.0"
 	id("io.spring.dependency-management") version "1.1.0"
+	id("com.bmuschko.docker-spring-boot-application") version "9.3.1"
 }
 
 group = "ru.bookfind.parsers.labirint"
@@ -33,7 +34,6 @@ dependencies {
 	implementation("org.springframework.kafka:spring-kafka")
 	// https://mvnrepository.com/artifact/org.jsoup/jsoup
 	implementation("org.jsoup:jsoup:1.16.1")
-	implementation(files("C:\\Users\\s.rumyantsev\\IdeaProjects\\book-find.ru\\backend\\server\\target\\server-entities.jar"))
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	//developmentOnly("org.springframework.boot:spring-boot-docker-compose")
@@ -53,4 +53,12 @@ dependencyManagement {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+docker {
+	springBootApplication {
+		baseImage.set("eclipse-temurin:17-jdk-jammy")
+		ports.set(listOf(8188, 8188))
+		jvmArgs.set(listOf("-Dspring.profiles.active=dev", "-Xmx2048m"))
+	}
 }

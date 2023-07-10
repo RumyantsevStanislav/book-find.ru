@@ -5,7 +5,8 @@ import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import server.entities.*;
+import ru.bookfind.parsers.labirint.dtos.*;
+
 
 import java.io.IOException;
 import java.util.Arrays;
