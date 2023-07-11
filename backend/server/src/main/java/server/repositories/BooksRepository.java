@@ -2,9 +2,11 @@ package server.repositories;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import server.entities.Book;
 import server.entities.dtos.BookDto;
 import server.entities.dtos.BookDtoFull;
@@ -14,7 +16,7 @@ import java.util.Optional;
 
 // TODO: 25.01.2023 is the Repository annotation need to be here?  Spring data interfaces includes Repository?
 //@Repository
-public interface BooksRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
+public interface BooksRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book>/*, ElasticsearchRepository<Book, Long>*/ {
     List<Book> findByTitle(String title);
 
     Optional<BookDtoFull> findDtoFullByIsbn(Long isbn);
@@ -22,6 +24,8 @@ public interface BooksRepository extends JpaRepository<Book, Long>, JpaSpecifica
     Optional<Book> findByIsbn(Long isbn);
 
     void deleteByIsbn(Long isbn);
+
+    List<BookDto> findAllBy();
 
     @Query(value = "select books.*," +
             " authors.name, authors.role," +

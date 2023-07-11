@@ -2,6 +2,16 @@ server:
   port: 8189
   servlet:
     context-path: /book-find
+  ssl:
+    enabled: false
+
+    key-store: classpath:www.book-find.ru.jks
+    key-store-type: pkcs12
+    key-store-password:
+    #key-password:
+    key-alias:
+    #certificate-private-key:
+
 #  error:
 #    include-stacktrace: never
 spring:
@@ -28,12 +38,12 @@ spring:
     properties:
       hibernate:
         generate_statistics: true
-      #dialect: org.hibernate.dialect.PostgreSQL95Dialect
-      dialect: MariaDB103Dialect
-      format_sql: true
-      temp:
-        use_jdbc_metadata_defaults: false
-    #open-in-view: false
+        #dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        dialect: org.hibernate.dialect.MariaDB103Dialect
+        format_sql: true
+        temp:
+          use_jdbc_metadata_defaults: false
+    open-in-view: true
   flyway:
     #locations: classpath:/db/postgresql/common,/db/postgresql/dev
     locations: classpath:/db/mariadb/common,/db/mariadb/dev

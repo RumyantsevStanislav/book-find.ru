@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import server.entities.*;
@@ -123,6 +125,7 @@ public class BooksController {
     }
 
     //@Transactional(isolation = Isolation.SERIALIZABLE)
+    //@Retryable
     private void checkAuthors(Book book) {
         Set<Author> currentAuthors = book.getAuthors();
         Set<Author> authors = new HashSet<>(currentAuthors);
@@ -133,7 +136,9 @@ public class BooksController {
             if (existingAuthor != null) {
                 currentAuthors.add(existingAuthor);
                 currentAuthors.remove(author);
-            }
+            } /*else {
+                authorsService.saveOrUpdate(author);
+            }*/
         }
     }
 

@@ -15,5 +15,26 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQL95Dialect
         temp:
           use_jdbc_metadata_defaults: false
+    open-in-view: false
   flyway:
     locations: classpath:/db/postgresql/common,/db/postgresql/prod
+  kafka:
+    properties:
+       #Server host name verification is disabled by setting ssl.endpoint.identification.algorithm to an empty string
+      ssl.endpoint.identification.algorithm:
+    ssl:
+      protocol: SSL
+
+      trust-store-location: file:/app/store/truststore.jks
+      trust-store-password: <TRUST_STORE_PASSWORD>
+      key-store-location: file:/app/store/keystore.jks
+      key-store-password: <KEY_STORE_PASSWORD>
+      key-password: <KEY_PASSWORD>
+  # https://codingnconcepts.com/spring-boot/configure-kafka-producer-and-consumer/
+  # It is recommended to always give absolute path in production environment to avoid any error.
+
+  # Absolute Path
+  # file:/app/store/truststore.jks
+
+  # Relative Path
+  # file:app/store/truststore.jks

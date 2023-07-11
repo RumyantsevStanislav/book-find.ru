@@ -10,5 +10,6 @@ public class ToDo {
     // TODO: 03.12.2022 blocking login after 3 times failing
     // TODO: 16.12.2022 parse estimations count from labirint
     // TODO: 17.12.2022 hiding Endpoints From Swagger Documentation in Spring Boot. baeldung.com
+    // TODO: 16.06.2023 move common properties to application.yml
 }
 

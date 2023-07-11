@@ -3,6 +3,7 @@ package server.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.entities.Author;
+import server.entities.Book;
 import server.repositories.AuthorsRepository;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public class AuthorsService {
     @Autowired
     public void setAuthorRepository(AuthorsRepository authorsRepository) {
         this.authorsRepository = authorsRepository;
+    }
+
+    public Author saveOrUpdate(Author author) {
+        return authorsRepository.save(author);
     }
 
     public List<Author> findAll() {

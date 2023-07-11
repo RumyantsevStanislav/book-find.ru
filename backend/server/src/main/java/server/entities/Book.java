@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.*;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -20,6 +21,7 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
+//@Document(indexName = "book")
 public class Book implements Serializable {
 
     @Id

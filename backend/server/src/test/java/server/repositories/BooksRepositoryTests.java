@@ -62,4 +62,12 @@ public class BooksRepositoryTests {
         List<Book> allBooks = booksRepository.findAll();
         Assertions.assertEquals(2, allBooks.size());
     }
+    //    Statistics stats = sessionFactory.getStatistics();
+    //stats.setStatisticsEnabled(true);
+    //    stats.getSessionOpenCount();
+    //stats.logSummary();
+    //    @TestPropertySource(properties = [
+    //            "spring.jpa.properties.hibernate.generate_statistics=true",
+    //            "logging.level.org.hibernate.stat=debug"
+    //            ])
 }

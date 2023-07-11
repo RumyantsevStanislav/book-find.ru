@@ -1,7 +1,13 @@
+#APP SPECIFIC CUSTOM PROPERTIES
+app:
+  kafka:
+    consumer:
+      topic: BOOKS #<CONSUMER_TOPIC_NAME_1, CONSUMER_TOPIC_NAME_2, CONSUMER_TOPIC_NAME_3>
 server:
   port: 8189
   servlet:
     context-path: /book-find
+#SPRING PROPERTIES
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -17,3 +23,18 @@ spring:
           use_jdbc_metadata_defaults: false
   flyway:
     locations: classpath:/db/postgresql/common,/db/postgresql/prod
+  kafka:
+    bootstrap-servers: 192.168.1.12:9094 #localhost:9200,localhost:9300,localhost:9400
+    properties:
+      #Server host name verification is disabled by setting ssl.endpoint.identification.algorithm to an empty string
+      ssl.endpoint.identification.algorithm:
+    ssl:
+      protocol: PLAINTEXT #SSL
+    consumer:
+      group-id: GROUP #<CONSUMER_GROUP_ID>
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: server.kafka.BookDeserializer
+    listener:
+      auto-startup: false # since spring boot 3
+      concurrency: 1

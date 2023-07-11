@@ -21,8 +21,8 @@ public class ServerApplication implements CommandLineRunner {
     // TODO: 17.11.2022 figure out how to get environment properties
     @Override
     public void run(String... args) throws Exception {
-        logger.info("{}", env.getProperty("JAVA_HOME"));
-        logger.info("{}", env.getProperty("app.name"));
+        logger.info("JAVA HOME: {}", env.getProperty("JAVA_HOME"));
+        logger.info("app.name: {}", env.getProperty("app.name"));
     }
     //$ mvn -q spring-boot:run
 

@@ -1,0 +1,40 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!--        &lt;!&ndash; JDBC Database connection settings &ndash;&gt;-->
+        <!--        <property name="connection.driver_class">org.postgresql.Driver</property>-->
+        <!--        <property name="connection.url">jdbc:postgresql://localhost:5432/postgres</property>-->
+        <!--        <property name="connection.username">postgres</property>-->
+        <!--        <property name="connection.password">demetra</property>-->
+        <!--        &lt;!&ndash; JDBC connection pool settings ... using built-in test pool &ndash;&gt;-->
+        <!--        &lt;!&ndash; <property name="connection.pool_size">20</property> &ndash;&gt;-->
+        <!--        <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>-->
+        <!--        <property name="hibernate.c3p0.min__size">5</property>-->
+        <!--        <property name="hibernate.c3p0.max__size">20</property>-->
+        <!--        <property name="hibernate.c3p0.acquire__increment">5</property>-->
+        <!--        <property name="hibernate.c3p0.timeout">300</property>-->
+        <!--        <property name="hibernate.c3p0.max__statements">50</property>-->
+        <!--        <property name="hibernate.c3p0.idle__test__period">3000</property>-->
+        <!--        &lt;!&ndash; Select our SQL dialect &ndash;&gt;-->
+        <!--        <property name="dialect">org.hibernate.dialect.PostgreSQL9Dialect</property> &lt;!&ndash; DB Dialect &ndash;&gt;-->
+        <!--        <property name="hbm2ddl.auto">create</property> &lt;!&ndash; create / create-drop / update &ndash;&gt;-->
+
+        <!--        <property name="show_sql">true</property> &lt;!&ndash; Show SQL in console &ndash;&gt;-->
+        <!--        <property name="format_sql">true</property> &lt;!&ndash; Show SQL formatted &ndash;&gt;-->
+        <!--        <property name="hibernate.current_session_context_class">thread</property>-->
+        <!--        &lt;!&ndash; number of rows fetched &ndash;&gt;-->
+        <!--        <property name="hibernate.jdbc.fetch_size">50</property>-->
+        <!--        &lt;!&ndash; batching size &ndash;&gt;-->
+        <!--        <property name="hibernate.jdbc.batch_size">50</property>-->
+        <!--        <property name="hibernate.order_inserts">true</property>-->
+        <!--        <property name="hibernate.order_updates">true</property>-->
+        <!--        <property name="hibernate.jdbc.batch_versioned_data">true</property>-->
+        <!--        <property name="hibernate.id.new_generator_mappings">true</property>-->
+        <!-- hibernate statistics -->
+
+        <!--        <property name="hibernate.generate_statistics">true</property>-->
+
+    </session-factory>
+</hibernate-configuration>
