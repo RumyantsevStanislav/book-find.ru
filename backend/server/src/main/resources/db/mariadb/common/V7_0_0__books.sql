@@ -11,7 +11,7 @@ create table books
     year              integer,
     estimation        numeric(3, 1),
     estimations_count integer,
-    isbn              bigint,
+    isbn              varchar(64),
     status            varchar(255),
     publisher_id      integer,
     genre_id          integer,

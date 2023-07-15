@@ -1,17 +1,6 @@
 server:
-  port: 8189
-  servlet:
-    context-path: /book-find
   ssl:
     enabled: false
-
-    key-store: classpath:www.book-find.ru.jks
-    key-store-type: pkcs12
-    key-store-password:
-    #key-password:
-    key-alias:
-    #certificate-private-key:
-
 #  error:
 #    include-stacktrace: never
 spring:
@@ -22,14 +11,11 @@ spring:
   #  mvc:
   #    pathmatch:
   #      matching-strategy: ant_path_matcher
-  #  datasource:
-  #    driver-class-name: org.postgresql.Driver
-  #    url: jdbc:postgresql://localhost:5432/bookfind_test?currentSchema=main
-  #    #url: jdbc:postgresql://localhost:5433/
-  #    username:
-  #    password:
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
+    #url: jdbc:postgresql://localhost:5432/bookfind_test?currentSchema=main #public
+    ##url: jdbc:postgresql://localhost:5433/ #new version
+    #username:
+    #password:
     url: jdbc:mariadb://192.168.1.6:3307/bookfind_test
     username:
     password:
@@ -41,8 +27,6 @@ spring:
         #dialect: org.hibernate.dialect.PostgreSQL95Dialect
         dialect: org.hibernate.dialect.MariaDB103Dialect
         format_sql: true
-        temp:
-          use_jdbc_metadata_defaults: false
     open-in-view: true
   flyway:
     #locations: classpath:/db/postgresql/common,/db/postgresql/dev
@@ -50,6 +34,9 @@ spring:
   jackson:
     serialization:
       indent_output: true
+  kafka:
+    ssl:
+      protocol: PLAINTEXT
   mail:
     host: 192.168.1.6 #smtp.gmail.com book-find.ru #
     port: 25
@@ -61,9 +48,9 @@ spring:
     properties:
       mail:
         smtp:
-          auth: false #true
+          auth: false
           starttls:
-            enable: false #true # Enable a TLS-protected connection.
+            enable: false
   web:
     resources:
       static-locations: file:src/main/resources/static/

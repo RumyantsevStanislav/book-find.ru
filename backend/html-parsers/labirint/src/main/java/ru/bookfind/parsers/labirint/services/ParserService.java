@@ -48,9 +48,7 @@ public class ParserService {
             ExecutorService executorService = Executors.newFixedThreadPool(1);
             for (int i = from; i <= to; i++) {
 //                int finalI = i;
-                log.info("start = {}", System.nanoTime());
                 saveBook(i, printWriter);
-                log.info("finish = {}", System.nanoTime());
 //            executorService.execute(() ->
 //                    saveBook(finalI)
 //            );
@@ -114,7 +112,7 @@ public class ParserService {
             printWriter.println(i + " " + response.getStatusCode().is2xxSuccessful());
         } catch (IOException exception) {
             log.error("Unable to create LabirintParser {}", i);
-            printWriter.println(i + " " + Boolean.FALSE);
+            printWriter.println(i + " " + "NOT EXIST");
         }
     }
 }

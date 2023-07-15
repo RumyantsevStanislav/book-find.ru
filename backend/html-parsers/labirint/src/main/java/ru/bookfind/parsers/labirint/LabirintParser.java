@@ -5,6 +5,7 @@ import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.util.StringUtils;
 import ru.bookfind.parsers.labirint.dtos.*;
 
 
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 @Slf4j
 public class LabirintParser {
     private final Document document;
@@ -46,82 +48,83 @@ public class LabirintParser {
 
     private Long getLabirintId(Document document) {
         Long labirintId = parseLong(onlyDigits(getElementText(document.selectFirst("div.articul"))));
-        log.info("Correct get labirintId: {}", labirintId);
+        log.debug("Correct get labirintId: {}", labirintId);
         return labirintId;
     }
 
     private String getTitle(Document document) {
         String title = getElementText(document.selectFirst("div#product-title > h1"));
-        log.info("Correct get title: {}", title);
+        log.debug("Correct get title: {}", title);
         return title;
     }
 
     private Set<Author> getAuthors(Document document) {
         Set<Author> authorsList = new HashSet<>();
-        Elements authorElements = document.select("div.authors");
-        for (Element authorElement : authorElements) {
-            Long authorId = parseLong(onlyDigits(getElementAttribute(authorElement.selectFirst("a"), "abs:href")));
-            String[] authorNameAndRole = authorElement.text().split(": ", 2);
-            String authorRole = authorNameAndRole[0];
-            String authorName = authorNameAndRole[1];
-            Author author = new Author();
-            author.setLabirintId(authorId);
-            author.setName(authorName);
-            author.setRole(authorRole);
-            authorsList.add(author);
+        Elements authorsElements = document.select("div.authors");
+        for (Element authorsElement : authorsElements) {
+            String authorsRole = authorsElement.text().split(": ", 2)[0];
+            Elements authors = authorsElement.select("a");
+            for (Element authorElement : authors) {
+                Long authorId = parseLong(onlyDigits(getElementAttribute(authorElement, "abs:href")));
+                String authorName = getElementText(authorElement);
+                Author author = new Author();
+                author.setLabirintId(authorId);
+                author.setName(authorName);
+                author.setRole(authorsRole);
+                authorsList.add(author);
+            }
         }
-        log.info("Correct get authors list {}", authorsList);
+        log.debug("Correct get authors list {}", authorsList);
         return authorsList;
     }
 
     private String getDescription(Document document) {
         Element fullAnnotation = document.getElementById("product-about");
         String description = fullAnnotation == null ? "" : getElementText(fullAnnotation.selectFirst("p"));
-        log.info("Correct get description: {}", description);
+        log.debug("Correct get description: {}", description);
         return description;
     }
 
     private Float getEstimation(Document document) {
         Float estimation = parseFloat(getElementText(document.getElementById("rate")));
-        log.info("Correct get estimation: {}", estimation);
+        log.debug("Correct get estimation: {}", estimation);
         return estimation;
     }
 
     private Integer getEstimationsCount(Document document) {
         Integer estimationCount = parseInt(onlyDigits(getElementText(document.getElementById("product-rating-marks-label"))));
-        log.info("Correct get estimationCount: {}", estimationCount);
+        log.debug("Correct get estimationCount: {}", estimationCount);
         return estimationCount;
     }
 
 
     private Set<Isbn> getIsbn(Document document) {
         Set<Isbn> isbnEntitySet = new HashSet<>();
-        Set<Long> isbns = Arrays.stream(getElementText(document.selectFirst("div.isbn"))
+        Set<String> isbns = Arrays.stream(getElementText(document.selectFirst("div.isbn"))
                         .split(" "))
-                .map(this::onlyDigits)
-                .map(this::parseLong)
-                .filter((isbn) -> isbn != 0L)
+                .map(this::removeDash)
+                .filter((isbn) -> StringUtils.hasText(isbn))
                 .collect(Collectors.toSet());
-        for (Long isbn : isbns) {
+        for (String isbn : isbns) {
             Isbn isbnEntity = new Isbn();
             isbnEntity.setIsbn(isbn);
             isbnEntitySet.add(isbnEntity);
         }
-        log.info("Correct get isbns: {}", isbns);
+        log.debug("Correct get isbns: {}", isbns);
         return isbnEntitySet;
     }
 
 
     private Integer getPages(Document document) {
         Integer pages = parseInt(getElementAttribute(document.selectFirst("div.pages2 > span"), "data-pages"));
-        log.info("Correct get pages: {}", pages);
+        log.debug("Correct get pages: {}", pages);
         return pages;
     }
 
     private Integer getYear(Document document) {
         Element yearElement = document.selectFirst("div.publisher");
         Integer year = parseInt(onlyDigits(getElementText(yearElement)));
-        log.info("Correct get year {}", year);
+        log.debug("Correct get year {}", year);
         return year;
     }
 
@@ -132,7 +135,7 @@ public class LabirintParser {
         Long seriesId = parseLong(onlyDigits(getElementAttribute(seriesElement, "href")));
         series.setTitle(title);
         series.setLabirintId(seriesId);
-        log.info("Correct get series {}", series);
+        log.debug("Correct get series {}", series);
         return series;
     }
 
@@ -143,7 +146,7 @@ public class LabirintParser {
         String publisherTitle = getElementText(publisherElement);
         publisher.setLabirintId(publisherId);
         publisher.setTitle(publisherTitle);
-        log.info("Correct get publisher {}", publisher);
+        log.debug("Correct get publisher {}", publisher);
         return publisher;
     }
 
@@ -158,7 +161,7 @@ public class LabirintParser {
             category.setTitle(categoryTitle);
             categoryList.add(category);
         }
-        log.info("Correct get category list {}", categoryList);
+        log.debug("Correct get category list {}", categoryList);
         return categoryList;
     }
 
@@ -166,7 +169,7 @@ public class LabirintParser {
         String path = getElementText(document.getElementById("thermometer-books"));
         Genre genre = new Genre();
         genre.setPath(path);
-        log.info("Correct get genre {}", genre);
+        log.debug("Correct get genre {}", genre);
         return genre;
     }
 
@@ -199,6 +202,10 @@ public class LabirintParser {
 
     private String onlyDigits(String element) {
         return element.replaceAll("\\D+", "");
+    }
+
+    private String removeDash(String element) {
+        return element.replaceAll("-", "");
     }
 
     private String getElementText(Element element) {

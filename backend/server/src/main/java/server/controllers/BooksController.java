@@ -50,7 +50,7 @@ public class BooksController {
 
     @GetMapping(value = "/{isbn}", produces = "application/json")
     @ApiOperation("Returns one book by isbn.")
-    public ResponseEntity<BookDtoFull> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull Long isbn, Principal principal) {
+    public ResponseEntity<BookDtoFull> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull String isbn, Principal principal) {
         /// TODO: 18.02.2023 add personal book if user is authorized
         return new ResponseEntity<>(booksService.getDtoFullByIsbn(isbn).orElseThrow(() -> new EntityNotFoundException("Can't find book with isbn = " + isbn)), HttpStatus.OK);
     }
@@ -118,7 +118,7 @@ public class BooksController {
         if (book.getId() != null) {
             book.setId(null);
         }
-        Long isbn = book.getIsbn();
+        String isbn = book.getIsbn();
         if (booksService.getByIsbn(isbn).isPresent()) {
             throw new ElementAlreadyExistsException("Book with isbn " + isbn + " is already exist");
         }

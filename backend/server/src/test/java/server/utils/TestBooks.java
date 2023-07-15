@@ -27,7 +27,7 @@ public class TestBooks {
             PRICE = 0,
             PAGES = 101,
             YEAR = 2021;
-    public static final long ISBN = 9785907143784L;
+    public static final String ISBN = "9785907143784";
     public static final float ESTIMATION = 8.6f;
 
     public static Set<Author> getAuthors() {

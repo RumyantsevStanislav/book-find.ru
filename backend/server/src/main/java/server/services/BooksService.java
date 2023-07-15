@@ -33,11 +33,11 @@ public class BooksService {
         return booksRepository.findByTitle(title);
     }
 
-    public Optional<BookDtoFull> getDtoFullByIsbn(Long isbn) {
+    public Optional<BookDtoFull> getDtoFullByIsbn(String isbn) {
         return booksRepository.findDtoFullByIsbn(isbn);
     }
 
-    public Optional<Book> getByIsbn(Long isbn) {
+    public Optional<Book> getByIsbn(String isbn) {
         return booksRepository.findByIsbn(isbn);
     }
 

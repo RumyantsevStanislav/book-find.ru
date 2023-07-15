@@ -50,7 +50,7 @@ public class Book implements Serializable {
     @NaturalId
     // TODO: 06.02.2023 is it useful?
     //@ISBN
-    private Long isbn;
+    private String isbn;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
     @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})

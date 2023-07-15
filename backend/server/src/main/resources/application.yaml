@@ -10,12 +10,9 @@ server:
 #SPRING PROPERTIES
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/bookfind?currentSchema=public
-    username: postgres
-    password:
+#    driver-class-name: org.postgresql.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
-    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL95Dialect
@@ -28,8 +25,6 @@ spring:
     properties:
       #Server host name verification is disabled by setting ssl.endpoint.identification.algorithm to an empty string
       ssl.endpoint.identification.algorithm:
-    ssl:
-      protocol: PLAINTEXT #SSL
     consumer:
       group-id: GROUP #<CONSUMER_GROUP_ID>
       auto-offset-reset: earliest
@@ -38,3 +33,11 @@ spring:
     listener:
       auto-startup: false # since spring boot 3
       concurrency: 1
+  mail:
+    host: 192.168.1.6 #smtp.gmail.com book-find.ru #
+    port: 25
+    protocol: smtp
+    username:
+    password:
+    templates:
+      path: /templates

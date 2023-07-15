@@ -26,7 +26,7 @@ public class Book {
 
     private Integer estimationsCount;
 
-    private Long isbn;
+    private String isbn;
 
     private Set<Isbn> isbns = new HashSet<>();
 

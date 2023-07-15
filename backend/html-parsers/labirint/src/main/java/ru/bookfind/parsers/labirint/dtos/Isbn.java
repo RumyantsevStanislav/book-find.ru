@@ -5,5 +5,5 @@ import lombok.*;
 @Data
 public class Isbn {
 
-    private Long isbn;
+    private String isbn;
 }

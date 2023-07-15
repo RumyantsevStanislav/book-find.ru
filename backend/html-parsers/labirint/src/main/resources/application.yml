@@ -10,22 +10,14 @@ app:
   kafka:
     producer:
       topic: BOOKS #<PRODUCER_TOPIC_NAME>
-    consumer:
-      topic: <CONSUMER_TOPIC_NAME_1, CONSUMER_TOPIC_NAME_2, CONSUMER_TOPIC_NAME_3>
+#    consumer:
+#      topic: <CONSUMER_TOPIC_NAME_1, CONSUMER_TOPIC_NAME_2, CONSUMER_TOPIC_NAME_3>
 #SPRING PROPERTIES
 spring:
   kafka:
-    bootstrap-servers: 192.168.1.12:9094 #localhost:9200,localhost:9300,localhost:9400
     properties:
       #Server host name verification is disabled by setting ssl.endpoint.identification.algorithm to an empty string
       ssl.endpoint.identification.algorithm:
-    ssl:
-      protocol: PLAINTEXT #SSL
-#      trust-store-location: classpath:/app/store/truststore.jks
-#      trust-store-password: <TRUST_STORE_PASSWORD>
-#      key-store-location: classpath:/app/store/keystore.jks
-#      key-store-password: <KEY_STORE_PASSWORD>
-#      key-password: <KEY_PASSWORD>
     producer:
       retries: 0
       acks: all
@@ -37,7 +29,6 @@ spring:
         config:
 # https://codingnconcepts:com/spring-boot/configure-feign-rest-client/
           books:
-            url: http://localhost:8189/book-find/api/v1/books
 #            connectTimeout: 5000
 #            readTimeout: 5000
             loggerLevel: BASIC

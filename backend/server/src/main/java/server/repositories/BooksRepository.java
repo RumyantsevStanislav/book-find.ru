@@ -19,9 +19,9 @@ import java.util.Optional;
 public interface BooksRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book>/*, ElasticsearchRepository<Book, Long>*/ {
     List<Book> findByTitle(String title);
 
-    Optional<BookDtoFull> findDtoFullByIsbn(Long isbn);
+    Optional<BookDtoFull> findDtoFullByIsbn(String isbn);
 
-    Optional<Book> findByIsbn(Long isbn);
+    Optional<Book> findByIsbn(String isbn);
 
     void deleteByIsbn(Long isbn);
 

@@ -60,5 +60,6 @@ docker {
 		baseImage.set("eclipse-temurin:17-jdk-jammy")
 		ports.set(listOf(8188, 8188))
 		jvmArgs.set(listOf("-Dspring.profiles.active=dev", "-Xmx2048m"))
+		images.set(setOf("stasrum/book-find.ru:labirint-parser"))
 	}
 }

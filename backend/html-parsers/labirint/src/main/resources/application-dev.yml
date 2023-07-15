@@ -1,0 +1,12 @@
+spring:
+  kafka:
+    bootstrap-servers: 192.168.1.12:9094 #localhost:9200,localhost:9300,localhost:9400
+    ssl:
+      protocol: PLAINTEXT
+  cloud:
+    openfeign:
+      client:
+        config:
+          # https://codingnconcepts:com/spring-boot/configure-feign-rest-client/
+          books:
+            url: http://localhost:8189/book-find/api/v1/books

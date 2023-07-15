@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @RequiredArgsConstructor
 public class Isbn extends DefaultEntity {
 
-    private Long isbn;
+    private String isbn;
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;

@@ -1,11 +1,8 @@
 spring:
   kafka:
-    properties:
-      #Server host name verification is disabled by setting ssl.endpoint.identification.algorithm to an empty string
-      ssl.endpoint.identification.algorithm:
+    bootstrap-servers: kafka:9094
     ssl:
-      protocol: SSL
-
+      protocol: PLAINTEXT #SSL
       trust-store-location: file:/app/store/truststore.jks
       trust-store-password: <TRUST_STORE_PASSWORD>
       key-store-location: file:/app/store/keystore.jks
@@ -19,3 +16,9 @@ spring:
 
 # Relative Path
 # file:app/store/truststore.jks
+  cloud:
+    openfeign:
+      client:
+        config:
+          books:
+            url: http://server:8189/book-find/api/v1/books
