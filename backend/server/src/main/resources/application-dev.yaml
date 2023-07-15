@@ -38,13 +38,6 @@ spring:
     ssl:
       protocol: PLAINTEXT
   mail:
-    host: 192.168.1.6 #smtp.gmail.com book-find.ru #
-    port: 25
-    protocol: smtp
-    username:
-    password:
-    templates:
-      path: /templates
     properties:
       mail:
         smtp:

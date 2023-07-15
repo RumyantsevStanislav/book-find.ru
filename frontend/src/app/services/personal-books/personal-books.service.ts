@@ -42,7 +42,7 @@ export class PersonalBooksService {
     });
   }
 
-  addToLibrary(isbn: number, status: Status) {
+  addToLibrary(isbn: string, status: Status) {
     const personalBook: PersonalBook = new PersonalBook(isbn, status.valueOf())
     this.postRequest(personalBook).subscribe({
       next: (res) => {

@@ -49,3 +49,5 @@ spring:
           auth: false #true
           starttls:
             enable: false #true # Enable a TLS-protected connection.
+jwt:
+  secret:

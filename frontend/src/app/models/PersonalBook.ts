@@ -2,7 +2,7 @@ import {Book} from "./Book";
 
 export class PersonalBook {
   constructor(
-    public isbn: number,
+    public isbn: string,
     public status: string,
     public estimation?: number,
     public comment?: string

@@ -2,12 +2,12 @@ import {Environment} from './interface';
 
 export const environment: Environment = {
   production: false,
-  serverUrl: '',
+  serverUrl: 'https://book-find.ru/backend/book-find/api/v1',
   authUrl: '/users/auth',
   registerUrl: '/users/register',
   accountUrl: '/users/account',
   updateUserUrl: '/users/update',
-  updatePasswordUrl: '/users/updatepassword',
+  updatePasswordUrl: '/users/updatePassword',
   personalBooksUrl: '/library',
   booksUrl: '/books',
   reviewsUrl: '/reviews',

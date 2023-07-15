@@ -13,7 +13,7 @@ export interface BookFull extends Book {
 export interface Book {
   title: string
   estimation?: number
-  isbn: number
+  isbn: string
   authors?: Set<Author>
   cover: Cover
 }
@@ -57,7 +57,7 @@ export interface Review {
 }
 
 export interface BookPk {
-  isbn: number
+  isbn: string
 }
 
 export interface ProfileDto {
