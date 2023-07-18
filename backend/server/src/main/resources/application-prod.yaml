@@ -23,9 +23,10 @@ spring:
         generate_statistics: false
         #dialect: org.hibernate.dialect.PostgreSQL95Dialect
         dialect: org.hibernate.dialect.MariaDB103Dialect
-    open-in-view: false
+    open-in-view: true #false
   flyway:
-    locations: classpath:/db/postgresql/common,/db/postgresql/prod
+    #locations: classpath:/db/postgresql/common,/db/postgresql/prod
+    locations: classpath:/db/mariadb/common,/db/mariadb/prod
   kafka:
     ssl:
       protocol: PLAINTEXT #SSL

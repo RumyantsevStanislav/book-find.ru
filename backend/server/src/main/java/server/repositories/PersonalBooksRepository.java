@@ -13,5 +13,5 @@ public interface PersonalBooksRepository extends JpaRepository<PersonalBook, Lon
 
     List<PersonalBook> findAllByPhoneOrEmail(String phone, String email);
 
-    Optional<PersonalBook> findByIsbnAndPhoneAndEmail(Long isbn, String phone, String email);
+    Optional<PersonalBook> findByIsbnAndPhoneAndEmail(String isbn, String phone, String email);
 }

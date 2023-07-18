@@ -40,7 +40,7 @@ public class PersonalBooksService {
      * @param personalBook entity of saved personal book.
      */
     public void saveOrUpdate(@NonNull final PersonalBook personalBook) {
-        Long isbn = personalBook.getIsbn();
+        String isbn = personalBook.getIsbn();
         String phone = personalBook.getPhone();
         String email = personalBook.getEmail();
         // TODO: 04.04.2023 resolve cascade fields in Book entity (see entity in debug mode).

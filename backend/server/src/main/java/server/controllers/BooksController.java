@@ -58,7 +58,7 @@ public class BooksController {
     @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
     @DeleteMapping("/{isbn}")
     @ApiOperation("")
-    public void deleteOneBook(@PathVariable @NotNull Long isbn) {
+    public void deleteOneBook(@PathVariable @NotNull String isbn) {
         booksService.deleteByIsbn(isbn);
     }
 
@@ -75,11 +75,7 @@ public class BooksController {
         for (Isbn isbn : book.getIsbns()) {
             isbn.setBook(book);
         }
-        try {
-            booksService.saveOrUpdate(book);
-        } catch (DataIntegrityViolationException exception) {
-            System.out.println("Posgres error");
-        }
+        booksService.saveOrUpdate(book);
     }
 
     @PutMapping(consumes = "application/json", produces = "application/json")

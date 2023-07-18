@@ -41,7 +41,7 @@ public class BooksService {
         return booksRepository.findByIsbn(isbn);
     }
 
-    public void deleteByIsbn(Long isbn) {
+    public void deleteByIsbn(String isbn) {
         booksRepository.deleteByIsbn(isbn);
     }
 

@@ -18,8 +18,9 @@ create table authors
 (
     id          serial primary key,
     labirint_id integer,
-    name        varchar(255) unique,
+    name        varchar(255),
     role        varchar(255),
+    unique (name, role),
     created_at  timestamp default current_timestamp,
     updated_at  timestamp default current_timestamp
 );
@@ -77,7 +78,7 @@ create table books
     year              integer,
     estimation        numeric(3, 1),
     estimations_count integer,
-    isbn              bigint,
+    isbn              varchar(64),
     status            varchar(255),
     publisher_id      integer,
     genre_id          integer,
@@ -97,7 +98,7 @@ drop table if exists isbns cascade;
 create table isbns
 (
     id         serial primary key,
-    isbn       bigint,
+    isbn       varchar(64),
     book_id    integer not null,
     created_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp,
@@ -173,7 +174,7 @@ drop table if exists personal_books cascade;
 create table personal_books
 (
     id         serial primary key,
-    isbn       bigint                              not null,
+    isbn       varchar(64)                         not null,
     phone      varchar(255),
     email      varchar(255),
     status     varchar(255)                        not null,

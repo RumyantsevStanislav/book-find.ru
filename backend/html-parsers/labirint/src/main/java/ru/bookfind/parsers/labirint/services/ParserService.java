@@ -1,5 +1,8 @@
 package ru.bookfind.parsers.labirint.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
@@ -10,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.bookfind.parsers.labirint.LabirintParser;
+import ru.bookfind.parsers.labirint.api.ApiError;
 import ru.bookfind.parsers.labirint.dtos.Book;
 import ru.bookfind.parsers.labirint.kafka.KafkaProducerService;
 
@@ -32,6 +36,8 @@ public class ParserService {
     private static final String AGENT = "Chrome/81.0.4044.138";
     private KafkaProducerService kafkaProducerService;
     private RestClient restClient;
+
+    ObjectMapper mapper = new ObjectMapper();
 
     //@Scheduled(cron = "0 0 1 ? * SAT-SUN")
     //@Scheduled(fixedDelay = 5, timeUnit = TimeUnit.HOURS)
@@ -101,7 +107,7 @@ public class ParserService {
         }
     }
 
-    private void saveBook(final int i, PrintWriter printWriter) {
+    private void saveBook(final int i, PrintWriter printWriter) throws JsonProcessingException {
         var url = PATH + i;
         Connection connection = Jsoup.connect(url).userAgent(AGENT);
         try {
@@ -110,9 +116,11 @@ public class ParserService {
 //            kafkaProducerService.send(book);
             ResponseEntity<String> response = restClient.saveBook(book);
             printWriter.println(i + " " + response.getStatusCode().is2xxSuccessful());
-        } catch (IOException exception) {
+        } catch (IOException ioException) {
             log.error("Unable to create LabirintParser {}", i);
             printWriter.println(i + " " + "NOT EXIST");
+        } catch (FeignException feignException) {
+            printWriter.println(i + " " + mapper.readValue(feignException.contentUTF8(), ApiError.class).getMessages());
         }
     }
 }

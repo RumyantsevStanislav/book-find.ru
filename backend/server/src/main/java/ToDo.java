@@ -11,5 +11,6 @@ public class ToDo {
     // TODO: 16.12.2022 parse estimations count from labirint
     // TODO: 17.12.2022 hiding Endpoints From Swagger Documentation in Spring Boot. baeldung.com
     // TODO: 16.06.2023 move common properties to application.yml
+    // TODO: 18.07.2023  figure out how it works: @ElementCollection, @EntityGraph
 }
 

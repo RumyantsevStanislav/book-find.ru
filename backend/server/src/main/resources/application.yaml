@@ -41,3 +41,5 @@ spring:
     password:
     templates:
       path: /templates
+support:
+  email: "info@book-find.ru"

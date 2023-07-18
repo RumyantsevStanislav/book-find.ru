@@ -14,7 +14,7 @@ import java.io.Serializable;
 })
 public class PersonalBook extends DefaultEntity implements Serializable {
 
-    private Long isbn;
+    private String isbn;
     private String phone;
     private String email;
     private String status;

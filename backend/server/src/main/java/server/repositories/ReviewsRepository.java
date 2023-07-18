@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface ReviewsRepository extends JpaRepository<Review, Long>, JpaSpecificationExecutor<Review> {
 
-    List<Review> findAllByBook_Isbn(Long isbn);
+    List<Review> findAllByBook_Isbn(String isbn);
 
     List<Review> findAllByUser_Id(Long id);
 }

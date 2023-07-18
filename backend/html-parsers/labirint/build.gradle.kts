@@ -34,6 +34,7 @@ dependencies {
 	implementation("org.springframework.kafka:spring-kafka")
 	// https://mvnrepository.com/artifact/org.jsoup/jsoup
 	implementation("org.jsoup:jsoup:1.16.1")
+    testImplementation("junit:junit:4.13.1")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	//developmentOnly("org.springframework.boot:spring-boot-docker-compose")
@@ -59,7 +60,7 @@ docker {
 	springBootApplication {
 		baseImage.set("eclipse-temurin:17-jdk-jammy")
 		ports.set(listOf(8188, 8188))
-		jvmArgs.set(listOf("-Dspring.profiles.active=dev", "-Xmx2048m"))
+		jvmArgs.set(listOf("-Dspring.profiles.active=prod", "-Xmx2048m"))
 		images.set(setOf("stasrum/book-find.ru:labirint-parser"))
 	}
 }

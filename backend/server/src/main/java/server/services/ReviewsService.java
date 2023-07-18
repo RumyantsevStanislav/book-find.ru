@@ -16,7 +16,7 @@ public class ReviewsService {
         this.reviewsRepository = reviewsRepository;
     }
 
-    public List<Review> getBookReviews(Long isbn) {
+    public List<Review> getBookReviews(String isbn) {
         return reviewsRepository.findAllByBook_Isbn(isbn);
     }
 

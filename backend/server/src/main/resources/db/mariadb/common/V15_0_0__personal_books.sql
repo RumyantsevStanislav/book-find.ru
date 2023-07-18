@@ -2,7 +2,7 @@ drop table if exists personal_books cascade;
 create table personal_books
 (
     id         int primary key auto_increment,
-    isbn       bigint                              not null,
+    isbn       varchar(64)                         not null,
     phone      varchar(255),
     email      varchar(255),
     status     varchar(255)                        not null,

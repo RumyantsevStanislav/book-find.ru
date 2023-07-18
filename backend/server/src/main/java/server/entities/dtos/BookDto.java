@@ -4,7 +4,7 @@ import java.util.Set;
 
 public interface BookDto {
     // TODO: 18.04.2023 figure out how to remove "get" before method name and save functionality
-    Long getIsbn();
+    String getIsbn();
 
     // TODO: 17.11.2022  configure annotations
 

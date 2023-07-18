@@ -2,6 +2,7 @@ package server.exceptions;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -89,4 +90,12 @@ public class ExceptionControllerAdvice implements WebMvcConfigurer {
         final ApiError apiError = new ApiError(exception.getLocalizedMessage());
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<ApiError> handleDataIntegrityViolationException(final DataIntegrityViolationException exception, final WebRequest request) {
+        log.info("Trying to save entity with duplicate entry.");
+        final ApiError apiError = new ApiError(exception.getLocalizedMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+
 }

@@ -34,7 +34,7 @@ public class LabirintParser {
         book.setEstimation(getEstimation(document));
         book.setEstimationsCount(getEstimationsCount(document));
         Set<Isbn> isbnEntitySet = getIsbn(document);
-        book.setIsbn(isbnEntitySet.stream().findFirst().get().getIsbn());
+        book.setIsbn(isbnEntitySet.stream().findFirst().map(Isbn::getIsbn).orElse("labirintId: " + getLabirintId(document)));
         book.setIsbns(isbnEntitySet);
         book.setStatus(Book.Status.ACTIVE);
         book.setPublisher(getPublisher(document));
@@ -102,8 +102,9 @@ public class LabirintParser {
         Set<Isbn> isbnEntitySet = new HashSet<>();
         Set<String> isbns = Arrays.stream(getElementText(document.selectFirst("div.isbn"))
                         .split(" "))
-                .map(this::removeDash)
-                .filter((isbn) -> StringUtils.hasText(isbn))
+                .map(this::onlyDigitsLetters)
+                .filter(StringUtils::hasText)
+                .filter(isbn -> isbn.matches(".*\\d+.*"))
                 .collect(Collectors.toSet());
         for (String isbn : isbns) {
             Isbn isbnEntity = new Isbn();
@@ -177,7 +178,7 @@ public class LabirintParser {
         try {
             return Long.parseLong(element);
         } catch (NumberFormatException numberFormatException) {
-            log.warn("Fail to parseLong element: {}", element);
+            log.debug("Fail to parseLong element: {}", element);
             return 0L;
         }
     }
@@ -186,7 +187,7 @@ public class LabirintParser {
         try {
             return Integer.parseInt(element);
         } catch (NumberFormatException numberFormatException) {
-            log.warn("Fail to parseInt element: {}", element);
+            log.debug("Fail to parseInt element: {}", element);
             return 0;
         }
     }
@@ -195,13 +196,17 @@ public class LabirintParser {
         try {
             return Float.parseFloat(element);
         } catch (NumberFormatException numberFormatException) {
-            log.warn("Fail to parseFloat element: {}", element);
+            log.debug("Fail to parseFloat element: {}", element);
             return 0F;
         }
     }
 
     private String onlyDigits(String element) {
         return element.replaceAll("\\D+", "");
+    }
+
+    private String onlyDigitsLetters(String element) {
+        return element.replaceAll("[^0-9а-яА-ЯёЁa-zA-Z]+", "");
     }
 
     private String removeDash(String element) {
