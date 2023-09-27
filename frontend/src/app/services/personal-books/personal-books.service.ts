@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {PersonalBook, PersonalBookImpl, Status} from "../../models/PersonalBook";
-import {environment} from "../../environments/environment.dev";
+import {environment} from "../../../environments/environment";
 import {catchError} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
 

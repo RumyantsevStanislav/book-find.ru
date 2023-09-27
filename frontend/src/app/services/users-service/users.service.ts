@@ -5,7 +5,7 @@ import {PasswordDto, RegisteredUser, SystemUser, User} from "../../models/User";
 import {Observable, Subject, throwError} from "rxjs";
 import {catchError, tap} from "rxjs/operators";
 import {ApiMessage} from "../../models/Response";
-import {environment} from "../../environments/environment.dev";
+import {environment} from "../../../environments/environment";
 
 /**
  * Сервис для работы с пользователем.

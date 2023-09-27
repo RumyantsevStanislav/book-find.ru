@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 //TODO see getHost(), figure out
 //import {environment} from '@env/environment';
 import {forkJoin, mergeMap, Observable, of} from 'rxjs';
-import {environment} from "../../environments/environment.dev";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'

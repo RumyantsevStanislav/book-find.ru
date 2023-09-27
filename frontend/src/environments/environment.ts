@@ -2,11 +2,23 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import {Environment} from "./interfaces";
+import {Environment} from "./interface";
 
 export const environment: Environment = {
   production: false,
-  apiKey: 'Вставить ключ реальный'
+  apiKey: 'Вставить ключ реальный',
+  serverUrl: 'http://localhost:8189/book-find/api/v1',
+  authUrl: '/users/auth',
+  registerUrl: '/users/register',
+  accountUrl: '/users/account',
+  updateUserUrl: '/users/update',
+  updatePasswordUrl: '/users/updatePassword',
+  personalBooksUrl: '/library',
+  booksUrl: '/books',
+  reviewsUrl: '/reviews',
+  resetPasswordUrl: '/users/resetPassword',
+  changePasswordUrl: '/users/changePassword',
+  savePasswordUrl: '/users/savePassword'
 };
 
 /*

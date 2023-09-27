@@ -24,7 +24,7 @@ export class BookActionsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addToLibrary(isbn: number, status: Status) {
+  addToLibrary(isbn: string, status: Status) {
     if (!this.usersService.isAuthenticated()) {
       this.modalService.open()
       // setTimeout(() => this.infoPopup = false, 1000);

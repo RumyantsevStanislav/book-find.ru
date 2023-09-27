@@ -6,7 +6,7 @@ import {map} from 'rxjs/operators';
 import {Book, BookFull} from "../../models/Book";
 import {UsersService} from "../users-service/users.service";
 import {Page} from "../../models/Page";
-import {environment} from "../../environments/environment.dev";
+import {environment} from "../../../environments/environment";
 import {Filter} from "../../models/Filter";
 
 @Injectable({
@@ -37,7 +37,7 @@ export class BookService {
   }
 
   //todo is it a good way to get one book?
-  getBookByIsbn(isbn: number): Observable<BookFull> {
+  getBookByIsbn(isbn: string): Observable<BookFull> {
     return this.http.get<BookFull>(this.booksURL + `/${isbn}`)
       .pipe(map((bookFull: BookFull) => {
         return {

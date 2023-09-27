@@ -1,5 +1,6 @@
 export interface Environment {
   production: boolean
+  apiKey: string
   serverUrl: string
   authUrl: string
   registerUrl: string

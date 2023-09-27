@@ -1,7 +1,7 @@
 import {Injectable, ViewChild} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {SignModalDirective} from "../../directives/sign-modal/sign-modal.directive";
-import {environment} from "../../environments/environment.dev";
+import {environment} from "../../../environments/environment";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {Review} from "../../models/Book";
