@@ -9,7 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import server.entities.User;
 import server.utils.TestUsers;
 
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 

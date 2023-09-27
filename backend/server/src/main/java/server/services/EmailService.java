@@ -1,6 +1,6 @@
 package server.services;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 // TODO: 17.11.2022 include in project
 public interface EmailService {

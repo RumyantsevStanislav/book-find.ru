@@ -33,8 +33,8 @@ import server.verification.OnRegistrationCompleteEvent;
 import server.verification.OnResendTokenEvent;
 import server.verification.OnResetPasswordEvent;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import java.security.Principal;
 import java.util.Calendar;
 import java.util.Locale;

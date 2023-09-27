@@ -22,7 +22,7 @@ import server.repositories.PasswordResetTokenRepository;
 import server.repositories.UsersRepository;
 import server.repositories.VerificationTokenRepository;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;

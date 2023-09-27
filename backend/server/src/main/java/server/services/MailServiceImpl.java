@@ -10,8 +10,8 @@ import server.entities.dtos.BookDto;
 import server.entities.dtos.SubscriptionDto;
 import server.utils.MailMessageBuilder;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -7,7 +7,7 @@ import server.utils.validation.FieldMatch;
 import server.utils.validation.Marker;
 import server.utils.validation.ValidPassword;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 @Getter
 @Setter
