@@ -15,7 +15,7 @@ import server.entities.dtos.BookDtoFull;
 import server.utils.BookFilter;
 import server.utils.TestBooks;
 
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 import java.util.*;
 
 @DataJpaTest

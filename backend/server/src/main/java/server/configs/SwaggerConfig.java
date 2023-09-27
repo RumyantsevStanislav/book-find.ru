@@ -11,8 +11,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 // TODO: 17.11.2022 configure swagger
 @EnableWebMvc //see matching-strategy: ant_path_matcher in .yaml
-@Configuration
-@EnableSwagger2
+//@Configuration
+//@EnableSwagger2
+// Type javax.servlet.http.HttpServletRequest not present.
+// Solution - springdoc-openapi or wait swagger update.
 public class SwaggerConfig {
     @Bean
     public Docket api() {

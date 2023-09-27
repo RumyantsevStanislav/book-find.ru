@@ -5,7 +5,7 @@ import server.entities.Author;
 import server.entities.Book;
 import server.entities.Category;
 
-import javax.persistence.criteria.Join;
+import jakarta.persistence.criteria.Join;
 
 // TODO: 24.12.2022 optimize methods -> root.get("parameter")
 public class BookSpecifications {

@@ -31,7 +31,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
       value-deserializer: server.kafka.BookDeserializer
     listener:
-      auto-startup: false # since spring boot 3
+      auto-startup: false
       concurrency: 1
   mail:
     host: 192.168.1.6 #smtp.gmail.com book-find.ru #

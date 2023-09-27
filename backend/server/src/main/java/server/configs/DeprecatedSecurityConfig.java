@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //Защита на уровне методов, а не эндпоинтов. Пример - @Secured над мотодом в BooksService. Существует ещё на уровне представлений (views)
 //@EnableGlobalMethodSecurity(securedEnabled = true)
 @Profile("disabled") //Такого профиля нет, класс работать не будет.
-public class DeprecatedSecurityConfig extends WebSecurityConfigurerAdapter {
+public class DeprecatedSecurityConfig /*extends WebSecurityConfigurerAdapter*/ {
     //Spring объект UserDetails - username, password, List<GrantedAuthority>
     private UserDetailsService userDetailsService;
 
@@ -31,25 +31,25 @@ public class DeprecatedSecurityConfig extends WebSecurityConfigurerAdapter {
         this.usersService = usersService;
     }
 
-    @Override
+    //@Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests()
-                .antMatchers("/authenticated/**").authenticated() //Только для аутентифицированных
-                .antMatchers("/admins/**").hasRole("ADMIN") // Только для роли ADMIN
+        //httpSecurity.authorizeRequests()
+                //.antMatchers("/authenticated/**").authenticated() //Только для аутентифицированных
+                //.antMatchers("/admins/**").hasRole("ADMIN") // Только для роли ADMIN
                 //.antMatchers("/admins/**").hasAnyRole("ADMIN", "SUPERADMIN") //Автоматически добавляет ROLE_
                 //.antMatchers("/emails/**").hasAnyAuthority("CAN_READ_EMAIL") //Не добавляет ROLE_
-                .anyRequest().permitAll() //Все остальные - незащищённая область
-                .and()
+                //.anyRequest().permitAll() //Все остальные - незащищённая область
+                //.and()
                 //Логин/пароль подшиваются в header, можно использовать для отправки JSON
                 //Стандартное окно в браузере (вместо формы formLogin).
                 //.httpBasic()
-                .formLogin() //Форма, куда вписать логин/пароль дефолтная от Spring
+                //.formLogin() //Форма, куда вписать логин/пароль дефолтная от Spring
                 //.loginPage("login") //Использование своей формы ввода логина/пароля. Опционально
                 //.loginProcessingUrl("/authenticateTheUser") //Адрес, куда отправить логин/пароль. Опционально
                 //.successForwardUrl("/pageForAuthenticateUsers") //Редирект после успешной авторизации. Опционально
-                .and()
-                .csrf().disable()//обычно отключают для REST
-                .logout().logoutSuccessUrl("/"); //Можно настроить процесс logout, например почистить cookies
+                //.and()
+                //.csrf().disable()//обычно отключают для REST
+                //.logout().logoutSuccessUrl("/"); //Можно настроить процесс logout, например почистить cookies
     }
 
     //In memory authentication. Настроили своих юзеров. Спринг не будет выдавать пароль при запуске.
@@ -103,7 +103,7 @@ public class DeprecatedSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        //authenticationProvider.setPasswordEncoder(passwordEncoder());
         authenticationProvider.setUserDetailsService(usersService); //или userDetailsService для InMemory  и таблицы из sql.txt
         return authenticationProvider;
     }

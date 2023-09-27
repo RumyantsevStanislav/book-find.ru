@@ -24,9 +24,10 @@ import server.exceptions.ElementAlreadyExistsException;
 import server.services.*;
 import server.utils.BookFilter;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;

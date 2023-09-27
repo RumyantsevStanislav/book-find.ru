@@ -3,13 +3,16 @@ package server.configs;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -18,11 +21,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import server.services.UsersService;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = false)
 @AllArgsConstructor
 // TODO: 17.11.2022 leave one profile annotation
 //@Profile({"dev", "prod"})
 @Profile("!unsecured")
+@Configuration
 public class SecurityConfig implements WebMvcConfigurer {
     private UsersService usersService;
     private final JwtRequestFilter jwtRequestFilter;
@@ -36,15 +40,18 @@ public class SecurityConfig implements WebMvcConfigurer {
     // TODO: 17.11.2022 configure security of methods depends on roles
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
+        http
+                .csrf(CsrfConfigurer::disable)
+                .authorizeHttpRequests(requests -> requests
                 //.anyRequest().authenticated()
-                .antMatchers("/account").authenticated()
+                .requestMatchers("/account").authenticated()
                 .anyRequest().permitAll()
                 //                .and()
                 //                .exceptionHandling()
                 //                .authenticationEntryPoint(unauthorizedHandler)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

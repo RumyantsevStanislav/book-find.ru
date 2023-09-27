@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import server.utils.validation.FieldMatch;
 import server.utils.validation.Marker;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
