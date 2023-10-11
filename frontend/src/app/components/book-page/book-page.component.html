@@ -5,8 +5,9 @@
   <div class="book-card-spec">
     <div class="book-card-spec-left">
       <div class="book-card-cover">
-        <img class="book-card-img" src="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
-             alt="{{book.title}}">
+        <img class="book-card-img" src="{{book.cover.path}}.{{book.cover.extension}}"
+             alt="{{book.title}}"
+             onerror="this.src ='../../../assets/images/covers/emptycover-big.svg'">
       </div>
       <div class="book-card-info">
         <div *ngFor="let author of book.authors">

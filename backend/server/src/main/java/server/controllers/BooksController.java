@@ -53,7 +53,7 @@ public class BooksController {
     @ApiOperation("Returns one book by isbn.")
     public ResponseEntity<BookDtoFull> getOneBook(@PathVariable @ApiParam("ISBN of the book to be requested. Can not be empty") @NotNull String isbn, Principal principal) {
         /// TODO: 18.02.2023 add personal book if user is authorized
-        return new ResponseEntity<>(booksService.getDtoFullByIsbn(isbn).orElseThrow(() -> new EntityNotFoundException("Can't find book with isbn = " + isbn)), HttpStatus.OK);
+        return new ResponseEntity<>(booksService.getDtoFullImplByIsbn(isbn).orElseThrow(() -> new EntityNotFoundException("Can't find book with isbn = " + isbn)), HttpStatus.OK);
     }
 
     @Secured({"ROLE_MANAGER", "ROLE_ADMIN"})

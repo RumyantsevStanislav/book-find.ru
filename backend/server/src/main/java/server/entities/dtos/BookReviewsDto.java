@@ -1,7 +1,7 @@
 package server.entities.dtos;
 
-import server.entities.dtos.user.UserDto;
+import server.entities.dtos.user.ProfileDto;
 
 public interface BookReviewsDto extends ReviewDto {
-    UserDto getUser();
+    ProfileDto getProfile();
 }

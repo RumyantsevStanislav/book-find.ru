@@ -9,8 +9,8 @@
     <swiper-slide class="slider-book-card" *ngFor="let book of booksPage.content">
       <div class="cover">
         <img class="slider-book-card-img"
-             ngSrc="../../../assets/images/covers/{{book.cover.path}}.{{book.cover.extension}}"
-             onerror="this.src ='../../../assets/images/covers/768776.jpg'"
+             ngSrc="{{book.cover.path}}.{{book.cover.extension}}"
+             onerror="this.src ='../../../assets/images/covers/emptycover-big.svg'"
              alt="{{book.title}}"
              width="220" height="320">
         <div class="estimation">{{book.estimation | number:'1.1'}}</div>

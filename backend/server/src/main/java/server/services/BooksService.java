@@ -6,9 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import server.entities.Book;
-import server.entities.dtos.BookDto;
-import server.entities.dtos.BookDtoFull;
-import server.entities.dtos.BookDtoImpl;
+import server.entities.dtos.*;
 import server.mappers.BookMapper;
 import server.repositories.BooksRepository;
 
@@ -35,6 +33,10 @@ public class BooksService {
 
     public Optional<BookDtoFull> getDtoFullByIsbn(String isbn) {
         return booksRepository.findDtoFullByIsbn(isbn);
+    }
+
+    public Optional<BookDtoFullImpl> getDtoFullImplByIsbn(String isbn) {
+        return booksRepository.findByIsbn(isbn).map(BookMapper.BOOK_MAPPER::toFullDto);
     }
 
     public Optional<Book> getByIsbn(String isbn) {

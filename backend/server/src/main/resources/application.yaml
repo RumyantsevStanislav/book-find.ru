@@ -3,6 +3,8 @@ app:
   kafka:
     consumer:
       topic: BOOKS #<CONSUMER_TOPIC_NAME_1, CONSUMER_TOPIC_NAME_2, CONSUMER_TOPIC_NAME_3>
+  path:
+    img: https://img.book-find.ru/assets/images/covers/
 server:
   port: 8189
   servlet:
